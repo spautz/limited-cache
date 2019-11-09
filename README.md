@@ -34,16 +34,16 @@ Low-level pure functions, if you persist redux:
 ```javascript
 const initialState = {
   childIdsByParentId: {},
-  limitedCacheData: limitedCacheUtil.init(),
+  cacheMeta: limitedCacheUtil.init(),
 };
 
-// limitedCacheData is a plain, JSON-compatible object
-limitedCacheData = limitedCacheUtil.set(limitedCacheData, 'abc', resultsForABC);
+// cacheMeta is a plain, JSON-compatible object
+cacheMeta = limitedCacheUtil.set(cacheMeta, 'abc', resultsForABC);
 
 return {
   ...state,
-  childIdsByParentId: limitedCacheData.cache,
-  limitedCacheData,
+  childIdsByParentId: cacheMeta.cache,
+  cacheMeta,
 }
 ```
 
@@ -79,17 +79,17 @@ Use a falsy value to disable.
 Some under-the-hood performance optimizations result in null values and empty keys left in the cache. They are
 auto-purged after this number of operations.
 
-
+ 
 ### Low-level pure functions
 
 These functions are grouped together as `limitedCacheUtil`. All interfaces are built on top of these.
 
 * `init(options)`
-* `init(limitedCacheData, options)` - you can update options anytime
-* `set(limitedCacheData, cacheKey, value)`
-* `get(limitedCacheData, cacheKey)`
-* `get(limitedCacheData)` - returns the entire cache object
-* `cleanup(limitedCacheData)` - runs autoCleanup
+* `init(cacheMeta, options)` - you can update options anytime
+* `set(cacheMeta, cacheKey, value)`
+* `get(cacheMeta, cacheKey)`
+* `get(cacheMeta)` - returns the entire cache object
+* `cleanup(cacheMeta)` - runs autoCleanup
 
 ## FAQ
 
