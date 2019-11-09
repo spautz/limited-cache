@@ -1,0 +1,13 @@
+{
+  "name": "limited-cache",
+  "description": "A minimal JS cache: like using an object, except it won't grow forever",
+  "version": "0.0.1",
+  "license": "MIT",
+  "homepage": "https://github.com/spautz/limited-cache",
+  "repository": "github:spautz/limited-cache",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "peerDependencies": {}
+}
