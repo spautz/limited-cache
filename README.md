@@ -4,18 +4,20 @@ A minimal JS cache: like using an object, except it won't grow forever
 
 ## Motivation
 
-A plain Javascript object is often good enough for simple caching.
+A plain Javascript object is often good enough for simple key-value caching.
 
-The only problem is that the cache can grow forever. This library is like a plain object with a size limit.
+The problem is that a simple object cache can grow forever. This library is like a plain object with a size limit,
+plus `maxCacheTime` and smarter removal of old items.
+
 
 ## Example
 
+The plain API provides a standard cache interface:
 ```javascript
 const recentResults = new LimitedCache({
   maxCacheSize: 100,
 });
 recentResults.set('abc', resultsForABC);
-
 recentResults.get('abc');
 ```
 
@@ -25,12 +27,17 @@ const recentResults = new LimitedCacheProxy();
 recentResults['abc'] = resultsForABC;
 ```
 
-A React hook is available:
+React hooks are available for both:
 ```javascript
-const [cache, setCache] = useLimitedCache();
+const useRecentResults = new LimitedCacheHook();
+const [getCache, setCache] = useRecentResults();
+```
+```javascript
+const useRecentResults = new LimitedCacheProxyHook();
+const cache = useRecentResults();
 ```
 
-Low-level pure functions, if you persist redux:
+Low-level functions using plain objects, if you need serialization:
 ```javascript
 const initialState = {
   childIdsByParentId: {},
@@ -42,25 +49,26 @@ cacheMeta = limitedCacheUtil.set(cacheMeta, 'abc', resultsForABC);
 
 return {
   ...state,
-  childIdsByParentId: cacheMeta.cache,
+  childIdsByParentId: limitedCacheUtil.get(cacheMeta),
   cacheMeta,
 }
 ```
 
-## API
+
+## Import
 
 The default import is available for basic usage, or you can import the specific pieces you want.
-The react hook is a separate package.
 
 ```javascript
-import LimitedCache from 'limited-cache';
-
 import { LimitedCache, LimitedCacheProxy, limitedCacheUtil } from 'limited-cache';
-
-import useLimitedCache from 'limited-cache/hook';
 ```
 
-### Options
+The react hook constructors are a separate package.
+```javascript
+import { LimitedCacheHook, LimitedCacheProxyHook } from 'limited-cache/hook';
+```
+
+## Options
 
 #### `maxCacheSize` (number, default: 500)
 Number of key/value pairs to keep in the cache. Items will be removed to stay within the limit.
@@ -76,31 +84,41 @@ If an item rotates out of the cache before this time passes, emits a warning tel
 Use a falsy value to disable.
 
 #### `autoMaintenanceMultiplier` (number, default: 2)
-Some under-the-hood performance optimizations result in null values and empty keys left in the cache, temporarily.
-They are auto-purged after `(autoMaintenanceMultiplier * maxCacheSize)` operations.
+Some under-the-hood performance optimizations result in `undefined` values left in the cache, temporarily.
+They are auto-purged after `autoMaintenanceMultiplier * maxCacheSize` operations.
 
  
-### Low-level pure functions
+## Low-level functions
 
 These functions are grouped together as `limitedCacheUtil`. All interfaces are built on top of these.
 
 * `init(options)`
-* `init(cacheMeta, options)` - you can update options anytime
-* `set(cacheMeta, cacheKey, value)`
-* `get(cacheMeta, cacheKey)`
 * `get(cacheMeta)` - returns the entire cache object
-* `maintenance(cacheMeta)` - runs autoMaintenance
+* `get(cacheMeta, cacheKey)`
+* `has(cacheMeta, cacheKey)`
+* `set(cacheMeta, cacheKey, value)`
+* `remove(cacheMeta, cacheKey)`
+* `performMaintenance(cacheMeta)` - runs autoMaintenance
+* `setOptions(cacheMeta, options)` - you can update options anytime
+
 
 ## FAQ
 
 **Immutable?**
 
-Yep
+The cache itself is, but cacheMeta is persistent.
 
 **API for bulk operations?**
 
-Nope 
+Nope.
 
 **Is this a least-recently-used cache?**
 
-No: For performance it only tracks by `set`
+No: For performance it only tracks by `set`.
+
+**When are old items removed?**
+
+When new items are added, or if you try to `get` an item that has expired.
+
+If you retrieve the entire cache object as-is then it may contain expired items. If you don't want that,
+run `performMaintenance` first.

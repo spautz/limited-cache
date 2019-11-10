@@ -1,20 +1,25 @@
 import {
-    defaultOptions,
     lowLevelInit,
-    lowLevelSet,
     lowLevelGet,
-    lowLevelMaintenance,
+    lowLevelHas,
+    lowLevelSet,
+    lowLevelRemove,
+    lowLevelSetOptions,
+    lowLevelPerformMaintenance,
 } from './limitedCacheUtil'
 
 function LimitedCache(options) {
-    const cacheMeta = lowLevelInit(null, options)
+    const cacheMeta = lowLevelInit(options)
 
     return {
-        _cacheMeta: cacheMeta,
-        get: (cacheKey) => lowLevelGet(cacheMeta, cacheKey),
-        set: (cacheKey, item) => lowLevelSet(cacheMeta, cacheKey, item),
-        applyOptions: (options) => lowLevelInit(cacheMeta, options),
-        performMaintenance: () => lowLevelMaintenance(cacheMeta),
+        get: lowLevelGet.bind(null, cacheMeta),
+        has: lowLevelHas.bind(null, cacheMeta),
+        set: lowLevelSet.bind(null, cacheMeta),
+        remove: lowLevelRemove.bind(null, cacheMeta),
+        getCacheMeta: () => cacheMeta,
+        getOptions: () => cacheMeta.options,
+        setOptions: lowLevelSetOptions.bind(null, cacheMeta),
+        performMaintenance: lowLevelPerformMaintenance.bind(null, cacheMeta),
     };
 }
 

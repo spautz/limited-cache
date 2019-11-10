@@ -1,9 +1,12 @@
 import {
     defaultOptions,
     lowLevelInit,
-    lowLevelSet,
     lowLevelGet,
-    lowLevelMaintenance,
+    lowLevelHas,
+    lowLevelSet,
+    lowLevelRemove,
+    lowLevelPerformMaintenance,
+    lowLevelSetOptions,
 } from './limitedCacheUtil'
 import LimitedCache from './LimitedCache';
 import LimitedCacheProxy from './LimitedCacheProxy';
@@ -18,7 +21,10 @@ export {
 export const limitedCacheUtil = {
     defaultOptions,
     init: lowLevelInit,
-    set: lowLevelSet,
     get: lowLevelGet,
-    maintenance: lowLevelMaintenance,
+    has: lowLevelHas,
+    set: lowLevelSet,
+    remove: lowLevelRemove,
+    performMaintenance: lowLevelPerformMaintenance,
+    setOptions: lowLevelSetOptions,
 };
