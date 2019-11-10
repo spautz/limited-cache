@@ -75,9 +75,9 @@ A plain object whose keys and values will
 If an item rotates out of the cache before this time passes, emits a warning telling you increase the cache size.
 Use a falsy value to disable.
 
-#### `autoCleanupAfter` (number, default: 2*maxCacheSize)
-Some under-the-hood performance optimizations result in null values and empty keys left in the cache. They are
-auto-purged after this number of operations.
+#### `autoMaintenanceMultiplier` (number, default: 2)
+Some under-the-hood performance optimizations result in null values and empty keys left in the cache, temporarily.
+They are auto-purged after `(autoMaintenanceMultiplier * maxCacheSize)` operations.
 
  
 ### Low-level pure functions
@@ -89,7 +89,7 @@ These functions are grouped together as `limitedCacheUtil`. All interfaces are b
 * `set(cacheMeta, cacheKey, value)`
 * `get(cacheMeta, cacheKey)`
 * `get(cacheMeta)` - returns the entire cache object
-* `cleanup(cacheMeta)` - runs autoCleanup
+* `maintenance(cacheMeta)` - runs autoMaintenance
 
 ## FAQ
 

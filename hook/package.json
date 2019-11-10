@@ -1,5 +1,5 @@
 {
-  "name": "limited-cache-hook",
+  "name": "@limited-cache/hook",
   "description": "A hook for using limited-cache in React components",
   "version": "0.0.1",
   "license": "MIT",

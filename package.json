@@ -3,6 +3,7 @@
   "description": "A minimal JS cache: like using an object, except it won't grow forever",
   "version": "0.0.1",
   "license": "MIT",
+  "author": "Steven Pautz <spautz@gmail.com>",
   "homepage": "https://github.com/spautz/limited-cache",
   "repository": "github:spautz/limited-cache",
   "scripts": {},

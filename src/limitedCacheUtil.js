@@ -3,56 +3,61 @@ const defaultOptions = {
     maxCacheTime: 0,
     initialValues: null,
     warnIfItemPurgedBeforeTime: process.env.NODE_ENV === 'development' ? 5000 : 0,
-    autoCleanupAfter: null,
+    autoMaintenanceMultiplier: 2,
     numItemsToExamineForPurge: 10,
 };
 
 /* Options processing */
 
 const assignOptions = (baseOptions, additionalOptions) => {
-    const newOptions = additionalOptions ? {...baseOptions, ...additionalOptions} : {...baseOptions};
-    const needsToCalculateAutoCleanupCount = newOptions.autoCleanupAfter == null ||
-        (additionalOptions && additionalOptions.maxCacheSize && !additionalOptions.autoCleanupAfter);
-    if (needsToCalculateAutoCleanupCount) {
-        newOptions.autoCleanupAfter = 2 * options.maxCacheSize;
+    if (additionalOptions) {
+        return  {...baseOptions, ...additionalOptions };
     }
-    return newOptions;
+    return {...baseOptions};
 };
 
 const createCacheMeta = () => ({
-    isLimitedCacheMeta: true,
+    limitedCacheMetaVersion: 1,
     options: defaultOptions,
     cache: {},
-    recentCacheKeys: Array(500),
+    recentCacheKeys: [],
     cacheKeyTimestamps: Object.create(null),
-    autoCleanupCount: 1000,
+    autoMaintenanceCount: 1000,
 });
 
 const lowLevelInit = (cacheMeta, options) => {
     // cacheMeta is optional: if it isn't there, the first argument must be the options
-    if (cacheMeta && !options && !cacheMeta.isLimitedCacheMeta) {
+    if (cacheMeta && !options && !cacheMeta.limitedCacheMetaVersion) {
         return lowLevelInit(null, cacheMeta)
     }
 
     const newCacheMeta = cacheMeta || createCacheMeta();
     const newOptions = assignOptions(newCacheMeta.options, options);
     newCacheMeta.options = newOptions;
-    newCacheMeta.autoCleanupCount = newOptions.autoCleanupAfter;
+    newCacheMeta.autoMaintenanceCount = newOptions.maxCacheSize * newOptions.autoMaintenanceMultiplier;
     return newCacheMeta;
 };
 
-/* Internal utilities */
+/* Internal cache manipulation */
 
-const lowLevelCleanup = (cacheMeta) => {
-
+const lowLevelMaintenance = (cacheMeta) => {
+    // Rebuild cache from recentCacheKeys only, checking timestamps to auto-remove expired
+    // Purge/rebuild cacheKeyTimestamps
 };
 
-const _dropExpiredItemsAtIndex = (startIndex, now) => {}
-const _purgeItemsToMakeRoom = (now) => {}
+const _dropExpiredItemsAtIndex = (startIndex, now) => {
+    // Check item and as many following items as we can, and drop any/all that are expired
+};
+
+const _purgeItemsToMakeRoom = (now) => {
+    // Search numItemsToExamineForPurge and force-remove the oldest one
+    // Warn if the purged item was still fresh
+    // _dropExpiredItemsAtIndex from there, in case we had a hop
+};
 
 /* Accessors */
 
-const lowLevelSet = (cacheMeta, cacheKey, value) => {
+const lowLevelSet = (cacheMeta, cacheKey, item) => {
     // The cache itself is immutable (but the rest of cacheMeta is not)
     cacheMeta.cache = {
         ...cacheMeta.cache,
@@ -60,13 +65,21 @@ const lowLevelSet = (cacheMeta, cacheKey, value) => {
     };
 
     // If this was new, and we're at the cache limit, push something else out
-    const { cacheKeyTimestamps, recentCacheKeys } = cacheMeta;
+    const { cacheKeyTimestamps, options, recentCacheKeys } = cacheMeta;
     if (!cacheKeyTimestamps[cacheKey]) {
+        const { autoMaintenanceMultiplier, maxCacheSize } = options;
+
         const now = Date.now();
         cacheKeyTimestamps[cacheKey] = now;
         recentCacheKeys.push(cacheKey);
         _dropExpiredItemsAtIndex(0, now);
 
+        cacheMeta.autoMaintenanceCount = cacheMeta.autoMaintenanceCount - 1;
+        if (cacheMeta.autoMaintenanceCount < 0) {
+            // Time for an oil change
+            lowLevelMaintenance(cacheMeta);
+            cacheMeta.autoMaintenanceCount = maxCacheSize * autoMaintenanceMultiplier;
+        }
         if (recentCacheKeys.length > maxCacheSize) {
             // We're still over the limit: purge some items
             _purgeItemsToMakeRoom(now);
@@ -92,5 +105,5 @@ export {
     lowLevelInit,
     lowLevelSet,
     lowLevelGet,
-    lowLevelCleanup,
+    lowLevelMaintenance,
 };
