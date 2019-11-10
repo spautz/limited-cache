@@ -6,9 +6,30 @@
   "author": "Steven Pautz <spautz@gmail.com>",
   "homepage": "https://github.com/spautz/limited-cache",
   "repository": "github:spautz/limited-cache",
-  "scripts": {},
+  "main": "lib-cjs/redux.js",
+  "module": "dist-es/limited-cache.mjs",
+  "unpkg": "dist-umd/redux.js",
+  "types": "types/index.d.ts",
+  "files": [
+    "dist-cjs",
+    "dist-es",
+    "dist-umd",
+    "src",
+    "types"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "clean": "rimraf lib dist es"
+  },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "rimraf": "^3.0.0",
+    "rollup": "^1.26.4",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-terser": "^5.1.2",
+    "rollup-plugin-typescript2": "^0.25.2",
+    "typescript": "^3.7.2"
+  },
   "optionalDependencies": {},
   "peerDependencies": {}
 }

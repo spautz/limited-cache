@@ -7,10 +7,12 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/spautz/limited-cache.git",
-    "directory": "hook"
+    "directory": "hooks"
   },
   "scripts": {},
-  "dependencies": {},
+  "dependencies": {
+    "limited-cache": "../"
+  },
   "devDependencies": {},
   "optionalDependencies": {},
   "peerDependencies": {}

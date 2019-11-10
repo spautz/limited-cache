@@ -65,7 +65,7 @@ import { LimitedCache, LimitedCacheProxy, limitedCacheUtil } from 'limited-cache
 
 The react hook constructors are a separate package.
 ```javascript
-import { LimitedCacheHook, LimitedCacheProxyHook } from 'limited-cache/hook';
+import { LimitedCacheHook, LimitedCacheProxyHook } from 'hooks/index';
 ```
 
 ## Options
