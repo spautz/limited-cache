@@ -14,7 +14,7 @@ plus `maxCacheTime` and smarter removal of old items.
 The plain API provides a standard cache interface:
 
 ```javascript
-const recentResults = new LimitedCache({
+const recentResults = LimitedCache({
   maxCacheSize: 100,
 });
 recentResults.set('abc', resultsForABC);
@@ -24,19 +24,19 @@ recentResults.get('abc');
 Use `LimitedCacheProxy` for a nicer developer experience:
 
 ```javascript
-const recentResults = new LimitedCacheProxy();
+const recentResults = LimitedCacheProxy();
 recentResults['abc'] = resultsForABC;
 ```
 
 React hooks are available for both:
 
 ```javascript
-const useRecentResults = new LimitedCacheHook();
+const useRecentResults = LimitedCacheHook();
 const [getCache, setCache] = useRecentResults();
 ```
 
 ```javascript
-const useRecentResults = new LimitedCacheProxyHook();
+const useRecentResults = LimitedCacheProxyHook();
 const cache = useRecentResults();
 ```
 

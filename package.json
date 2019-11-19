@@ -23,6 +23,9 @@
     "build": "rollup -c",
     "format": "prettier --write \"**/*.{js,json,md,ts}\"",
     "lint": "eslint \"**/*.{js,ts}\"",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
     "types": "tsc --noEmit src/index.ts",
     "____ INTEGRATION ___________________________________________________": "",
     "dev": "yon run format && yon run types && yon run lint",
@@ -30,20 +33,56 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.9",
     "@typescript-eslint/eslint-plugin": "^2.8.0",
     "@typescript-eslint/parser": "^2.8.0",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.6.0",
     "eslint-plugin-prettier": "^3.1.1",
+    "husky": "^3.1.0",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.4.3",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.0",
     "rollup": "^1.27.2",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-terser": "^5.1.2",
     "rollup-plugin-typescript2": "^0.25.2",
+    "ts-jest": "^24.1.0",
     "typescript": "^3.7.2",
     "yarn-or-npm": "^3.0.1"
   },
   "optionalDependencies": {},
-  "peerDependencies": {}
+  "peerDependencies": {},
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|/tests/.*|(\\.|/)(test|spec))\\.tsx?$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "html"
+    ]
+  },
+  "lint-staged": {
+    "**/*.{css,html,js,json,less,md,scss,ts}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
 }

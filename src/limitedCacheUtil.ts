@@ -34,7 +34,7 @@ const defaultOptions: LimitedCacheOptionsReadonly = {
   numItemsToExamineForPurge: 10,
 };
 
-const lowLevelInit = (options: LimitedCacheOptionsPartial): LimitedCacheMeta => {
+const lowLevelInit = (options?: LimitedCacheOptionsPartial): LimitedCacheMeta => {
   // This is the cacheMeta. It is created once, and persists per instance
   return {
     limitedCacheMetaVersion: 1,

@@ -25,7 +25,7 @@ export interface LimitedCacheInstance<T = any> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function LimitedCache<T = any>(options: LimitedCacheOptionsPartial): LimitedCacheInstance<T> {
+function LimitedCache<T = any>(options?: LimitedCacheOptionsPartial): LimitedCacheInstance<T> {
   const cacheMeta = lowLevelInit(options);
 
   return {
