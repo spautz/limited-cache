@@ -1,8 +1,8 @@
 /* eslint-env jest */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import LimitedCache, { LimitedCacheInstance } from '../src/LimitedCache';
-import { defaultOptions } from '../src/limitedCacheUtil';
+import LimitedCache from '../src/LimitedCache';
+import { LimitedCacheInstance, defaultOptions } from '../src/';
 
 describe('LimitedCache', () => {
   it('initializes without options', () => {
@@ -30,19 +30,19 @@ describe('LimitedCache', () => {
       myCache = LimitedCache<any>();
     });
 
-    it('has missing', () => {
+    it('has, missing', () => {
       const result = myCache.has('asdf');
 
       expect(result).toEqual(false);
     });
 
-    it('get missing', () => {
+    it('get, missing', () => {
       const result = myCache.get('asdf');
 
       expect(result).toBeUndefined();
     });
 
-    it('getAll empty', () => {
+    it('getAll, empty', () => {
       const result = myCache.get();
 
       expect(result).toEqual({});
@@ -54,35 +54,35 @@ describe('LimitedCache', () => {
       expect(result).toEqual(123);
     });
 
-    it('has present', () => {
+    it('has, present', () => {
       myCache.set('abc', 123);
       const result = myCache.has('abc');
 
       expect(result).toEqual(true);
     });
 
-    it('get present', () => {
+    it('get, present', () => {
       myCache.set('abc', 123);
       const result = myCache.get('abc');
 
       expect(result).toEqual(123);
     });
 
-    it('getAll present', () => {
+    it('getAll, present', () => {
       myCache.set('abc', 123);
       const result = myCache.get();
 
       expect(result).toEqual({ abc: 123 });
     });
 
-    it('remove return', () => {
+    it('remove, return', () => {
       myCache.set('abc', 123);
       const result = myCache.remove('abc');
 
       expect(result).toEqual(true);
     });
 
-    it('remove effect, has', () => {
+    it('remove, effect, has', () => {
       myCache.set('abc', 123);
       myCache.remove('abc');
       const result = myCache.has('abc');
@@ -90,7 +90,7 @@ describe('LimitedCache', () => {
       expect(result).toEqual(false);
     });
 
-    it('remove effect, get', () => {
+    it('remove, effect, get', () => {
       myCache.set('abc', 123);
       myCache.remove('abc');
       const result = myCache.get('abc');
@@ -124,7 +124,7 @@ describe('LimitedCache', () => {
       expect(result).toEqual(defaultOptions);
     });
 
-    it('setOptions return', () => {
+    it('setOptions, return', () => {
       const result = myCache.setOptions({
         maxCacheSize: 123,
         maxCacheTime: 456,
@@ -143,7 +143,7 @@ describe('LimitedCache', () => {
       });
     });
 
-    it('setOptions effect', () => {
+    it('setOptions, effect', () => {
       myCache.setOptions({
         maxCacheSize: 123,
         maxCacheTime: 456,

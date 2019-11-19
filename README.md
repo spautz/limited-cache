@@ -21,10 +21,10 @@ recentResults.set('abc', resultsForABC);
 recentResults.get('abc');
 ```
 
-Use `LimitedCacheProxy` for a nicer developer experience:
+Use `LimitedCacheObject` for a nicer developer experience, using Proxies:
 
 ```javascript
-const recentResults = LimitedCacheProxy();
+const recentResults = LimitedCacheObject();
 recentResults['abc'] = resultsForABC;
 ```
 
@@ -36,7 +36,7 @@ const [getCache, setCache] = useRecentResults();
 ```
 
 ```javascript
-const useRecentResults = LimitedCacheProxyHook();
+const useRecentResults = LimitedCacheObjectHook();
 const cache = useRecentResults();
 ```
 
@@ -63,13 +63,13 @@ return {
 The default import is available for basic usage, or you can import the specific pieces you want.
 
 ```javascript
-import { LimitedCache, LimitedCacheProxy, limitedCacheUtil } from 'limited-cache';
+import { LimitedCache, LimitedCacheObject, limitedCacheUtil } from 'limited-cache';
 ```
 
 The react hook constructors are a separate package.
 
 ```javascript
-import { LimitedCacheHook, LimitedCacheProxyHook } from 'hooks/index';
+import { LimitedCacheHook, LimitedCacheObjectHook } from 'hooks/index';
 ```
 
 ## Options

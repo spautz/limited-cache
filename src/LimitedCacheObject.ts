@@ -10,14 +10,32 @@ import {
 } from './limitedCacheUtil';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface LimitedCacheObjectInterface<T = any> {
+export interface LimitedCacheObjectInterface<T = any> {
   [key: string]: T;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const proxyHandler: ProxyHandler<any> = {
   get: (cacheMeta: LimitedCacheMeta, cacheKey: string) => {
+    if (cacheKey === 'hasOwnProperty') {
+      return Object.prototype.hasOwnProperty;
+    }
+
     return lowLevelGet(cacheMeta, cacheKey);
+  },
+  getOwnPropertyDescriptor: (cacheMeta: LimitedCacheMeta, cacheKey: string) => {
+    const hasResult = lowLevelHas(cacheMeta, cacheKey);
+    const getResult = lowLevelGet(cacheMeta, cacheKey);
+
+    if (hasResult) {
+      return {
+        configurable: true,
+        enumerable: hasResult,
+        value: getResult,
+        writable: true,
+      };
+    }
+    return;
   },
   has: lowLevelHas,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,11 +51,11 @@ const proxyHandler: ProxyHandler<any> = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function LimitedCacheProxy<T = any>(
-  options: LimitedCacheOptionsPartial,
+function LimitedCacheObject<T = any>(
+  options?: LimitedCacheOptionsPartial,
 ): LimitedCacheObjectInterface<T> {
   const cacheMeta = lowLevelInit(options);
   return new Proxy(cacheMeta, proxyHandler);
 }
 
-export default LimitedCacheProxy;
+export default LimitedCacheObject;

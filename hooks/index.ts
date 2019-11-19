@@ -1,7 +1,7 @@
 // @TODO
-// import { LimitedCache, LimitedCacheProxy, limitedCacheUtil } from 'src';
+// import { LimitedCache, LimitedCacheObject, limitedCacheUtil } from 'src';
 
 const LimitedCacheHook = null;
-const LimitedCacheProxyHook = null;
+const LimitedCacheObjectHook = null;
 
-export { LimitedCacheHook, LimitedCacheProxyHook };
+export { LimitedCacheHook, LimitedCacheObjectHook };

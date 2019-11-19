@@ -29,7 +29,7 @@
     "types": "tsc --noEmit src/index.ts",
     "____ INTEGRATION ___________________________________________________": "",
     "dev": "yon run format && yon run types && yon run lint",
-    "prepare": "yon run clean && yon run dev && yon test"
+    "prepare": "yon run clean && yon run dev && yon test && yon build"
   },
   "dependencies": {},
   "devDependencies": {
