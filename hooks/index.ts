@@ -4,7 +4,4 @@
 const LimitedCacheHook = null;
 const LimitedCacheProxyHook = null;
 
-export {
-    LimitedCacheHook,
-    LimitedCacheProxyHook,
-};
+export { LimitedCacheHook, LimitedCacheProxyHook };
