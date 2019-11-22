@@ -1,16 +1,11 @@
+import {
+  defaultOptions,
+  // types
+  LimitedCacheOptionsPartial,
+  LimitedCacheOptionsReadonly,
+} from './options';
+
 /* Types */
-
-export interface LimitedCacheOptions {
-  maxCacheSize: number;
-  maxCacheTime: number;
-  initialValues: object | null;
-  warnIfItemPurgedBeforeTime: number;
-  autoMaintenanceMultiplier: number;
-  numItemsToExamineForPurge: number;
-}
-
-export type LimitedCacheOptionsPartial = Partial<LimitedCacheOptions>;
-export type LimitedCacheOptionsReadonly = Readonly<LimitedCacheOptions>;
 
 export interface LimitedCacheMeta {
   limitedCacheMetaVersion: number;
@@ -25,15 +20,6 @@ export interface LimitedCacheMeta {
 }
 
 /* Initialization and options */
-
-const defaultOptions: LimitedCacheOptionsReadonly = {
-  maxCacheSize: 500,
-  maxCacheTime: 0,
-  initialValues: null,
-  warnIfItemPurgedBeforeTime: process.env['NODE_ENV'] === 'development' ? 5000 : 0,
-  autoMaintenanceMultiplier: 2,
-  numItemsToExamineForPurge: 10,
-};
 
 const lowLevelInit = (options?: LimitedCacheOptionsPartial): LimitedCacheMeta => {
   // This is the cacheMeta. It is created once, and persists per instance

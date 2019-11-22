@@ -1,8 +1,8 @@
 /* eslint-env jest */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import LimitedCache from '../src/LimitedCache';
-import { defaultOptions, LimitedCacheInstance } from '../src/';
+import LimitedCache, { LimitedCacheInstance } from '../src/LimitedCache';
+import { defaultOptions } from '../src/options';
 
 describe('LimitedCache', () => {
   it('initializes without options', () => {

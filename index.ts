@@ -1,5 +1,4 @@
 import {
-  defaultOptions,
   lowLevelGet,
   lowLevelHas,
   lowLevelInit,
@@ -7,22 +6,22 @@ import {
   lowLevelRemove,
   lowLevelSet,
   lowLevelSetOptions,
-} from './limitedCacheUtil';
-import LimitedCache from './LimitedCache';
-import LimitedCacheObject from './LimitedCacheObject';
+} from './src/limitedCacheUtil';
 
-export { LimitedCacheInstance } from './LimitedCache';
-export { LimitedCacheObjectInterface } from './LimitedCacheObject';
+import LimitedCache from './src/LimitedCache';
+import LimitedCacheObject from './src/LimitedCacheObject';
+
+export { LimitedCacheInstance } from './src/LimitedCache';
+export { LimitedCacheObjectInterface } from './src/LimitedCacheObject';
+export { LimitedCacheMeta } from './src/limitedCacheUtil';
 export {
+  defaultOptions,
   LimitedCacheOptions,
   LimitedCacheOptionsPartial,
   LimitedCacheOptionsReadonly,
-  LimitedCacheMeta,
-} from './limitedCacheUtil';
+} from './src/options';
 
-export default LimitedCache;
-
-export { LimitedCache, LimitedCacheObject, defaultOptions };
+export { LimitedCache, LimitedCacheObject };
 
 export const limitedCacheUtil = {
   init: lowLevelInit,

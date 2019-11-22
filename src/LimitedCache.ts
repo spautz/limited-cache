@@ -8,9 +8,8 @@ import {
   lowLevelPerformMaintenance,
   // types
   LimitedCacheMeta,
-  LimitedCacheOptionsPartial,
-  LimitedCacheOptionsReadonly,
 } from './limitedCacheUtil';
+import { LimitedCacheOptionsPartial, LimitedCacheOptionsReadonly } from './options';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface LimitedCacheInstance<T = any> {

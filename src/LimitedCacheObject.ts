@@ -6,8 +6,8 @@ import {
   lowLevelRemove,
   // types
   LimitedCacheMeta,
-  LimitedCacheOptionsPartial,
 } from './limitedCacheUtil';
+import { LimitedCacheOptionsPartial } from './options';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface LimitedCacheObjectInterface<T = any> {

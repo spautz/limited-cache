@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "____ BASE COMMANDS _________________________________________________": "",
-    "clean": "rimraf dist-* coverage types; jest --clearCache",
+    "clean": "rimraf dist-*/ coverage/ types/ ; jest --clearCache",
     "build": "rollup -c",
     "format": "prettier --write \"**/*.{js,json,md,ts}\"",
     "lint": "eslint \"**/*.{js,ts}\"",
@@ -25,7 +25,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
-    "types": "tsc --noEmit src/index.ts",
+    "types": "tsc --noEmit index.ts",
     "____ INTEGRATION ___________________________________________________": "",
     "dev": "yon run format && yon run types && yon run lint",
     "gs": "yon run dev && yon run test:coverage && yon run build"
@@ -34,6 +34,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.23",
     "@types/node": "^12.12.11",
+    "@types/react": "^16.8.0",
     "@typescript-eslint/eslint-plugin": "^2.8.0",
     "@typescript-eslint/parser": "^2.8.0",
     "eslint": "^6.6.0",
@@ -53,7 +54,9 @@
     "yarn-or-npm": "^3.0.1"
   },
   "optionalDependencies": {},
-  "peerDependencies": {},
+  "peerDependencies": {
+    "react": "^16.8.0"
+  },
   "jest": {
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
