@@ -8,6 +8,7 @@ export interface LimitedCacheOptions {
   autoMaintenanceMultiplier: number;
   numItemsToExamineForPurge: number;
 }
+
 export type LimitedCacheOptionsPartial = Partial<LimitedCacheOptions>;
 export type LimitedCacheOptionsReadonly = Readonly<LimitedCacheOptions>;
 

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import LimitedCache from '../src/LimitedCache';
-import { LimitedCacheInstance, defaultOptions } from '../src/';
+import { defaultOptions, LimitedCacheInstance } from '../src/';
 
 describe('LimitedCache', () => {
   it('initializes without options', () => {

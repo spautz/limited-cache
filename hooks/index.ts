@@ -1,7 +1,40 @@
-// @TODO
-// import { LimitedCache, LimitedCacheObject, limitedCacheUtil } from 'src';
+import { useRef } from 'react';
 
-const LimitedCacheHook = null;
-const LimitedCacheObjectHook = null;
+import {
+  LimitedCache,
+  LimitedCacheInstance,
+  LimitedCacheObject,
+  limitedCacheUtil,
+  // types
+  LimitedCacheObjectInterface,
+  LimitedCacheOptionsPartial,
+} from '../src';
 
-export { LimitedCacheHook, LimitedCacheObjectHook };
+const useLimitedCache = (options: LimitedCacheOptionsPartial): LimitedCacheInstance => {
+  const lastOptionsRef = useRef(options);
+  const limitedCacheRef = useRef(LimitedCache(options));
+
+  if (options !== lastOptionsRef.current) {
+    lastOptionsRef.current = options;
+    limitedCacheRef.current.setOptions(options);
+  }
+
+  return limitedCacheRef.current;
+};
+
+const useLimitedCacheObject = (
+  options: LimitedCacheOptionsPartial,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): LimitedCacheObjectInterface<any> => {
+  const lastOptionsRef = useRef(options);
+  const limitedCacheRef = useRef(LimitedCacheObject(options));
+
+  if (options !== lastOptionsRef.current) {
+    lastOptionsRef.current = options;
+    limitedCacheRef.current.setOptions(options);
+  }
+
+  return limitedCacheRef.current;
+};
+
+export { useLimitedCache, useLimitedCacheObject, limitedCacheUtil };

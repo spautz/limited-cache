@@ -4,7 +4,7 @@ import {
   lowLevelHas,
   lowLevelSet,
   lowLevelRemove,
-  // type
+  // types
   LimitedCacheMeta,
   LimitedCacheOptionsPartial,
 } from './limitedCacheUtil';

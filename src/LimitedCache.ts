@@ -7,9 +7,9 @@ import {
   lowLevelSetOptions,
   lowLevelPerformMaintenance,
   // types
+  LimitedCacheMeta,
   LimitedCacheOptionsPartial,
   LimitedCacheOptionsReadonly,
-  LimitedCacheMeta,
 } from './limitedCacheUtil';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

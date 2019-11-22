@@ -11,7 +11,6 @@
     "removeComments": false,
     // "isolatedModules": true,
     "outDir": "dist-tsc",
-
     /* Strict Type-Checking Options */
     "strict": true,
     "noImplicitAny": true,
@@ -21,17 +20,14 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-
     /* Additional Checks */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-
     /* Module Resolution Options */
     "moduleResolution": "node",
     "esModuleInterop": true,
-
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true
   },

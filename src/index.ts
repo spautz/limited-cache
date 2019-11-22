@@ -1,11 +1,11 @@
 import {
   defaultOptions,
-  lowLevelInit,
   lowLevelGet,
   lowLevelHas,
-  lowLevelSet,
-  lowLevelRemove,
+  lowLevelInit,
   lowLevelPerformMaintenance,
+  lowLevelRemove,
+  lowLevelSet,
   lowLevelSetOptions,
 } from './limitedCacheUtil';
 import LimitedCache from './LimitedCache';
