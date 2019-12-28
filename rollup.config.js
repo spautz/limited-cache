@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
-
 import typescript from 'rollup-plugin-typescript2';
 
 import packageJson from './package.json';
