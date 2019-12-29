@@ -82,10 +82,6 @@ Number of key/value pairs to keep in the cache. Items will be removed to stay wi
 
 Time after which an item is removed. Use a falsy value to disable.
 
-#### `initialValues` (object, default: {})
-
-A plain object whose keys and values will
-
 #### `warnIfItemPurgedBeforeTime` (milliseconds, default: 5000 for development, none for production)
 
 If an item rotates out of the cache before this time passes, emits a warning telling you increase the cache size.
