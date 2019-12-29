@@ -31,13 +31,11 @@ type RequestIdleCallbackDeadline = {
 };
 
 declare global {
-  interface Window {
-    requestIdleCallback: (
-      callback: (deadline: RequestIdleCallbackDeadline) => void,
-      opts?: RequestIdleCallbackOptions,
-    ) => RequestIdleCallbackHandle;
-    cancelIdleCallback: (handle: RequestIdleCallbackHandle) => void;
-  }
+  const requestIdleCallback: (
+    callback: (deadline: RequestIdleCallbackDeadline) => void,
+    opts?: RequestIdleCallbackOptions,
+  ) => RequestIdleCallbackHandle;
+  const cancelIdleCallback: (handle: RequestIdleCallbackHandle) => void;
 }
 
 /* Initialization and options */
@@ -78,27 +76,31 @@ const _cacheKeyHasExpired = (
 };
 
 const lowLevelPerformMaintenance = (cacheMeta: LimitedCacheMeta): LimitedCacheMeta => {
-  const { cache, cacheKeyTimestamps } = cacheMeta;
+  const { cache, cacheKeyTimestamps, recentCacheKeys } = cacheMeta;
   const now = Date.now();
 
   // Rebuild cache from recentCacheKeys only, checking timestamps to auto-remove expired
-  const [newCache, newTimestamps] = Object.keys(cacheKeyTimestamps).reduce(
+  const [newRecentKeys, newCache, newTimestamps] = recentCacheKeys.reduce(
     (acc, cacheKey) => {
-      const [accCache, accTimestamps] = acc;
+      const [accRecentKeys, accCache, accTimestamps] = acc;
       if (!_cacheKeyHasExpired(cacheMeta, cacheKey, now)) {
+        accRecentKeys.push(cacheKey);
         accCache[cacheKey] = cache[cacheKey];
         accTimestamps[cacheKey] = cacheKeyTimestamps[cacheKey];
       }
       return acc;
     },
     [
+      [] as LimitedCacheMeta['recentCacheKeys'],
       {} as LimitedCacheMeta['cache'],
       Object.create(null) as LimitedCacheMeta['cacheKeyTimestamps'],
     ],
   );
 
+  cacheMeta.recentCacheKeys = newRecentKeys;
   cacheMeta.cache = newCache;
   cacheMeta.cacheKeyTimestamps = newTimestamps;
+
   return cacheMeta;
 };
 
@@ -121,9 +123,6 @@ const _dropExpiredItemsAtIndex = (
     const nextIndex = startIndex + numItemsRemoved;
     if (nextIndex <= recentCacheKeysLength) {
       cacheKeyToCheck = recentCacheKeys[nextIndex];
-    } else {
-      // We're at the end of the list
-      break;
     }
   }
   if (numItemsRemoved) {
@@ -147,7 +146,7 @@ const _purgeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void =
   // Search numItemsToExamineForPurge and force-remove the oldest one
   let indexToCheck = 0;
   const recentCacheKeysLength = recentCacheKeys.length;
-  while (indexToCheck - numItemsToExamineForPurge > 0 && indexToCheck < recentCacheKeysLength) {
+  while (indexToCheck < numItemsToExamineForPurge && indexToCheck < recentCacheKeysLength) {
     const cacheKeyForIndex = recentCacheKeys[indexToCheck];
     const timestampForIndex = cacheKeyTimestamps[cacheKeyForIndex];
     if (!timestampForIndex || _cacheKeyHasExpired(cacheMeta, cacheKeyForIndex, now)) {
@@ -194,32 +193,16 @@ const _purgeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void =
 /* Accessors */
 
 const lowLevelRemove = (cacheMeta: LimitedCacheMeta, cacheKey: string): LimitedCacheMeta => {
-  if (cacheMeta.cache[cacheKey] !== undefined) {
-    cacheMeta.cache = {
-      ...cacheMeta.cache,
-      [cacheKey]: undefined,
-    };
-  }
-  cacheMeta.cacheKeyTimestamps[cacheKey] = undefined;
-  return cacheMeta;
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const lowLevelGet = (cacheMeta: LimitedCacheMeta, cacheKey?: string): object | any => {
-  if (cacheKey) {
-    const { cache } = cacheMeta;
-    if (hasOwnProperty.call(cache, cacheKey) && cache[cacheKey] !== undefined) {
-      if (!_cacheKeyHasExpired(cacheMeta, cacheKey, Date.now())) {
-        return cache[cacheKey];
-      }
-      // If it's expired, go ahead and remove it
-      lowLevelRemove(cacheMeta, cacheKey);
+  if (cacheMeta.cacheKeyTimestamps[cacheKey]) {
+    if (cacheMeta.cache[cacheKey] !== undefined) {
+      cacheMeta.cache = {
+        ...cacheMeta.cache,
+        [cacheKey]: undefined,
+      };
     }
-    return;
+    cacheMeta.cacheKeyTimestamps[cacheKey] = undefined;
   }
-  // Return all expired values, and return whatever's left
-  lowLevelPerformMaintenance(cacheMeta);
-  return cacheMeta.cache;
+  return cacheMeta;
 };
 
 const lowLevelHas = (cacheMeta: LimitedCacheMeta, cacheKey: string): boolean => {
@@ -228,10 +211,23 @@ const lowLevelHas = (cacheMeta: LimitedCacheMeta, cacheKey: string): boolean => 
     if (!_cacheKeyHasExpired(cacheMeta, cacheKey, Date.now())) {
       return true;
     }
-    // If it's expired, go ahead and remove it
-    lowLevelRemove(cacheMeta, cacheKey);
+    // If it's expired, clear the value so that we can short-circuit future lookups
+    cache[cacheKey] = undefined;
   }
   return false;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const lowLevelGet = (cacheMeta: LimitedCacheMeta, cacheKey?: string): object | any => {
+  if (cacheKey) {
+    if (lowLevelHas(cacheMeta, cacheKey)) {
+      return cacheMeta.cache[cacheKey];
+    }
+    return;
+  }
+  // Remove all expired values, and return whatever's left
+  lowLevelPerformMaintenance(cacheMeta);
+  return cacheMeta.cache;
 };
 
 const lowLevelSet = (
@@ -258,15 +254,11 @@ const lowLevelSet = (
     _dropExpiredItemsAtIndex(cacheMeta, 0, now);
 
     cacheMeta.autoMaintenanceCount = cacheMeta.autoMaintenanceCount + 1;
-    if (cacheMeta.autoMaintenanceCount >= maxCacheSize * autoMaintenanceMultiplier) {
+    if (cacheMeta.autoMaintenanceCount > maxCacheSize * autoMaintenanceMultiplier) {
       // Time for an oil change
-      if (window.requestIdleCallback && typeof window.requestIdleCallback === 'function') {
-        window.requestIdleCallback(lowLevelPerformMaintenance.bind(null, cacheMeta));
-      } else {
-        lowLevelPerformMaintenance(cacheMeta);
-      }
+      lowLevelPerformMaintenance(cacheMeta);
     }
-    if (recentCacheKeys.length > maxCacheSize) {
+    if (cacheMeta.recentCacheKeys.length > maxCacheSize) {
       // We're still over the limit: purge at least one item
       _purgeItemsToMakeRoom(cacheMeta, now);
     }

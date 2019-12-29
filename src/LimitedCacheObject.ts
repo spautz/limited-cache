@@ -47,7 +47,7 @@ const proxyHandler: ProxyHandler<any> = {
     lowLevelRemove(cacheMeta, cacheKey);
     return true;
   },
-  ownKeys: (cacheMetaTarget: LimitedCacheMeta) => cacheMetaTarget.recentCacheKeys,
+  ownKeys: (cacheMeta: LimitedCacheMeta) => Object.keys(lowLevelGet(cacheMeta)),
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
