@@ -1,13 +1,13 @@
 # limited-cache
 
-A minimal JS cache: like using an object, except it won't grow forever
+A minimal JS cache. Like using an object to store keys and values, except it won't grow forever
 
 ## Motivation
 
 A plain Javascript object is often good enough for simple key-value caching.
 
-The problem is that a simple object cache can grow forever. This library is like a plain object with a size limit,
-plus `maxCacheTime` and smarter removal of old items.
+The problem is that a simple object cache can grow forever. This library adds a size limit, plus `maxCacheTime` and
+smarter removal of old items.
 
 ## Example
 
@@ -17,7 +17,7 @@ The plain API provides a standard cache interface:
 const recentResults = LimitedCache({
   maxCacheSize: 100,
 });
-recentResults.set('abc', resultsForABC);
+recentResults.set('abc', thingToSave);
 recentResults.get('abc');
 ```
 
@@ -25,7 +25,7 @@ Use `LimitedCacheObject` for a nicer developer experience, using Proxies:
 
 ```javascript
 const recentResults = LimitedCacheObject();
-recentResults['abc'] = resultsForABC;
+recentResults['abc'] = thingToSave;
 ```
 
 React hooks are available for both:
@@ -49,7 +49,7 @@ const initialState = {
 };
 
 // cacheMeta is a plain, JSON-compatible object
-cacheMeta = limitedCacheUtil.set(cacheMeta, 'abc', resultsForABC);
+cacheMeta = limitedCacheUtil.set(cacheMeta, 'abc', thingToSave);
 
 return {
   ...state,
@@ -98,10 +98,10 @@ They are auto-purged after `autoMaintenanceMultiplier * maxCacheSize` operations
 
 ## Low-level functions
 
-These functions are grouped together as `limitedCacheUtil`. All interfaces are built on top of these.
+These functions are grouped together as `limitedCacheUtil`. The other interfaces are built on top of these.
 
 - `init(options)`
-- `get(cacheMeta)` - returns the entire cache object
+- `get(cacheMeta)` - returns the entire cache
 - `get(cacheMeta, cacheKey)`
 - `has(cacheMeta, cacheKey)`
 - `set(cacheMeta, cacheKey, value)`
@@ -121,11 +121,8 @@ Nope.
 
 **Is this a least-recently-used cache?**
 
-No: For performance it only tracks by `set`.
+No: For performance it only tracks by `set` time.
 
 **When are old items removed?**
 
 When new items are added, or if you try to `get` an item that has expired.
-
-If you retrieve the entire cache object as-is then it may contain expired items. If you don't want that,
-run `performMaintenance` first.

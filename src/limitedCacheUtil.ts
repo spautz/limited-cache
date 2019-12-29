@@ -19,6 +19,27 @@ export interface LimitedCacheMeta {
   autoMaintenanceCount: number;
 }
 
+// from https://github.com/Microsoft/TypeScript/issues/21309#issuecomment-376338415
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type RequestIdleCallbackHandle = any;
+type RequestIdleCallbackOptions = {
+  timeout: number;
+};
+type RequestIdleCallbackDeadline = {
+  readonly didTimeout: boolean;
+  timeRemaining: () => number;
+};
+
+declare global {
+  interface Window {
+    requestIdleCallback: (
+      callback: (deadline: RequestIdleCallbackDeadline) => void,
+      opts?: RequestIdleCallbackOptions,
+    ) => RequestIdleCallbackHandle;
+    cancelIdleCallback: (handle: RequestIdleCallbackHandle) => void;
+  }
+}
+
 /* Initialization and options */
 
 const lowLevelInit = (options?: LimitedCacheOptionsPartial): LimitedCacheMeta => {
@@ -26,7 +47,7 @@ const lowLevelInit = (options?: LimitedCacheOptionsPartial): LimitedCacheMeta =>
   return {
     limitedCacheMetaVersion: 1,
     options: options ? { ...defaultOptions, ...options } : { ...defaultOptions },
-    cache: (options && options.initialValues) || {},
+    cache: {},
     recentCacheKeys: [],
     cacheKeyTimestamps: Object.create(null),
     autoMaintenanceCount: 0,
@@ -42,13 +63,7 @@ const lowLevelSetOptions = (
 
 /* Internal cache manipulation */
 
-const lowLevelPerformMaintenance = (cacheMeta: LimitedCacheMeta): LimitedCacheMeta => {
-  // @TODO
-  // Rebuild cache from recentCacheKeys only, checking timestamps to auto-remove expired
-  // Purge/rebuild cacheKeyTimestamps
-  cacheMeta.autoMaintenanceCount = 0;
-  return cacheMeta;
-};
+const { hasOwnProperty } = Object.prototype;
 
 const _cacheKeyHasExpired = (
   cacheMeta: LimitedCacheMeta,
@@ -60,6 +75,31 @@ const _cacheKeyHasExpired = (
     options: { maxCacheTime },
   } = cacheMeta;
   return !cacheKeyTimestamp || (!!maxCacheTime && now - cacheKeyTimestamp > maxCacheTime);
+};
+
+const lowLevelPerformMaintenance = (cacheMeta: LimitedCacheMeta): LimitedCacheMeta => {
+  const { cache, cacheKeyTimestamps } = cacheMeta;
+  const now = Date.now();
+
+  // Rebuild cache from recentCacheKeys only, checking timestamps to auto-remove expired
+  const [newCache, newTimestamps] = Object.keys(cacheKeyTimestamps).reduce(
+    (acc, cacheKey) => {
+      const [accCache, accTimestamps] = acc;
+      if (!_cacheKeyHasExpired(cacheMeta, cacheKey, now)) {
+        accCache[cacheKey] = cache[cacheKey];
+        accTimestamps[cacheKey] = cacheKeyTimestamps[cacheKey];
+      }
+      return acc;
+    },
+    [
+      {} as LimitedCacheMeta['cache'],
+      Object.create(null) as LimitedCacheMeta['cacheKeyTimestamps'],
+    ],
+  );
+
+  cacheMeta.cache = newCache;
+  cacheMeta.cacheKeyTimestamps = newTimestamps;
+  return cacheMeta;
 };
 
 const _dropExpiredItemsAtIndex = (
@@ -166,23 +206,25 @@ const lowLevelRemove = (cacheMeta: LimitedCacheMeta, cacheKey: string): LimitedC
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const lowLevelGet = (cacheMeta: LimitedCacheMeta, cacheKey?: string): object | any => {
-  const { cache } = cacheMeta;
   if (cacheKey) {
-    if (Object.prototype.hasOwnProperty.call(cache, cacheKey) && cache[cacheKey] !== undefined) {
+    const { cache } = cacheMeta;
+    if (hasOwnProperty.call(cache, cacheKey) && cache[cacheKey] !== undefined) {
       if (!_cacheKeyHasExpired(cacheMeta, cacheKey, Date.now())) {
         return cache[cacheKey];
       }
       // If it's expired, go ahead and remove it
       lowLevelRemove(cacheMeta, cacheKey);
     }
-    return undefined;
+    return;
   }
-  return cache;
+  // Return all expired values, and return whatever's left
+  lowLevelPerformMaintenance(cacheMeta);
+  return cacheMeta.cache;
 };
 
 const lowLevelHas = (cacheMeta: LimitedCacheMeta, cacheKey: string): boolean => {
   const { cache } = cacheMeta;
-  if (Object.prototype.hasOwnProperty.call(cache, cacheKey) && cache[cacheKey] !== undefined) {
+  if (hasOwnProperty.call(cache, cacheKey) && cache[cacheKey] !== undefined) {
     if (!_cacheKeyHasExpired(cacheMeta, cacheKey, Date.now())) {
       return true;
     }
@@ -218,7 +260,11 @@ const lowLevelSet = (
     cacheMeta.autoMaintenanceCount = cacheMeta.autoMaintenanceCount + 1;
     if (cacheMeta.autoMaintenanceCount >= maxCacheSize * autoMaintenanceMultiplier) {
       // Time for an oil change
-      lowLevelPerformMaintenance(cacheMeta);
+      if (window.requestIdleCallback && typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(lowLevelPerformMaintenance.bind(null, cacheMeta));
+      } else {
+        lowLevelPerformMaintenance(cacheMeta);
+      }
     }
     if (recentCacheKeys.length > maxCacheSize) {
       // We're still over the limit: purge at least one item
@@ -231,6 +277,9 @@ const lowLevelSet = (
 
   return cacheMeta;
 };
+
+// These are for the tests only
+export const internalFunctions = {};
 
 export {
   defaultOptions,

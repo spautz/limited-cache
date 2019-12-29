@@ -1,8 +1,8 @@
 /* eslint-env jest */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import LimitedCache, { LimitedCacheInstance } from '../src/LimitedCache';
-import { defaultOptions } from '../src/options';
+import LimitedCache, { LimitedCacheInstance } from '../../src/LimitedCache';
+import { defaultOptions } from '../../src/options';
 
 describe('LimitedCache', () => {
   it('initializes without options', () => {
@@ -15,7 +15,6 @@ describe('LimitedCache', () => {
     const myCache: LimitedCacheInstance = LimitedCache({
       maxCacheSize: 123,
       maxCacheTime: 456,
-      initialValues: {},
       warnIfItemPurgedBeforeTime: 789,
       autoMaintenanceMultiplier: 10,
       numItemsToExamineForPurge: 100,
@@ -30,59 +29,66 @@ describe('LimitedCache', () => {
       myCache = LimitedCache<any>();
     });
 
-    it('has, missing', () => {
+    it('has: when missing', () => {
       const result = myCache.has('asdf');
 
       expect(result).toEqual(false);
     });
 
-    it('get, missing', () => {
-      const result = myCache.get('asdf');
-
-      expect(result).toBeUndefined();
-    });
-
-    it('getAll, empty', () => {
-      const result = myCache.get();
-
-      expect(result).toEqual({});
-    });
-
-    it('set', () => {
-      const result = myCache.set('abc', 123);
-
-      expect(result).toEqual(123);
-    });
-
-    it('has, present', () => {
+    it('has: when present', () => {
       myCache.set('abc', 123);
       const result = myCache.has('abc');
 
       expect(result).toEqual(true);
     });
 
-    it('get, present', () => {
+    it('get: when missing', () => {
+      const result = myCache.get('asdf');
+
+      expect(result).toBeUndefined();
+    });
+
+    it('get: when present', () => {
       myCache.set('abc', 123);
       const result = myCache.get('abc');
 
       expect(result).toEqual(123);
     });
 
-    it('getAll, present', () => {
+    it('getAll: when empty', () => {
+      const result = myCache.get();
+
+      expect(result).toEqual({});
+    });
+
+    it('getAll: when present', () => {
       myCache.set('abc', 123);
       const result = myCache.get();
 
       expect(result).toEqual({ abc: 123 });
     });
 
-    it('remove, return', () => {
+    it('set: when new', () => {
+      const result = myCache.set('abc', 123);
+
+      expect(result).toEqual(123);
+    });
+
+    it('set: when already present', () => {
+      myCache.set('abc', 123);
+      const result = myCache.set('abc', 456);
+
+      expect(result).toEqual(456);
+    });
+
+    it('remove and return value', () => {
       myCache.set('abc', 123);
       const result = myCache.remove('abc');
 
       expect(result).toEqual(true);
     });
 
-    it('remove, effect, has', () => {
+    it('remove, then check', () => {
       myCache.set('abc', 123);
       myCache.remove('abc');
       const result = myCache.has('abc');
@@ -90,7 +96,7 @@ describe('LimitedCache', () => {
       expect(result).toEqual(false);
     });
 
-    it('remove, effect, get', () => {
+    it('remove, then get', () => {
       myCache.set('abc', 123);
       myCache.remove('abc');
       const result = myCache.get('abc');
@@ -124,7 +130,7 @@ describe('LimitedCache', () => {
       expect(result).toEqual(defaultOptions);
     });
 
-    it('setOptions, return', () => {
+    it('setOptions and return value', () => {
       const result = myCache.setOptions({
         maxCacheSize: 123,
         maxCacheTime: 456,
@@ -143,7 +149,7 @@ describe('LimitedCache', () => {
       });
     });
 
-    it('setOptions, effect', () => {
+    it('setOptions as mutation', () => {
       myCache.setOptions({
         maxCacheSize: 123,
         maxCacheTime: 456,
