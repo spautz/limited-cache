@@ -1,4 +1,4 @@
-import LimitedCacheObject, { LimitedCacheObjectInterface } from '../src/LimitedCacheObject';
+import { LimitedCacheObject, LimitedCacheObjectInterface } from '../index';
 
 // To avoid race conditions or timing issues, since some expect() checks can take 10+ ms when busy,
 // we use a long cache timeout even for 'immediate' expiration, and use delays slightly longer than that

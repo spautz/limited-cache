@@ -31,16 +31,14 @@ recentResults['abc'] = thingToSave;
 React hooks are available for both:
 
 ```javascript
-const useRecentResults = LimitedCacheHook();
-const [getCache, setCache] = useRecentResults();
+const cache = useLimitedCache();
 ```
 
 ```javascript
-const useRecentResults = LimitedCacheObjectHook();
-const cache = useRecentResults();
+const cache = useLimitedCacheObject();
 ```
 
-Low-level functions using plain objects, if you need serialization:
+Low-level functions using plain objects, if you need to stay serializable:
 
 ```javascript
 const initialState = {
@@ -48,7 +46,7 @@ const initialState = {
   cacheMeta: limitedCacheUtil.init(),
 };
 
-// cacheMeta is a plain, JSON-compatible object
+// cacheMeta is a plain, serializable object
 cacheMeta = limitedCacheUtil.set(cacheMeta, 'abc', thingToSave);
 
 return {
@@ -109,7 +107,7 @@ These functions are grouped together as `limitedCacheUtil`. The other interfaces
 
 **Immutable?**
 
-The cache itself is, but cacheMeta is persistent.
+The cache itself is, but the low-level cacheMeta is persistent.
 
 **API for bulk operations?**
 
