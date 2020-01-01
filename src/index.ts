@@ -6,20 +6,20 @@ import {
   lowLevelRemove,
   lowLevelSet,
   lowLevelSetOptions,
-} from './src/limitedCacheUtil';
+} from './limited-cache/limitedCacheUtil';
 
-import LimitedCache from './src/LimitedCache';
-import LimitedCacheObject from './src/LimitedCacheObject';
+import LimitedCache from './limited-cache/LimitedCache';
+import LimitedCacheObject from './limited-cache/LimitedCacheObject';
 
-export { LimitedCacheInstance } from './src/LimitedCache';
-export { LimitedCacheObjectInterface } from './src/LimitedCacheObject';
-export { LimitedCacheMeta } from './src/limitedCacheUtil';
+export { LimitedCacheInstance } from './limited-cache/LimitedCache';
+export { LimitedCacheObjectInterface } from './limited-cache/LimitedCacheObject';
+export { LimitedCacheMeta } from './limited-cache/limitedCacheUtil';
 export {
   defaultOptions,
   LimitedCacheOptions,
   LimitedCacheOptionsPartial,
   LimitedCacheOptionsReadonly,
-} from './src/options';
+} from './limited-cache/options';
 
 export { LimitedCache, LimitedCacheObject };
 

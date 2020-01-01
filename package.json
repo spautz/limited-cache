@@ -1,6 +1,6 @@
 {
   "name": "limited-cache",
-  "version": "0.0.1",
+  "version": "0.0.1-next.1",
   "description": "A minimal JS cache: like using an object, except it won't grow forever",
   "keywords": [
     "cache",
@@ -20,21 +20,25 @@
   "files": [
     "dist-cjs",
     "dist-es",
-    "src",
     "types"
   ],
   "scripts": {
     "____ BASE COMMANDS _________________________________________________": "",
-    "clean": "rimraf dist-*/ coverage/ types/ ; jest --clearCache",
+    "clean": "rimraf dist-*/ types/",
     "build": "rollup -c",
     "format": "prettier --write \"**/*.{js,json,md,ts}\"",
+    "format:check": "prettier --list-different \"**/*.{js,json,md,ts}\"",
     "lint": "eslint \"**/*.{js,ts}\"",
-    "prepare": "yon run clean",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
-    "types": "tsc --noEmit index.ts",
+    "test:clean": "rimraf coverage/ ; jest --clearCache",
+    "types": "tsc --noEmit src/index.ts",
+    "____ HOOKS _________________________________________________________": "",
+    "prebuild": "yon clean",
+    "prepublish": "yon check && yon build",
     "____ INTEGRATION ___________________________________________________": "",
+    "check": "yon format:check && yon run types && yon run lint",
     "dev": "yon run format && yon run types && yon run lint",
     "all": "yon run dev && yon run test:coverage && yon run build"
   },

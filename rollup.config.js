@@ -2,7 +2,7 @@ import typescript from 'rollup-plugin-typescript2';
 
 import packageJson from './package.json';
 
-const inputFiles = { index: './index.ts', hooks: './hooks.ts' };
+const inputFiles = { index: './src/index.ts', hooks: './src/hooks.ts' };
 const noDeclarationFiles = { compilerOptions: { declaration: false } };
 
 export default [

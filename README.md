@@ -41,7 +41,7 @@ const cache = useLimitedCacheObject();
 Low-level functions using plain objects, if you need to stay serializable:
 
 ```javascript
-const initialState = {
+const reduxState = {
   childIdsByParentId: {},
   cacheMeta: limitedCacheUtil.init(),
 };
@@ -50,7 +50,7 @@ const initialState = {
 cacheMeta = limitedCacheUtil.set(cacheMeta, 'abc', thingToSave);
 
 return {
-  ...state,
+  ...reduxState,
   childIdsByParentId: limitedCacheUtil.get(cacheMeta),
   cacheMeta,
 };
@@ -67,7 +67,7 @@ import { LimitedCache, LimitedCacheObject, limitedCacheUtil } from 'limited-cach
 The react hook constructors are a separate package.
 
 ```javascript
-import { LimitedCacheHook, LimitedCacheObjectHook } from 'hooks/index';
+import { useLimitedCache, useLimitedCacheObject } from 'limited-cache/hooks';
 ```
 
 ## Options
@@ -100,7 +100,6 @@ These functions are grouped together as `limitedCacheUtil`. The other interfaces
 - `has(cacheMeta, cacheKey)`
 - `set(cacheMeta, cacheKey, value)`
 - `remove(cacheMeta, cacheKey)`
-- `performMaintenance(cacheMeta)` - runs autoMaintenance
 - `setOptions(cacheMeta, options)` - you can update options anytime
 
 ## FAQ

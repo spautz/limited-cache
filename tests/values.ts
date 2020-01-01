@@ -1,4 +1,4 @@
-import { limitedCacheUtil, LimitedCacheMeta } from '../index';
+import { limitedCacheUtil, LimitedCacheMeta } from '../src';
 
 describe('value types', () => {
   let myCacheMeta: LimitedCacheMeta;

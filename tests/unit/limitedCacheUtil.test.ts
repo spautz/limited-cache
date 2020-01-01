@@ -6,7 +6,7 @@ import {
   lowLevelHas,
   lowLevelSet,
   lowLevelRemove,
-} from '../../src/limitedCacheUtil';
+} from '../../src/limited-cache/limitedCacheUtil';
 
 describe('LimitedCacheUtil', () => {
   describe('lowLevelInit', () => {
