@@ -1,0 +1,25 @@
+{
+  "name": "limited-cache",
+  "version": "0.0.2",
+  "description": "A minimal JS cache: like using an object, except it won't grow forever",
+  "keywords": [
+    "cache",
+    "limited cache",
+    "circular buffer",
+    "rotating cache",
+    "max size",
+    "autoexpire"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/spautz/limited-cache",
+  "repository": "github:spautz/limited-cache",
+  "author": "Steven Pautz <spautz@gmail.com>",
+  "main": "cjs/index.js",
+  "module": "index.js",
+  "types": "types/index.d.ts",
+  "dependencies": {},
+  "optionalDependencies": {},
+  "peerDependencies": {
+    "react": "^16.8.0"
+  }
+}
