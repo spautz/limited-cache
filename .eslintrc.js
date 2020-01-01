@@ -14,4 +14,14 @@ module.exports = {
   },
 
   rules: {},
+  overrides: [
+    {
+      files: ['*.js'],
+      rules: {
+        '@typescript-eslint/ban-ts-ignore': 'off',
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/no-var-requires': 'off',
+      },
+    },
+  ],
 };

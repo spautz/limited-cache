@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import { limitedCacheUtil, LimitedCacheMeta } from '../src';
 
 describe('value types', () => {

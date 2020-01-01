@@ -9,7 +9,7 @@ export default [
   // CommonJS
   {
     input: inputFiles,
-    output: { dir: 'dist-cjs/', format: 'cjs', indent: false },
+    output: { dir: 'build/cjs/', format: 'cjs', indent: false },
     external: [
       ...Object.keys(packageJson.dependencies || {}),
       ...Object.keys(packageJson.peerDependencies || {}),
@@ -20,7 +20,7 @@ export default [
   // ES
   {
     input: inputFiles,
-    output: { dir: 'dist-es/', format: 'es', indent: false },
+    output: { dir: 'build/', format: 'es', indent: false },
     external: [
       ...Object.keys(packageJson.dependencies || {}),
       ...Object.keys(packageJson.peerDependencies || {}),

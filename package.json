@@ -1,6 +1,7 @@
 {
   "name": "limited-cache",
-  "version": "0.0.1-next.1",
+  "version": "0.0.1-next.2",
+  "private": true,
   "description": "A minimal JS cache: like using an object, except it won't grow forever",
   "keywords": [
     "cache",
@@ -14,17 +15,12 @@
   "homepage": "https://github.com/spautz/limited-cache",
   "repository": "github:spautz/limited-cache",
   "author": "Steven Pautz <spautz@gmail.com>",
-  "main": "dist-cjs/index.js",
-  "module": "dist-es/index.js",
+  "main": "cjs/index.js",
+  "module": "index.js",
   "types": "types/index.d.ts",
-  "files": [
-    "dist-cjs",
-    "dist-es",
-    "types"
-  ],
   "scripts": {
     "____ BASE COMMANDS _________________________________________________": "",
-    "clean": "rimraf dist-*/ types/",
+    "clean": "rimraf build/",
     "build": "rollup -c",
     "format": "prettier --write \"**/*.{js,json,md,ts}\"",
     "format:check": "prettier --list-different \"**/*.{js,json,md,ts}\"",
@@ -33,10 +29,11 @@
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "test:clean": "rimraf coverage/ ; jest --clearCache",
-    "types": "tsc --noEmit src/index.ts",
+    "types": "tsc --noEmit src/index.ts src/hooks.ts",
     "____ HOOKS _________________________________________________________": "",
     "prebuild": "yon clean",
-    "prepublish": "yon check && yon build",
+    "postbuild": "node ./scripts/copy-files.js",
+    "prepublishOnly": "yon check && yon build",
     "____ INTEGRATION ___________________________________________________": "",
     "check": "yon format:check && yon run types && yon run lint",
     "dev": "yon run format && yon run types && yon run lint",

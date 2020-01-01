@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import { LimitedCache, LimitedCacheInstance } from '../src';
 
 // To avoid race conditions or timing issues, since some expect() checks can take 10+ ms when busy,
