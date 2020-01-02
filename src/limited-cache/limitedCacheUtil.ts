@@ -155,7 +155,7 @@ const _purgeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void =
       oldestItemTimestamp = 0;
       break;
     }
-    if (timestampForIndex < oldestItemTimestamp) {
+    if (!oldestItemTimestamp || timestampForIndex < oldestItemTimestamp) {
       // We have a new leader
       oldestItemIndex = indexToCheck;
       oldestItemKey = cacheKeyForIndex;
