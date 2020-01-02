@@ -1,9 +1,9 @@
 language: node_js
 node_js:
   - "node"
-  - "12"
+  - 12
+  - 10
+cache: yarn
 
-install:
-  - "yarn install"
 script:
   - "yarn ci"

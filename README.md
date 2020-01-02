@@ -2,6 +2,10 @@
 
 A minimal JS cache. Like using an object to store keys and values, except it won't grow forever
 
+[![npm version](https://img.shields.io/npm/v/limited-cache.svg)](https://www.npmjs.com/package/redux)
+[![build status](https://img.shields.io/travis/spautz/limited-cache.svg)](https://travis-ci.org/reduxjs/redux)
+[![build status](https://img.shields.io/coveralls/github/spautz/limited-cache.svg)](https://travis-ci.org/reduxjs/redux)
+
 ## Motivation
 
 A plain Javascript object is often good enough for simple key-value caching.

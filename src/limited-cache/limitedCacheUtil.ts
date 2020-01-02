@@ -141,7 +141,7 @@ const _purgeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void =
   // These track the oldest thing we've found
   let oldestItemIndex = 0;
   let oldestItemKey = recentCacheKeys[0];
-  let oldestItemTimestamp = cacheKeyTimestamps[oldestItemKey] || now;
+  let oldestItemTimestamp = cacheKeyTimestamps[oldestItemKey];
 
   // Search numItemsToExamineForPurge and force-remove the oldest one
   let indexToCheck = 0;
