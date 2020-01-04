@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import { LimitedCacheObject, LimitedCacheObjectInterface } from '../src';
+import { LimitedCacheObject, LimitedCacheObjectInterface } from '../src/main';
 
 // To avoid race conditions or timing issues, since some expect() checks can take 10+ ms when busy,
 // we use a long cache timeout even for 'immediate' expiration, and use delays slightly longer than that

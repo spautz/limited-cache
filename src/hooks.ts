@@ -8,7 +8,7 @@ import {
   // types
   LimitedCacheObjectInterface,
   LimitedCacheOptionsPartial,
-} from './index';
+} from './main';
 
 const useLimitedCache = (options: LimitedCacheOptionsPartial): LimitedCacheInstance => {
   const lastOptionsRef = useRef(options);
