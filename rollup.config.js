@@ -1,3 +1,4 @@
+/* eslint-env node*/
 /* eslint-disable @typescript-eslint/camelcase */
 
 import replace from 'rollup-plugin-replace';
@@ -5,6 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 
 import packageJson from './package.json';
+const { terserReserved, terserNameCache } = require('./scripts/buildNameMangling');
 
 const inputFiles = { main: './src/main.ts', hooks: './src/hooks.ts' };
 const outputDir = 'dist/';
@@ -15,6 +17,8 @@ const terserOptions = {
     unsafe_comps: true,
     warnings: false,
   },
+  mangle: { toplevel: true, properties: true, reserved: terserReserved },
+  nameCache: terserNameCache,
 };
 
 const makeConfig = (options) => ({

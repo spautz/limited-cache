@@ -5,10 +5,10 @@ import {
   lowLevelSet,
   lowLevelRemove,
   lowLevelSetOptions,
-  lowLevelPerformMaintenance,
+  lowLevelDoMaintenance,
   // types
   LimitedCacheMeta,
-} from './limitedCacheUtil';
+} from './lowLevelFunctions';
 import { LimitedCacheOptionsPartial, LimitedCacheOptionsReadonly } from './options';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,7 +20,7 @@ export interface LimitedCacheInstance<T = any> {
   getCacheMeta: () => LimitedCacheMeta;
   getOptions: () => LimitedCacheOptionsReadonly;
   setOptions: (newOptions: LimitedCacheOptionsPartial) => LimitedCacheOptionsReadonly;
-  performMaintenance: () => LimitedCacheMeta;
+  doMaintenance: () => LimitedCacheMeta;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,7 +42,7 @@ function LimitedCache<T = any>(options?: LimitedCacheOptionsPartial): LimitedCac
     getCacheMeta: (): LimitedCacheMeta => cacheMeta,
     getOptions: (): LimitedCacheOptionsReadonly => cacheMeta.options,
     setOptions: lowLevelSetOptions.bind(null, cacheMeta),
-    performMaintenance: lowLevelPerformMaintenance.bind(null, cacheMeta),
+    doMaintenance: lowLevelDoMaintenance.bind(null, cacheMeta),
   };
 }
 

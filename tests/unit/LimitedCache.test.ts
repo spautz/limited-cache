@@ -169,9 +169,9 @@ describe('LimitedCache', () => {
       });
     });
 
-    it('performMaintenance', () => {
+    it('doMaintenance', () => {
       // should not throw
-      myCache.performMaintenance();
+      myCache.doMaintenance();
     });
   });
 });
