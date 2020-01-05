@@ -7,10 +7,10 @@ import {
   // types
   LimitedCacheMeta,
 } from './lowLevelFunctions';
-import { LimitedCacheOptionsPartial } from './options';
+import { LimitedCacheOptionsPartial } from './defaultOptions';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface LimitedCacheObjectInterface<T = any> {
+interface LimitedCacheObjectInterface<T = any> {
   [key: string]: T;
 }
 
@@ -59,3 +59,4 @@ function LimitedCacheObject<T = any>(
 }
 
 export default LimitedCacheObject;
+export { LimitedCacheObjectInterface };

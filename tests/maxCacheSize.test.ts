@@ -14,6 +14,7 @@ describe('maxCacheSize scenarios', () => {
       maxCacheSize: 20,
       maxCacheTime: Number.MAX_SAFE_INTEGER,
       autoMaintenanceMultiplier: Number.MAX_SAFE_INTEGER,
+      warnIfItemPurgedBeforeTime: 0,
     });
   });
 

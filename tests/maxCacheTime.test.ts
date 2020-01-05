@@ -61,6 +61,7 @@ describe('maxCacheTime scenarios', () => {
       maxCacheTime: Number.MAX_SAFE_INTEGER,
       maxCacheSize: 3,
       autoMaintenanceMultiplier: Number.MAX_SAFE_INTEGER,
+      warnIfItemPurgedBeforeTime: 0,
     });
 
     myCache.abc = 123;

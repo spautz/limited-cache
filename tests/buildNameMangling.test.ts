@@ -1,28 +1,38 @@
 /* eslint-env jest */
-import { terserReserved, stableKeysForLimitedCacheMeta } from '../scripts/buildNameMangling';
 import { limitedCacheUtil } from '../src/main';
-import * as allMainExports from '../src/main';
-import * as allHooksExports from '../src/hooks';
 
-const allExports = { ...allMainExports, ...allHooksExports };
+import { propertyNamesToPreserve, propertyNameMap } from '../scripts/buildNameMangling';
+
+const allRegisteredPropertyNames = [...propertyNamesToPreserve, ...Object.keys(propertyNameMap)];
 
 /*
- * This makes sure that the build system -- specifically scripts/name-cache.js -- is up-to-date with the code.
- * It's included in the test suite because that's much easier than trying to do ts work inside the rollup config
- * at build time.
+ * This makes sure that the build system -- via scripts/buildNameMangling.js -- is up-to-date with the code.
  */
 
 describe('build config for name mangling', () => {
-  let myCacheMetaKeys: Array<string>;
-  beforeEach(() => {
-    myCacheMetaKeys = Object.keys(limitedCacheUtil.init());
+  describe('has all limitedCacheMeta keys registered', () => {
+    const myCacheMeta = limitedCacheUtil.init();
+    Object.keys(myCacheMeta).forEach((metaName) => {
+      it(metaName, () => {
+        expect(allRegisteredPropertyNames).toContain(metaName);
+      });
+    });
   });
 
-  it('has all public exports registered', () => {
-    expect(terserReserved).toEqual(Object.keys(allExports));
+  describe('has all option keys registered', () => {
+    const myCacheMeta = limitedCacheUtil.init();
+    Object.keys(myCacheMeta.options).forEach((optionName) => {
+      it(optionName, () => {
+        expect(allRegisteredPropertyNames).toContain(optionName);
+      });
+    });
   });
 
-  it('has all limitedCacheMeta keys registered', () => {
-    expect(Object.keys(stableKeysForLimitedCacheMeta)).toEqual(myCacheMetaKeys);
+  describe('has all limitedCacheUtil keys registered', () => {
+    Object.keys(limitedCacheUtil).forEach((optionName) => {
+      it(optionName, () => {
+        expect(allRegisteredPropertyNames).toContain(optionName);
+      });
+    });
   });
 });

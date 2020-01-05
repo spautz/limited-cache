@@ -50,7 +50,7 @@ const reduxState = {
   cacheMeta: limitedCacheUtil.init(),
 };
 
-// cacheMeta is a plain, serializable object
+// cacheMeta is a plain, serializable object for the cache's internal state
 cacheMeta = limitedCacheUtil.set(cacheMeta, 'abc', thingToSave);
 
 return {
@@ -84,12 +84,12 @@ Number of key/value pairs to keep in the cache. Items will be removed to stay wi
 
 Time after which an item is removed. Use a falsy value to disable.
 
-#### `warnIfItemPurgedBeforeTime` (milliseconds, default: 5000 for development, none for production)
+#### `warnIfItemPurgedBeforeTime` (milliseconds, default: 5000, development only)
 
 If an item rotates out of the cache before this time passes, emits a warning telling you increase the cache size.
 Use a falsy value to disable.
 
-#### `autoMaintenanceMultiplier` (number, default: 2)
+#### `autoMaintenanceMultiplier` (number, default: 2, development only)
 
 Some under-the-hood performance optimizations result in `undefined` values left in the cache, temporarily.
 They are auto-purged after `autoMaintenanceMultiplier * maxCacheSize` operations.

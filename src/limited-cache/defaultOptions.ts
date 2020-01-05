@@ -9,10 +9,15 @@ export interface LimitedCacheOptions {
 export type LimitedCacheOptionsPartial = Partial<LimitedCacheOptions>;
 export type LimitedCacheOptionsReadonly = Readonly<LimitedCacheOptions>;
 
-export const defaultOptions: LimitedCacheOptionsReadonly = {
+const defaultOptions: LimitedCacheOptionsReadonly = {
+  // Public
   maxCacheSize: 500,
   maxCacheTime: 0,
-  warnIfItemPurgedBeforeTime: process.env['NODE_ENV'] === 'development' ? 5000 : 0,
+  // Development-only
+  warnIfItemPurgedBeforeTime: 5000,
   autoMaintenanceMultiplier: 2,
+  // Development-only and private/secret
   numItemsToExamineForPurge: 10,
 };
+
+export default defaultOptions;

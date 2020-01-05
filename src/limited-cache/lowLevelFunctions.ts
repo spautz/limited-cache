@@ -1,13 +1,12 @@
-import {
-  defaultOptions,
+import defaultOptions, {
   // types
   LimitedCacheOptionsPartial,
   LimitedCacheOptionsReadonly,
-} from './options';
+} from './defaultOptions';
 
 /* Types */
 
-export interface LimitedCacheMeta {
+interface LimitedCacheMeta {
   limitedCacheMetaVersion: number;
   options: LimitedCacheOptionsReadonly;
   cache: {
@@ -170,6 +169,7 @@ const _purgeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void =
   } else {
     // Remove the oldest item -- but warn if it's more recent than we'd like
     if (
+      process.env.NODE_ENV !== 'production' &&
       warnIfItemPurgedBeforeTime &&
       oldestItemTimestamp &&
       now - oldestItemTimestamp < warnIfItemPurgedBeforeTime
@@ -279,3 +279,4 @@ export {
   lowLevelDoMaintenance,
   lowLevelSetOptions,
 };
+export { LimitedCacheMeta };

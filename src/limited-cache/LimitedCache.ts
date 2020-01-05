@@ -9,10 +9,10 @@ import {
   // types
   LimitedCacheMeta,
 } from './lowLevelFunctions';
-import { LimitedCacheOptionsPartial, LimitedCacheOptionsReadonly } from './options';
+import { LimitedCacheOptionsPartial, LimitedCacheOptionsReadonly } from './defaultOptions';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface LimitedCacheInstance<T = any> {
+interface LimitedCacheInstance<T = any> {
   get: (cacheKey?: string) => T;
   has: (cacheKey: string) => boolean;
   set: (cacheKey: string, item: T) => T;
@@ -47,3 +47,4 @@ function LimitedCache<T = any>(options?: LimitedCacheOptionsPartial): LimitedCac
 }
 
 export default LimitedCache;
+export { LimitedCacheInstance };

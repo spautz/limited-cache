@@ -1,37 +1,34 @@
 /* eslint-env node */
 
-const terserReserved = [
-  'LimitedCache',
-  'LimitedCacheObject',
-  'limitedCacheUtil',
-  'defaultOptions',
-  'useLimitedCache',
-  'useLimitedCacheObject',
+const propertyNamesToPreserve = [
+  // public options
+  'maxCacheSize',
+  'maxCacheTime',
+  // methods on limitedCacheUtil
+  'init',
+  'get',
+  'has',
+  'set',
+  'remove',
+  'doMaintenance',
+  'setOptions',
+  // React builtins
+  'current',
 ];
 
-const stableKeysForLimitedCacheMeta = {
+const propertyNameMap = {
+  // Keys of the cacheMeta need to always be mangled to the same token
   limitedCacheMetaVersion: 'mv',
   options: 'mo',
   cache: 'mc',
   recentCacheKeys: 'mr',
   cacheKeyTimestamps: 'mt',
-  autoMaintenanceCount: 'mc',
+  autoMaintenanceCount: 'mn',
+  // Private options still need to be stable, but the names don't matter much
+  warnIfItemPurgedBeforeTime: 'ow',
+  autoMaintenanceMultiplier: 'oa',
+  numItemsToExamineForPurge: 'on',
 };
 
-// This is the format Terser users
-const terserNameCache = {
-  vars: {
-    props: {},
-  },
-  props: {
-    props: Object.keys(stableKeysForLimitedCacheMeta).reduce((acc, propName) => {
-      // Terser puts a '$' in front of each key
-      acc[`$${propName}`] = stableKeysForLimitedCacheMeta[propName];
-      return acc;
-    }, {}),
-  },
-};
-
-module.exports.terserReserved = terserReserved;
-module.exports.terserNameCache = terserNameCache;
-module.exports.stableKeysForLimitedCacheMeta = stableKeysForLimitedCacheMeta;
+module.exports.propertyNamesToPreserve = propertyNamesToPreserve;
+module.exports.propertyNameMap = propertyNameMap;

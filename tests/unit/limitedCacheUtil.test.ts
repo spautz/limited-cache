@@ -1,7 +1,7 @@
 /* eslint-env jest */
+import defaultOptions from '../../src/limited-cache/defaultOptions';
 import {
   LimitedCacheMeta,
-  defaultOptions,
   lowLevelInit,
   lowLevelGet,
   lowLevelHas,

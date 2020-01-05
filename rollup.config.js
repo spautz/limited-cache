@@ -6,7 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 
 import packageJson from './package.json';
-const { terserReserved, terserNameCache } = require('./scripts/buildNameMangling');
+const { propertyNamesToPreserve, propertyNameMap } = require('./scripts/buildNameMangling');
 
 const inputFiles = { main: './src/main.ts', hooks: './src/hooks.ts' };
 const outputDir = 'dist/';
@@ -17,8 +17,25 @@ const terserOptions = {
     unsafe_comps: true,
     warnings: false,
   },
-  mangle: { toplevel: true, properties: true, reserved: terserReserved },
-  nameCache: terserNameCache,
+  mangle: {
+    module: true,
+    toplevel: true,
+    properties: {
+      reserved: propertyNamesToPreserve,
+    },
+  },
+  nameCache: {
+    vars: {
+      props: {},
+    },
+    props: {
+      props: Object.keys(propertyNameMap).reduce((acc, propName) => {
+        // Terser puts a '$' in front of each key
+        acc[`$${propName}`] = propertyNameMap[propName];
+        return acc;
+      }, {}),
+    },
+  },
 };
 
 const makeConfig = (options) => ({
@@ -46,10 +63,10 @@ export default [
       format: 'cjs',
     },
     plugins: [
-      replace({
-        'process.env.NODE_ENV': 'development',
-      }),
       typescript(),
+      replace({
+        'process.env.NODE_ENV': JSON.stringify('development'),
+      }),
     ],
   }),
 
@@ -62,10 +79,10 @@ export default [
       format: 'cjs',
     },
     plugins: [
-      replace({
-        'process.env.NODE_ENV': 'production',
-      }),
       typescript(),
+      replace({
+        'process.env.NODE_ENV': JSON.stringify('production'),
+      }),
       terser(terserOptions),
     ],
   }),
@@ -86,10 +103,10 @@ export default [
       format: 'umd',
     },
     plugins: [
-      replace({
-        'process.env.NODE_ENV': 'production',
-      }),
       typescript(),
+      replace({
+        'process.env.NODE_ENV': JSON.stringify('production'),
+      }),
       terser(terserOptions),
     ],
   }),

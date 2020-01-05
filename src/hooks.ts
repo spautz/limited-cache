@@ -4,7 +4,6 @@ import {
   LimitedCache,
   LimitedCacheInstance,
   LimitedCacheObject,
-  limitedCacheUtil,
   // types
   LimitedCacheObjectInterface,
   LimitedCacheOptionsPartial,
@@ -37,4 +36,4 @@ const useLimitedCacheObject = (
   return limitedCacheRef.current;
 };
 
-export { useLimitedCache, useLimitedCacheObject, limitedCacheUtil };
+export { useLimitedCache, useLimitedCacheObject };
