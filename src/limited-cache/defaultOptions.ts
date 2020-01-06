@@ -1,4 +1,4 @@
-export interface LimitedCacheOptions {
+interface LimitedCacheOptions {
   maxCacheSize: number;
   maxCacheTime: number;
   warnIfItemPurgedBeforeTime: number;
@@ -6,8 +6,8 @@ export interface LimitedCacheOptions {
   numItemsToExamineForPurge: number;
 }
 
-export type LimitedCacheOptionsPartial = Partial<LimitedCacheOptions>;
-export type LimitedCacheOptionsReadonly = Readonly<LimitedCacheOptions>;
+type LimitedCacheOptionsPartial = Partial<LimitedCacheOptions>;
+type LimitedCacheOptionsReadonly = Readonly<LimitedCacheOptions>;
 
 const defaultOptions: LimitedCacheOptionsReadonly = {
   // Public
@@ -21,3 +21,5 @@ const defaultOptions: LimitedCacheOptionsReadonly = {
 };
 
 export default defaultOptions;
+// types
+export { LimitedCacheOptions, LimitedCacheOptionsPartial, LimitedCacheOptionsReadonly };

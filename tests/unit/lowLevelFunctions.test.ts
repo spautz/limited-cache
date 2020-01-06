@@ -9,7 +9,7 @@ import {
   lowLevelRemove,
 } from '../../src/limited-cache/lowLevelFunctions';
 
-describe('LimitedCacheUtil', () => {
+describe('lowLevelFunctions', () => {
   describe('lowLevelInit', () => {
     it('clones the default options', () => {
       const myCacheMeta = lowLevelInit();

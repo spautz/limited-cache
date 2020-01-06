@@ -279,4 +279,5 @@ export {
   lowLevelDoMaintenance,
   lowLevelSetOptions,
 };
+// types
 export { LimitedCacheMeta };

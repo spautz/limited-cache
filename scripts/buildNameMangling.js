@@ -12,8 +12,9 @@ const propertyNamesToPreserve = [
   'remove',
   'doMaintenance',
   'setOptions',
-  // React builtins
+  // React
   'current',
+  'useRef',
 ];
 
 const propertyNameMap = {

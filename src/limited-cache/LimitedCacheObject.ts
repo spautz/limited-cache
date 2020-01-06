@@ -59,4 +59,5 @@ function LimitedCacheObject<T = any>(
 }
 
 export default LimitedCacheObject;
+// types
 export { LimitedCacheObjectInterface };

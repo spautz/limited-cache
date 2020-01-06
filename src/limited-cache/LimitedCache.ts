@@ -47,4 +47,5 @@ function LimitedCache<T = any>(options?: LimitedCacheOptionsPartial): LimitedCac
 }
 
 export default LimitedCache;
+// types
 export { LimitedCacheInstance };

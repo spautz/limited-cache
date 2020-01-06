@@ -8,15 +8,21 @@ import typescript from 'rollup-plugin-typescript2';
 import packageJson from './package.json';
 const { propertyNamesToPreserve, propertyNameMap } = require('./scripts/buildNameMangling');
 
-const inputFiles = { main: './src/main.ts', hooks: './src/hooks.ts' };
+const inputFiles = {
+  main: './src/main.ts',
+  hooks: './src/hooks.ts',
+};
 const outputDir = 'dist/';
+
 const terserOptions = {
   compress: {
     pure_getters: true,
     unsafe: true,
     unsafe_comps: true,
-    warnings: false,
+    warnings: true,
   },
+  module: true,
+  toplevel: true,
   mangle: {
     module: true,
     toplevel: true,
@@ -38,7 +44,7 @@ const terserOptions = {
   },
 };
 
-const makeConfig = (options) => ({
+const makeRollupConfig = (options) => ({
   ...options,
   output: {
     sourcemap: true,
@@ -48,6 +54,15 @@ const makeConfig = (options) => ({
     ...Object.keys(packageJson.dependencies || {}),
     ...Object.keys(packageJson.peerDependencies || {}),
   ],
+  // Rename the common chunk (otherwise rollup calls it "limitedCacheUtil", which is misleading)
+  manualChunks:
+    typeof options.input === 'object'
+      ? (id) => {
+          if (id.includes('limited-cache/')) {
+            return 'chunk';
+          }
+        }
+      : null,
   treeshake: {
     propertyReadSideEffects: false,
   },
@@ -55,7 +70,7 @@ const makeConfig = (options) => ({
 
 export default [
   // CommonJS, development
-  makeConfig({
+  makeRollupConfig({
     input: inputFiles,
     output: {
       dir: outputDir,
@@ -71,7 +86,7 @@ export default [
   }),
 
   // CommonJS, production
-  makeConfig({
+  makeRollupConfig({
     input: inputFiles,
     output: {
       dir: outputDir,
@@ -88,17 +103,17 @@ export default [
   }),
 
   // ES
-  makeConfig({
+  makeRollupConfig({
     input: inputFiles,
     output: { dir: outputDir, entryFileNames: '[name].esm.js', format: 'esm' },
     plugins: [typescript()],
   }),
 
   // UMD, production, without hooks
-  makeConfig({
+  makeRollupConfig({
     input: inputFiles.main,
     output: {
-      name: 'limited-cache',
+      name: 'limitedCache',
       file: `${outputDir}limited-cache.main.umd.production.min.js`,
       format: 'umd',
     },
