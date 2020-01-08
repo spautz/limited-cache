@@ -28,8 +28,8 @@ const terserOptions = {
   module: true,
   toplevel: true,
   mangle: {
-    module: true,
-    toplevel: true,
+    // module: true,
+    // toplevel: true,
     properties: {
       reserved: [...exportNamesToPreserve, ...propertyNamesToPreserve],
     },
