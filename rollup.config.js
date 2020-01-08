@@ -25,8 +25,8 @@ const terserOptions = {
     unsafe_comps: true,
     warnings: true,
   },
-  module: true,
-  toplevel: true,
+  // module: true,
+  // toplevel: true,
   mangle: {
     // module: true,
     // toplevel: true,
