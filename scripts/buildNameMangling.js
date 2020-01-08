@@ -1,5 +1,12 @@
 /* eslint-env node */
 
+const exportNamesToPreserve = [
+  'LimitedCache',
+  'LimitedCacheObject',
+  'defaultOptions',
+  'limitedCacheUtil',
+];
+
 const propertyNamesToPreserve = [
   // public options
   'maxCacheSize',
@@ -31,5 +38,6 @@ const propertyNameMap = {
   numItemsToExamineForPurge: 'on',
 };
 
+module.exports.exportNamesToPreserve = exportNamesToPreserve;
 module.exports.propertyNamesToPreserve = propertyNamesToPreserve;
 module.exports.propertyNameMap = propertyNameMap;

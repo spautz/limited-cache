@@ -6,7 +6,11 @@ import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 
 import packageJson from './package.json';
-const { propertyNamesToPreserve, propertyNameMap } = require('./scripts/buildNameMangling');
+const {
+  exportNamesToPreserve,
+  propertyNamesToPreserve,
+  propertyNameMap,
+} = require('./scripts/buildNameMangling');
 
 const inputFiles = {
   main: './src/main.ts',
@@ -27,7 +31,7 @@ const terserOptions = {
     module: true,
     toplevel: true,
     properties: {
-      reserved: propertyNamesToPreserve,
+      reserved: [...exportNamesToPreserve, ...propertyNamesToPreserve],
     },
   },
   nameCache: {

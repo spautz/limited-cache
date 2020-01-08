@@ -4,9 +4,7 @@
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = 'production';
 } else if (process.env.NODE_ENV !== 'production') {
-  console.warn(
-    `Running check-build in "${process.env.NODE_ENV}" instead of "production": is this intentional?`,
-  );
+  console.warn(`Running check-build in "${process.env.NODE_ENV}" instead of "production"`);
 }
 
 const {
@@ -18,7 +16,6 @@ const {
 } = require('../dist/main');
 
 const mainExportsToCheck = { LimitedCache, LimitedCacheObject, limitedCacheUtil, defaultOptions };
-console.log('mainExportsToCheck = ', mainExportsToCheck);
 Object.keys(mainExportsToCheck).forEach((exportName) => {
   if (!mainExportsToCheck[exportName]) {
     throw new Error(`Missing export from main: ${exportName}`);

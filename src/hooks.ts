@@ -1,7 +1,5 @@
 import { useRef } from 'react';
 
-// import LimitedCache from './limited-cache/LimitedCache';
-// import LimitedCacheObject from './limited-cache/LimitedCacheObject';
 import { LimitedCache, LimitedCacheObject } from './main';
 
 // types

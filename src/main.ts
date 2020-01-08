@@ -1,13 +1,7 @@
-// import LimitedCache from './limited-cache/LimitedCache';
-// import LimitedCacheObject from './limited-cache/LimitedCacheObject';
-// import limitedCacheUtil from './limited-cache/limitedCacheUtil';
-// import defaultOptions from './limited-cache/defaultOptions';
-import {
-  LimitedCacheInternal,
-  LimitedCacheObjectInternal,
-  limitedCacheUtilInternal,
-  defaultOptionsInternal,
-} from './limited-cache';
+import LimitedCache from './limited-cache/LimitedCache';
+import LimitedCacheObject from './limited-cache/LimitedCacheObject';
+import limitedCacheUtil from './limited-cache/limitedCacheUtil';
+import defaultOptions from './limited-cache/defaultOptions';
 
 // types
 import { LimitedCacheInstance } from './limited-cache/LimitedCache';
@@ -19,12 +13,7 @@ import {
   LimitedCacheOptionsReadonly,
 } from './limited-cache/defaultOptions';
 
-// export { LimitedCache, LimitedCacheObject, limitedCacheUtil, defaultOptions };
-
-export const LimitedCache = LimitedCacheInternal;
-export const LimitedCacheObject = LimitedCacheObjectInternal;
-export const limitedCacheUtil = limitedCacheUtilInternal;
-export const defaultOptions = defaultOptionsInternal;
+export { LimitedCache, LimitedCacheObject, limitedCacheUtil, defaultOptions };
 // types
 export {
   LimitedCacheInstance,

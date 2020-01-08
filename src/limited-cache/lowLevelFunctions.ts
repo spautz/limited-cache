@@ -99,6 +99,7 @@ const lowLevelDoMaintenance = (cacheMeta: LimitedCacheMeta): LimitedCacheMeta =>
   cacheMeta.recentCacheKeys = newRecentKeys;
   cacheMeta.cache = newCache;
   cacheMeta.cacheKeyTimestamps = newTimestamps;
+  cacheMeta.autoMaintenanceCount = 0;
 
   return cacheMeta;
 };
