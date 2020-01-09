@@ -4,12 +4,13 @@ os:
   - osx
   - windows
 node_js:
-  - "node"
-#  - 12
-#  - 10
+  - 13
+  - 12
+  - 10
+  - 8
 cache: yarn
 
 script:
   - "yarn ci"
 after_failure:
-  - find dist/ -name "*.js" | xargs cat
+  - find dist/ -name "*.js" | xargs -i  sh -c 'echo "==== {} ========" && cat {}'
