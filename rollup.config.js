@@ -28,6 +28,7 @@ const terserOptions = {
   // module: true,
   // toplevel: true,
   mangle: {
+    reserved: exportNamesToPreserve,
     // module: true,
     // toplevel: true,
     properties: {
@@ -59,14 +60,14 @@ const makeRollupConfig = (options) => ({
     ...Object.keys(packageJson.peerDependencies || {}),
   ],
   // Rename the common chunk (otherwise rollup calls it "limitedCacheUtil", which is misleading)
-  manualChunks:
-    typeof options.input === 'object'
-      ? (id) => {
-          if (id.includes('limited-cache/')) {
-            return 'chunk';
-          }
-        }
-      : null,
+  // manualChunks:
+  //   typeof options.input === 'object'
+  //     ? (id) => {
+  //         if (id.includes('limited-cache/')) {
+  //           return 'chunk';
+  //         }
+  //       }
+  //     : null,
   treeshake: false,
   // treeshake: {
   //   propertyReadSideEffects: false,
