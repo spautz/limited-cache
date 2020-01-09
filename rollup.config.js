@@ -67,9 +67,10 @@ const makeRollupConfig = (options) => ({
           }
         }
       : null,
-  treeshake: {
-    propertyReadSideEffects: false,
-  },
+  treeshake: false,
+  // treeshake: {
+  //   propertyReadSideEffects: false,
+  // },
 });
 
 export default [
