@@ -1,17 +1,19 @@
-import LimitedCache from './limited-cache/LimitedCache';
-import LimitedCacheObject from './limited-cache/LimitedCacheObject';
-import limitedCacheUtil from './limited-cache/limitedCacheUtil';
-import defaultOptions from './limited-cache/defaultOptions';
+import {
+  defaultOptions,
+  LimitedCache,
+  LimitedCacheObject,
+  limitedCacheUtil,
+} from './limited-cache';
 
 // types
-import { LimitedCacheInstance } from './limited-cache/LimitedCache';
-import { LimitedCacheObjectInterface } from './limited-cache/LimitedCacheObject';
-import { LimitedCacheMeta } from './limited-cache/lowLevelFunctions';
 import {
+  LimitedCacheInstance,
+  LimitedCacheObjectInterface,
+  LimitedCacheMeta,
   LimitedCacheOptions,
   LimitedCacheOptionsPartial,
   LimitedCacheOptionsReadonly,
-} from './limited-cache/defaultOptions';
+} from './limited-cache';
 
 export { LimitedCache, LimitedCacheObject, limitedCacheUtil, defaultOptions };
 // types

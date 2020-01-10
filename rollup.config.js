@@ -25,13 +25,11 @@ const terserOptions = {
     unsafe_comps: true,
     warnings: true,
   },
-  module: true,
-  toplevel: true,
   mangle: {
     module: true,
-    toplevel: true,
     reserved: exportNamesToPreserve,
     properties: {
+      // Names are also properties when repackaged as named exports
       reserved: [...exportNamesToPreserve, ...propertyNamesToPreserve],
     },
   },
