@@ -1,15 +1,15 @@
 /* eslint-env jest */
+import defaultOptions from '../../src/limited-cache/defaultOptions';
 import {
   LimitedCacheMeta,
-  defaultOptions,
   lowLevelInit,
   lowLevelGet,
   lowLevelHas,
   lowLevelSet,
   lowLevelRemove,
-} from '../../src/limited-cache/limitedCacheUtil';
+} from '../../src/limited-cache/lowLevelFunctions';
 
-describe('LimitedCacheUtil', () => {
+describe('lowLevelFunctions', () => {
   describe('lowLevelInit', () => {
     it('clones the default options', () => {
       const myCacheMeta = lowLevelInit();

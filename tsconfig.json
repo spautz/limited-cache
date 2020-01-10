@@ -4,6 +4,7 @@
     "target": "esnext",
     "module": "esnext",
     "lib": ["dom", "es2017"],
+    "allowJs": true,
     "declaration": true,
     "declarationDir": "./build/types",
     "sourceMap": true,

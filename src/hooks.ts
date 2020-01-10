@@ -1,14 +1,13 @@
 import { useRef } from 'react';
 
+import { LimitedCache, LimitedCacheObject } from './limited-cache';
+
+// types
 import {
-  LimitedCache,
   LimitedCacheInstance,
-  LimitedCacheObject,
-  limitedCacheUtil,
-  // types
   LimitedCacheObjectInterface,
   LimitedCacheOptionsPartial,
-} from './index';
+} from './limited-cache';
 
 const useLimitedCache = (options: LimitedCacheOptionsPartial): LimitedCacheInstance => {
   const lastOptionsRef = useRef(options);
@@ -37,4 +36,4 @@ const useLimitedCacheObject = (
   return limitedCacheRef.current;
 };
 
-export { useLimitedCache, useLimitedCacheObject, limitedCacheUtil };
+export { useLimitedCache, useLimitedCacheObject };

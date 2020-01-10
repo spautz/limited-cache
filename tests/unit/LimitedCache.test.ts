@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import LimitedCache, { LimitedCacheInstance } from '../../src/limited-cache/LimitedCache';
-import { defaultOptions } from '../../src/limited-cache/options';
+import defaultOptions from '../../src/limited-cache/defaultOptions';
 
 describe('LimitedCache', () => {
   it('initializes without options', () => {
@@ -169,9 +169,9 @@ describe('LimitedCache', () => {
       });
     });
 
-    it('performMaintenance', () => {
+    it('doMaintenance', () => {
       // should not throw
-      myCache.performMaintenance();
+      myCache.doMaintenance();
     });
   });
 });

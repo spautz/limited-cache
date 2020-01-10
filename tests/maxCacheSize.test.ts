@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import { LimitedCache, LimitedCacheInstance } from '../src';
+import { LimitedCache, LimitedCacheInstance } from '../src/main';
 
 // To avoid race conditions or timing issues, since some expect() checks can take 10+ ms when busy,
 // we use a long cache timeout even for 'immediate' expiration, and use delays slightly longer than that
@@ -14,6 +14,7 @@ describe('maxCacheSize scenarios', () => {
       maxCacheSize: 20,
       maxCacheTime: Number.MAX_SAFE_INTEGER,
       autoMaintenanceMultiplier: Number.MAX_SAFE_INTEGER,
+      warnIfItemPurgedBeforeTime: 0,
     });
   });
 

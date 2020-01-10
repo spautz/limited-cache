@@ -1,6 +1,6 @@
 *.log
 
 .idea/
-build/
+dist/
 coverage/
 node_modules/
