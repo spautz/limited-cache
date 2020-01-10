@@ -4,8 +4,8 @@ A minimal JS cache. Like using an object to store keys and values, except it won
 
 [![npm version](https://img.shields.io/npm/v/limited-cache.svg)](https://www.npmjs.com/package/limited-cache)
 [![build status](https://img.shields.io/travis/spautz/limited-cache.svg)](https://travis-ci.org/spautz/limited-cache)
-[![test coverage](https://img.shields.io/coveralls/github/spautz/limited-cache.svg)](https://travis-ci.org/spautz/limited-cache)
-![gzip size](https://img.shields.io/bundlephobia/minzip/limited-cache)
+[![test coverage](https://img.shields.io/coveralls/github/spautz/limited-cache.svg)](https://coveralls.io/github/spautz/limited-cache)
+[![gzip size](https://img.shields.io/bundlephobia/minzip/limited-cache)](https://bundlephobia.com/result?p=limited-cache)
 
 ## Motivation
 

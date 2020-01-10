@@ -6,7 +6,7 @@ interface LimitedCacheOptions {
   numItemsToExamineForPurge: number;
 }
 
-type LimitedCacheOptionsPartial = Partial<LimitedCacheOptions>;
+type LimitedCacheOptionsPartial = Partial<LimitedCacheOptions> | null;
 type LimitedCacheOptionsReadonly = Readonly<LimitedCacheOptions>;
 
 const defaultOptions: LimitedCacheOptionsReadonly = {
