@@ -4,10 +4,10 @@ os:
   - osx
   - windows
 node_js:
-  - 13
-  - 12
-  - 10
-  - 8
+  - node
+#  - 12
+#  - 10
+#  - 8
 cache: yarn
 
 script:
