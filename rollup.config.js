@@ -1,7 +1,7 @@
 /* eslint-env node*/
 /* eslint-disable @typescript-eslint/camelcase */
 
-import replace from 'rollup-plugin-replace';
+import replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 
@@ -55,6 +55,7 @@ const makeRollupConfig = (options) => ({
   },
   external: [
     ...Object.keys(packageJson.dependencies || {}),
+    ...Object.keys(packageJson.optionalDependencies || {}),
     ...Object.keys(packageJson.peerDependencies || {}),
   ],
   treeshake: {
@@ -110,6 +111,7 @@ export default [
       name: 'limitedCache',
       file: `${outputDir}limited-cache.main.umd.production.min.js`,
       format: 'umd',
+      esModule: false,
     },
     plugins: [
       typescript(),

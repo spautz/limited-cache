@@ -22,6 +22,8 @@ const propertyNamesToPreserve = [
   // React
   'current',
   'useRef',
+  // Others
+  '__esModule',
 ];
 
 const propertyNameMap = {

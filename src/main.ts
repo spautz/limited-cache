@@ -1,9 +1,4 @@
-import {
-  defaultOptions,
-  LimitedCache,
-  LimitedCacheObject,
-  limitedCacheUtil,
-} from './limited-cache';
+import { defaultOptions, LimitedCache, LimitedCacheObject, limitedCacheUtil } from './core';
 
 // types
 import {
@@ -13,7 +8,7 @@ import {
   LimitedCacheOptions,
   LimitedCacheOptionsPartial,
   LimitedCacheOptionsReadonly,
-} from './limited-cache';
+} from './core';
 
 export { LimitedCache, LimitedCacheObject, limitedCacheUtil, defaultOptions };
 // types
