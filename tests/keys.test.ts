@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import { limitedCacheUtil, LimitedCacheMeta } from '../src/main';
+import { limitedCacheUtil, LimitedCacheMeta } from '../src';
 
 describe('key names', () => {
   let myCacheMeta: LimitedCacheMeta;

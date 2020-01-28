@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import { limitedCacheUtil } from '../src/main';
+import { limitedCacheUtil } from '../src';
 
 import { propertyNamesToPreserve, propertyNameMap } from '../scripts/buildNameMangling';
 

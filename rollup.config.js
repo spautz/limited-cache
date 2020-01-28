@@ -13,7 +13,7 @@ const {
 } = require('./scripts/buildNameMangling');
 
 const inputFiles = {
-  main: './src/main.ts',
+  index: './src/index.ts',
   hooks: './src/hooks.ts',
 };
 const outputDir = 'dist/';
@@ -51,6 +51,7 @@ const makeRollupConfig = (options) => ({
   ...options,
   output: {
     sourcemap: true,
+    chunkFileNames: 'chunk-[name]-[hash].js',
     ...options.output,
   },
   external: [
@@ -106,10 +107,10 @@ export default [
 
   // UMD, production, without hooks
   makeRollupConfig({
-    input: inputFiles.main,
+    input: inputFiles.index,
     output: {
       name: 'limitedCache',
-      file: `${outputDir}limited-cache.main.umd.production.min.js`,
+      file: `${outputDir}limited-cache.index.umd.production.min.js`,
       format: 'umd',
       esModule: false,
     },

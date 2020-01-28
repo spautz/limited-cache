@@ -13,7 +13,7 @@ const {
   limitedCacheUtil,
   defaultOptions,
   ...unrecognizedMainExports
-} = require('../dist/main');
+} = require('../dist');
 
 const mainExportsToCheck = { LimitedCache, LimitedCacheObject, limitedCacheUtil, defaultOptions };
 Object.keys(mainExportsToCheck).forEach((exportName) => {
