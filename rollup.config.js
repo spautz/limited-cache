@@ -1,19 +1,15 @@
 /* eslint-env node*/
 /* eslint-disable @typescript-eslint/camelcase */
 
-import replace from 'rollup-plugin-replace';
+import replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 
 import packageJson from './package.json';
-const {
-  exportNamesToPreserve,
-  propertyNamesToPreserve,
-  propertyNameMap,
-} = require('./scripts/buildNameMangling');
+const { propertyNamesToPreserve, propertyNameMap } = require('./scripts/buildNameMangling');
 
 const inputFiles = {
-  main: './src/main.ts',
+  index: './src/index.ts',
   hooks: './src/hooks.ts',
 };
 const outputDir = 'dist/';
@@ -27,10 +23,8 @@ const terserOptions = {
   },
   mangle: {
     module: true,
-    reserved: exportNamesToPreserve,
     properties: {
-      // Names are also properties when repackaged as named exports
-      reserved: [...exportNamesToPreserve, ...propertyNamesToPreserve],
+      reserved: propertyNamesToPreserve,
     },
   },
   nameCache: {
@@ -51,10 +45,12 @@ const makeRollupConfig = (options) => ({
   ...options,
   output: {
     sourcemap: true,
+    chunkFileNames: 'chunk-[name]-[hash].js',
     ...options.output,
   },
   external: [
     ...Object.keys(packageJson.dependencies || {}),
+    ...Object.keys(packageJson.optionalDependencies || {}),
     ...Object.keys(packageJson.peerDependencies || {}),
   ],
   treeshake: {
@@ -87,6 +83,7 @@ export default [
       entryFileNames: 'limited-cache.[name].cjs.production.min.js',
       format: 'cjs',
     },
+    preserveModules: true,
     plugins: [
       typescript(),
       replace({
@@ -105,11 +102,12 @@ export default [
 
   // UMD, production, without hooks
   makeRollupConfig({
-    input: inputFiles.main,
+    input: inputFiles.index,
     output: {
       name: 'limitedCache',
-      file: `${outputDir}limited-cache.main.umd.production.min.js`,
+      file: `${outputDir}limited-cache.index.umd.production.min.js`,
       format: 'umd',
+      esModule: false,
     },
     plugins: [
       typescript(),

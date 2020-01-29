@@ -1,66 +1,35 @@
-import defaultOptions, {
-  // types
-  LimitedCacheOptionsPartial,
-  LimitedCacheOptionsReadonly,
-} from './defaultOptions';
+import defaultOptions from './defaultOptions';
+import { LimitedCacheOptions, LimitedCacheOptionsReadonly, LimitedCacheMeta } from '../types';
 
-/* Types */
-
-interface LimitedCacheMeta {
-  limitedCacheMetaVersion: number;
-  options: LimitedCacheOptionsReadonly;
-  cache: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [propName: string]: any;
-  };
-  recentCacheKeys: Array<string>;
-  cacheKeyTimestamps: { [propName: string]: number | undefined };
-  autoMaintenanceCount: number;
-}
-
-// from https://github.com/Microsoft/TypeScript/issues/21309#issuecomment-376338415
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type RequestIdleCallbackHandle = any;
-type RequestIdleCallbackOptions = {
-  timeout: number;
-};
-type RequestIdleCallbackDeadline = {
-  readonly didTimeout: boolean;
-  timeRemaining: () => number;
-};
-
-declare global {
-  const requestIdleCallback: (
-    callback: (deadline: RequestIdleCallbackDeadline) => void,
-    opts?: RequestIdleCallbackOptions,
-  ) => RequestIdleCallbackHandle;
-  const cancelIdleCallback: (handle: RequestIdleCallbackHandle) => void;
-}
+// To help minimization
+const {
+  create: objectCreate,
+  assign: objectAssign,
+  prototype: { hasOwnProperty },
+} = Object;
 
 /* Initialization and options */
 
-const lowLevelInit = (options?: LimitedCacheOptionsPartial): LimitedCacheMeta => {
+const lowLevelInit = (options?: LimitedCacheOptions): LimitedCacheMeta => {
   // This is the cacheMeta. It is created once, and persists per instance
   return {
     limitedCacheMetaVersion: 1,
     options: options ? { ...defaultOptions, ...options } : { ...defaultOptions },
     cache: {},
     recentCacheKeys: [],
-    cacheKeyTimestamps: Object.create(null),
+    cacheKeyTimestamps: objectCreate(null),
     autoMaintenanceCount: 0,
   };
 };
 
 const lowLevelSetOptions = (
   cacheMeta: LimitedCacheMeta,
-  options: LimitedCacheOptionsPartial,
+  options: LimitedCacheOptions,
 ): LimitedCacheOptionsReadonly => {
-  return Object.assign(cacheMeta.options, options);
+  return objectAssign(cacheMeta.options, options);
 };
 
 /* Internal cache manipulation */
-
-const { hasOwnProperty } = Object.prototype;
 
 const _cacheKeyHasExpired = (
   cacheMeta: LimitedCacheMeta,
@@ -92,7 +61,7 @@ const lowLevelDoMaintenance = (cacheMeta: LimitedCacheMeta): LimitedCacheMeta =>
     [
       [] as LimitedCacheMeta['recentCacheKeys'],
       {} as LimitedCacheMeta['cache'],
-      Object.create(null) as LimitedCacheMeta['cacheKeyTimestamps'],
+      objectCreate(null) as LimitedCacheMeta['cacheKeyTimestamps'],
     ],
   );
 
@@ -272,6 +241,7 @@ const lowLevelSet = (
 };
 
 export {
+  hasOwnProperty,
   lowLevelInit,
   lowLevelGet,
   lowLevelHas,
@@ -280,5 +250,3 @@ export {
   lowLevelDoMaintenance,
   lowLevelSetOptions,
 };
-// types
-export { LimitedCacheMeta };

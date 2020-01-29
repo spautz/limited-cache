@@ -1,15 +1,13 @@
 import { useRef } from 'react';
 
-import { LimitedCache, LimitedCacheObject } from './limited-cache';
-
-// types
 import {
-  LimitedCacheInstance,
-  LimitedCacheObjectInterface,
-  LimitedCacheOptionsPartial,
-} from './limited-cache';
+  LimitedCache,
+  LimitedCacheObject,
+  // types
+} from './index';
+import { LimitedCacheInstance, LimitedCacheObjectInterface, LimitedCacheOptions } from './types';
 
-const useLimitedCache = (options: LimitedCacheOptionsPartial): LimitedCacheInstance => {
+const useLimitedCache = (options: LimitedCacheOptions): LimitedCacheInstance => {
   const lastOptionsRef = useRef(options);
   const limitedCacheRef = useRef(LimitedCache(options));
 
@@ -22,7 +20,7 @@ const useLimitedCache = (options: LimitedCacheOptionsPartial): LimitedCacheInsta
 };
 
 const useLimitedCacheObject = (
-  options: LimitedCacheOptionsPartial,
+  options: LimitedCacheOptions,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): LimitedCacheObjectInterface<any> => {
   const lastOptionsRef = useRef(options);
