@@ -41,7 +41,6 @@ if (unrecognizedIndexExportNames.length) {
 const {
   useLimitedCache,
   useLimitedCacheObject,
-  useLimitedCacheMeta,
   ...unrecognizedHookExports
 } = require('../dist/hooks');
 
@@ -51,7 +50,6 @@ Object.keys(hookExportsToCheck).forEach((exportName) => {
     console.info('Exports from hooks: ', {
       useLimitedCache,
       useLimitedCacheObject,
-      useLimitedCacheMeta,
       ...unrecognizedHookExports,
     });
     throw new Error(`Missing export from hooks: ${exportName}`);
