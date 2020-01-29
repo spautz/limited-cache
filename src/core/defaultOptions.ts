@@ -1,13 +1,4 @@
-interface LimitedCacheOptions {
-  maxCacheSize: number;
-  maxCacheTime: number;
-  warnIfItemPurgedBeforeTime: number;
-  autoMaintenanceMultiplier: number;
-  numItemsToExamineForPurge: number;
-}
-
-type LimitedCacheOptionsPartial = Partial<LimitedCacheOptions>;
-type LimitedCacheOptionsReadonly = Readonly<LimitedCacheOptions>;
+import { LimitedCacheOptionsReadonly } from '../types';
 
 const defaultOptions: LimitedCacheOptionsReadonly = {
   // Public
@@ -17,9 +8,7 @@ const defaultOptions: LimitedCacheOptionsReadonly = {
   warnIfItemPurgedBeforeTime: 5000,
   autoMaintenanceMultiplier: 2,
   // Development-only and private/secret
-  numItemsToExamineForPurge: 10,
+  numItemsToExamineForPurge: 20,
 };
 
 export default defaultOptions;
-// types
-export { LimitedCacheOptions, LimitedCacheOptionsPartial, LimitedCacheOptionsReadonly };

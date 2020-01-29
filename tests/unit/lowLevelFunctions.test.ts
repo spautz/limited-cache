@@ -1,13 +1,13 @@
 /* eslint-env jest */
 import defaultOptions from '../../src/core/defaultOptions';
 import {
-  LimitedCacheMeta,
   lowLevelInit,
   lowLevelGet,
   lowLevelHas,
   lowLevelSet,
   lowLevelRemove,
 } from '../../src/core/lowLevelFunctions';
+import { LimitedCacheMeta } from '../../src/types';
 
 describe('lowLevelFunctions', () => {
   describe('lowLevelInit', () => {

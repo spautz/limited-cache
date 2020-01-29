@@ -6,8 +6,6 @@ import {
   lowLevelRemove,
   lowLevelSet,
   lowLevelSetOptions,
-  // types
-  LimitedCacheMeta,
 } from './lowLevelFunctions';
 
 const limitedCacheUtil = {
@@ -21,4 +19,3 @@ const limitedCacheUtil = {
 };
 
 export default limitedCacheUtil;
-export { LimitedCacheMeta };

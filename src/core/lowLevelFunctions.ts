@@ -1,45 +1,9 @@
-import defaultOptions, {
-  // types
-  LimitedCacheOptionsPartial,
-  LimitedCacheOptionsReadonly,
-} from './defaultOptions';
-
-/* Types */
-
-interface LimitedCacheMeta {
-  limitedCacheMetaVersion: number;
-  options: LimitedCacheOptionsReadonly;
-  cache: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [propName: string]: any;
-  };
-  recentCacheKeys: Array<string>;
-  cacheKeyTimestamps: { [propName: string]: number | undefined };
-  autoMaintenanceCount: number;
-}
-
-// from https://github.com/Microsoft/TypeScript/issues/21309#issuecomment-376338415
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type RequestIdleCallbackHandle = any;
-type RequestIdleCallbackOptions = {
-  timeout: number;
-};
-type RequestIdleCallbackDeadline = {
-  readonly didTimeout: boolean;
-  timeRemaining: () => number;
-};
-
-declare global {
-  const requestIdleCallback: (
-    callback: (deadline: RequestIdleCallbackDeadline) => void,
-    opts?: RequestIdleCallbackOptions,
-  ) => RequestIdleCallbackHandle;
-  const cancelIdleCallback: (handle: RequestIdleCallbackHandle) => void;
-}
+import defaultOptions from './defaultOptions';
+import { LimitedCacheOptions, LimitedCacheOptionsReadonly, LimitedCacheMeta } from '../types';
 
 /* Initialization and options */
 
-const lowLevelInit = (options?: LimitedCacheOptionsPartial): LimitedCacheMeta => {
+const lowLevelInit = (options?: LimitedCacheOptions): LimitedCacheMeta => {
   // This is the cacheMeta. It is created once, and persists per instance
   return {
     limitedCacheMetaVersion: 1,
@@ -53,7 +17,7 @@ const lowLevelInit = (options?: LimitedCacheOptionsPartial): LimitedCacheMeta =>
 
 const lowLevelSetOptions = (
   cacheMeta: LimitedCacheMeta,
-  options: LimitedCacheOptionsPartial,
+  options: LimitedCacheOptions,
 ): LimitedCacheOptionsReadonly => {
   return Object.assign(cacheMeta.options, options);
 };
@@ -280,5 +244,3 @@ export {
   lowLevelDoMaintenance,
   lowLevelSetOptions,
 };
-// types
-export { LimitedCacheMeta };

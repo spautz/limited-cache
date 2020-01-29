@@ -6,25 +6,16 @@ import {
   lowLevelRemove,
   lowLevelSetOptions,
   lowLevelDoMaintenance,
-  // types
-  LimitedCacheMeta,
 } from './lowLevelFunctions';
-import { LimitedCacheOptionsPartial, LimitedCacheOptionsReadonly } from './defaultOptions';
+import {
+  LimitedCacheOptions,
+  LimitedCacheOptionsReadonly,
+  LimitedCacheInstance,
+  LimitedCacheMeta,
+} from '../types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface LimitedCacheInstance<T = any> {
-  get: (cacheKey?: string) => T;
-  has: (cacheKey: string) => boolean;
-  set: (cacheKey: string, item: T) => T;
-  remove: (cacheKey: string) => true;
-  getCacheMeta: () => LimitedCacheMeta;
-  getOptions: () => LimitedCacheOptionsReadonly;
-  setOptions: (newOptions: LimitedCacheOptionsPartial) => LimitedCacheOptionsReadonly;
-  doMaintenance: () => LimitedCacheMeta;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function LimitedCache<T = any>(options?: LimitedCacheOptionsPartial): LimitedCacheInstance<T> {
+function LimitedCache<T = any>(options?: LimitedCacheOptions): LimitedCacheInstance<T> {
   const cacheMeta = lowLevelInit(options);
 
   return {
@@ -47,5 +38,3 @@ function LimitedCache<T = any>(options?: LimitedCacheOptionsPartial): LimitedCac
 }
 
 export default LimitedCache;
-// types
-export { LimitedCacheInstance };

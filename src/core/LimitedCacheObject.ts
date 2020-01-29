@@ -4,10 +4,8 @@ import {
   lowLevelHas,
   lowLevelSet,
   lowLevelRemove,
-  // types
-  LimitedCacheMeta,
 } from './lowLevelFunctions';
-import { LimitedCacheOptionsPartial } from './defaultOptions';
+import { LimitedCacheOptions, LimitedCacheMeta } from '../types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface LimitedCacheObjectInterface<T = any> {
@@ -52,12 +50,10 @@ const proxyHandler: ProxyHandler<any> = {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function LimitedCacheObject<T = any>(
-  options?: LimitedCacheOptionsPartial,
+  options?: LimitedCacheOptions,
 ): LimitedCacheObjectInterface<T> {
   const cacheMeta = lowLevelInit(options);
   return new Proxy(cacheMeta, proxyHandler);
 }
 
 export default LimitedCacheObject;
-// types
-export { LimitedCacheObjectInterface };

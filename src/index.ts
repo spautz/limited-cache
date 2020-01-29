@@ -6,3 +6,5 @@ export { default as LimitedCacheObject } from './core/LimitedCacheObject';
 export * from './core/LimitedCacheObject';
 export { default as limitedCacheUtil } from './core/limitedCacheUtil';
 export * from './core/limitedCacheUtil';
+
+export * from './types';
