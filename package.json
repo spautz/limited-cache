@@ -1,7 +1,6 @@
 {
   "name": "limited-cache",
   "version": "0.1.0",
-  "private": true,
   "description": "A minimal JS cache: like using an object, except it won't grow forever",
   "keywords": [
     "cache",
@@ -15,10 +14,17 @@
   "homepage": "https://github.com/spautz/limited-cache",
   "repository": "github:spautz/limited-cache",
   "author": "Steven Pautz <spautz@gmail.com>",
-  "main": "index.js",
-  "module": "index.esm.js",
-  "jsnext:main": "index.esm.js",
-  "types": "index.d.ts",
+  "files": [
+    "dist/",
+    "hooks/",
+    "index.cjs.js",
+    "LICENSE",
+    "README.md"
+  ],
+  "main": "index.cjs.js",
+  "module": "dist/index.esm.js",
+  "jsnext:main": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
     "____ BASE COMMANDS _________________________________________________": "",
@@ -38,7 +44,7 @@
     "types:everything": "find . -name '*.ts' | grep -v node_modules | xargs tsc --noEmit",
     "____ HOOKS _________________________________________________________": "",
     "prebuild": "yon clean",
-    "postbuild": "node ./scripts/copy-files.js && yon build:check",
+    "postbuild": "yon build:check",
     "prepublishOnly": "yon check && yon build",
     "pretest": "yon test:clean",
     "____ INTEGRATION ___________________________________________________": "",

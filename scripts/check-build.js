@@ -13,7 +13,7 @@ const {
   limitedCacheUtil,
   defaultOptions,
   ...unrecognizedIndexExports
-} = require('../dist');
+} = require('../');
 
 const indexExportsToCheck = { LimitedCache, LimitedCacheObject, limitedCacheUtil, defaultOptions };
 Object.keys(indexExportsToCheck).forEach((exportName) => {
@@ -38,11 +38,7 @@ if (unrecognizedIndexExportNames.length) {
   );
 }
 
-const {
-  useLimitedCache,
-  useLimitedCacheObject,
-  ...unrecognizedHookExports
-} = require('../dist/hooks');
+const { useLimitedCache, useLimitedCacheObject, ...unrecognizedHookExports } = require('../hooks');
 
 const hookExportsToCheck = { useLimitedCache, useLimitedCacheObject };
 Object.keys(hookExportsToCheck).forEach((exportName) => {
