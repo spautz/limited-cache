@@ -1,6 +1,13 @@
 import defaultOptions from './defaultOptions';
 import { LimitedCacheOptions, LimitedCacheOptionsReadonly, LimitedCacheMeta } from '../types';
 
+// To help minimization
+const {
+  create: objectCreate,
+  assign: objectAssign,
+  prototype: { hasOwnProperty },
+} = Object;
+
 /* Initialization and options */
 
 const lowLevelInit = (options?: LimitedCacheOptions): LimitedCacheMeta => {
@@ -10,7 +17,7 @@ const lowLevelInit = (options?: LimitedCacheOptions): LimitedCacheMeta => {
     options: options ? { ...defaultOptions, ...options } : { ...defaultOptions },
     cache: {},
     recentCacheKeys: [],
-    cacheKeyTimestamps: Object.create(null),
+    cacheKeyTimestamps: objectCreate(null),
     autoMaintenanceCount: 0,
   };
 };
@@ -19,12 +26,10 @@ const lowLevelSetOptions = (
   cacheMeta: LimitedCacheMeta,
   options: LimitedCacheOptions,
 ): LimitedCacheOptionsReadonly => {
-  return Object.assign(cacheMeta.options, options);
+  return objectAssign(cacheMeta.options, options);
 };
 
 /* Internal cache manipulation */
-
-const { hasOwnProperty } = Object.prototype;
 
 const _cacheKeyHasExpired = (
   cacheMeta: LimitedCacheMeta,
@@ -56,7 +61,7 @@ const lowLevelDoMaintenance = (cacheMeta: LimitedCacheMeta): LimitedCacheMeta =>
     [
       [] as LimitedCacheMeta['recentCacheKeys'],
       {} as LimitedCacheMeta['cache'],
-      Object.create(null) as LimitedCacheMeta['cacheKeyTimestamps'],
+      objectCreate(null) as LimitedCacheMeta['cacheKeyTimestamps'],
     ],
   );
 
@@ -236,6 +241,7 @@ const lowLevelSet = (
 };
 
 export {
+  hasOwnProperty,
   lowLevelInit,
   lowLevelGet,
   lowLevelHas,
