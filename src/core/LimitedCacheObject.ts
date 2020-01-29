@@ -1,24 +1,18 @@
 import {
+  hasOwnProperty,
   lowLevelInit,
   lowLevelGet,
   lowLevelHas,
   lowLevelSet,
   lowLevelRemove,
-  // types
-  LimitedCacheMeta,
 } from './lowLevelFunctions';
-import { LimitedCacheOptionsPartial } from './defaultOptions';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface LimitedCacheObjectInterface<T = any> {
-  [key: string]: T;
-}
+import { LimitedCacheOptions, LimitedCacheObjectInterface, LimitedCacheMeta } from '../types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const proxyHandler: ProxyHandler<any> = {
   get: (cacheMeta: LimitedCacheMeta, cacheKey: string) => {
     if (cacheKey === 'hasOwnProperty') {
-      return Object.prototype.hasOwnProperty;
+      return hasOwnProperty;
     }
 
     return lowLevelGet(cacheMeta, cacheKey);
@@ -52,12 +46,10 @@ const proxyHandler: ProxyHandler<any> = {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function LimitedCacheObject<T = any>(
-  options?: LimitedCacheOptionsPartial,
+  options?: LimitedCacheOptions,
 ): LimitedCacheObjectInterface<T> {
   const cacheMeta = lowLevelInit(options);
   return new Proxy(cacheMeta, proxyHandler);
 }
 
 export default LimitedCacheObject;
-// types
-export { LimitedCacheObjectInterface };

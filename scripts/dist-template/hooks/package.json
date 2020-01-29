@@ -1,0 +1,9 @@
+{
+  "main": "../hooks.js",
+  "module": "../hooks.esm.js",
+  "jsnext:main": "../hooks.esm.js",
+  "types": "../hooks.d.ts",
+  "dependencies": {
+    "react": "^16.8.0"
+  }
+}

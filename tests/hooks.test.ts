@@ -1,16 +1,14 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import { LimitedCache /* LimitedCacheObject, limitedCacheUtil */ } from '../src/main';
-import { useLimitedCache /* useLimitedCacheObject, useLimitedCacheMeta*/ } from '../src/hooks';
-
-// types
-import { LimitedCacheInstance, LimitedCacheOptionsPartial } from '../src/main';
+import { LimitedCache /* LimitedCacheObject, limitedCacheUtil */ } from '../src';
+import { useLimitedCache /* useLimitedCacheObject, useLimitedCacheMeta */ } from '../src/hooks';
+import { LimitedCacheInstance, LimitedCacheOptions } from '../src/types';
 
 describe('useLimitedCache', () => {
   let result: { current: LimitedCacheInstance };
-  let rerender: (options?: LimitedCacheOptionsPartial) => void;
+  let rerender: (options?: LimitedCacheOptions) => void;
   beforeEach(() => {
-    ({ result, rerender } = renderHook((options: LimitedCacheOptionsPartial = null) =>
+    ({ result, rerender } = renderHook((options: LimitedCacheOptions = null) =>
       useLimitedCache(options),
     ));
   });
