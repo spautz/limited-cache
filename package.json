@@ -34,6 +34,7 @@
     "test:report": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "test:watch": "jest --watch",
     "types": "tsc --noEmit src/index.ts src/hooks.ts",
+    "types:everything": "find . -name '*.ts' | grep -v node_modules | xargs tsc --noEmit",
     "____ HOOKS _________________________________________________________": "",
     "prebuild": "yon clean",
     "postbuild": "node ./scripts/copy-files.js && yon build:check",
