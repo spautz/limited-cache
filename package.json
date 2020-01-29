@@ -99,8 +99,7 @@
   },
   "lint-staged": {
     "**/*.{css,html,js,json,less,md,scss,ts}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "husky": {
