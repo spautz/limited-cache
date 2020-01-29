@@ -4,6 +4,7 @@ import {
   lowLevelInit,
   lowLevelDoMaintenance,
   lowLevelRemove,
+  lowLevelReset,
   lowLevelSet,
   lowLevelSetOptions,
 } from './lowLevelFunctions';
@@ -14,6 +15,7 @@ const limitedCacheUtil = {
   has: lowLevelHas,
   set: lowLevelSet,
   remove: lowLevelRemove,
+  reset: lowLevelReset,
   doMaintenance: lowLevelDoMaintenance,
   setOptions: lowLevelSetOptions,
 };

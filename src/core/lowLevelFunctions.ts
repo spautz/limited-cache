@@ -175,6 +175,14 @@ const lowLevelRemove = (cacheMeta: LimitedCacheMeta, cacheKey: string): LimitedC
   return cacheMeta;
 };
 
+const lowLevelReset = (cacheMeta: LimitedCacheMeta): LimitedCacheMeta => {
+  cacheMeta.cache = {};
+  cacheMeta.recentCacheKeys = [];
+  cacheMeta.cacheKeyTimestamps = objectCreate(null);
+  cacheMeta.autoMaintenanceCount = 0;
+  return cacheMeta;
+};
+
 const lowLevelHas = (cacheMeta: LimitedCacheMeta, cacheKey: string): boolean => {
   const { cache } = cacheMeta;
   if (hasOwnProperty.call(cache, cacheKey) && cache[cacheKey] !== undefined) {
@@ -247,6 +255,7 @@ export {
   lowLevelHas,
   lowLevelSet,
   lowLevelRemove,
+  lowLevelReset,
   lowLevelDoMaintenance,
   lowLevelSetOptions,
 };

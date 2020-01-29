@@ -10,6 +10,7 @@ const propertyNamesToPreserve = [
   'has',
   'set',
   'remove',
+  'reset',
   'doMaintenance',
   'setOptions',
   // React

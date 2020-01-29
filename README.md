@@ -24,6 +24,7 @@ const recentResults = LimitedCache({
 });
 recentResults.set('abc', thingToSave);
 recentResults.get('abc');
+recentResults.reset();
 ```
 
 Use `LimitedCacheObject` for a nicer developer experience, using Proxies:
@@ -105,6 +106,7 @@ These functions are grouped together as `limitedCacheUtil`. The other interfaces
 - `has(cacheMeta, cacheKey)`
 - `set(cacheMeta, cacheKey, value)`
 - `remove(cacheMeta, cacheKey)`
+- `reset(cacheMeta)`
 - `setOptions(cacheMeta, options)` - you can update options anytime
 
 ## FAQ
@@ -115,7 +117,7 @@ The cache itself is, but the low-level cacheMeta is persistent.
 
 **API for bulk operations?**
 
-Nope.
+Only `reset`. The other actions aren't as optimizable, so they're omitted to keep this small.
 
 **Is this a least-recently-used cache?**
 

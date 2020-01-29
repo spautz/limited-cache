@@ -15,6 +15,7 @@ export interface LimitedCacheInstance<ItemType = any> {
   has: (cacheKey: string) => boolean;
   set: (cacheKey: string, item: ItemType) => ItemType;
   remove: (cacheKey: string) => true;
+  reset: () => LimitedCacheMeta;
   getCacheMeta: () => LimitedCacheMeta;
   getOptions: () => LimitedCacheOptionsFull;
   setOptions: (newOptions: LimitedCacheOptions) => LimitedCacheOptionsReadonly;

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { DependencyList, useMemo, useRef } from 'react';
 
 import {
   LimitedCache,
@@ -7,33 +7,46 @@ import {
 } from './index';
 import { LimitedCacheInstance, LimitedCacheObjectInterface, LimitedCacheOptions } from './types';
 
-const useLimitedCache = (options?: LimitedCacheOptions): LimitedCacheInstance => {
+const useLimitedCache = (
+  options?: LimitedCacheOptions,
+  deps?: DependencyList,
+): LimitedCacheInstance => {
   const lastOptionsRef = useRef(options);
-  const limitedCacheRef = useRef(LimitedCache(options));
+  const limitedCache = useRef(LimitedCache(options)).current;
 
   if (options !== lastOptionsRef.current) {
     lastOptionsRef.current = options;
     if (options) {
-      limitedCacheRef.current.setOptions(options);
+      limitedCache.setOptions(options);
     }
   }
 
-  return limitedCacheRef.current;
+  // Piggyback on useMemo's existing shallow comparison, to keep things small
+  useMemo(limitedCache.reset, deps || []);
+
+  return limitedCache;
 };
 
 const useLimitedCacheObject = (
-  options: LimitedCacheOptions,
+  options?: LimitedCacheOptions,
+  deps?: DependencyList,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): LimitedCacheObjectInterface<any> => {
   const lastOptionsRef = useRef(options);
-  const limitedCacheRef = useRef(LimitedCacheObject(options));
+  const limitedCacheRef = useRef<LimitedCacheObjectInterface>();
+
+  // Piggyback on useMemo's existing shallow comparison, to keep things small
+  useMemo(() => {
+    limitedCacheRef.current = LimitedCacheObject(options);
+  }, deps || []);
+  const limitedCache = limitedCacheRef.current as LimitedCacheObjectInterface;
 
   if (options !== lastOptionsRef.current) {
     lastOptionsRef.current = options;
-    limitedCacheRef.current.setOptions(options);
+    limitedCache.setOptions(options);
   }
 
-  return limitedCacheRef.current;
+  return limitedCache;
 };
 
 export { useLimitedCache, useLimitedCacheObject };
