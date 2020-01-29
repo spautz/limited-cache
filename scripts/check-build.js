@@ -12,29 +12,29 @@ const {
   LimitedCacheObject,
   limitedCacheUtil,
   defaultOptions,
-  ...unrecognizedMainExports
+  ...unrecognizedIndexExports
 } = require('../dist');
 
-const mainExportsToCheck = { LimitedCache, LimitedCacheObject, limitedCacheUtil, defaultOptions };
-Object.keys(mainExportsToCheck).forEach((exportName) => {
-  if (!mainExportsToCheck[exportName]) {
-    console.info('Exports from main: ', {
+const indexExportsToCheck = { LimitedCache, LimitedCacheObject, limitedCacheUtil, defaultOptions };
+Object.keys(indexExportsToCheck).forEach((exportName) => {
+  if (!indexExportsToCheck[exportName]) {
+    console.info('Exports from index: ', {
       LimitedCache,
       LimitedCacheObject,
       limitedCacheUtil,
       defaultOptions,
-      ...unrecognizedMainExports,
+      ...unrecognizedIndexExports,
     });
-    throw new Error(`Missing export from main: ${exportName}`);
+    throw new Error(`Missing export from index: ${exportName}`);
   }
 });
 
-const unrecognizedMainExportNames = Object.keys(unrecognizedMainExports);
-if (unrecognizedMainExportNames.length) {
+const unrecognizedIndexExportNames = Object.keys(unrecognizedIndexExports);
+if (unrecognizedIndexExportNames.length) {
   throw new Error(
     `Unrecognized export${
-      unrecognizedMainExports.length === 1 ? '' : 's'
-    } found: ${unrecognizedMainExportNames.join(', ')}`,
+      unrecognizedIndexExports.length === 1 ? '' : 's'
+    } found: ${unrecognizedIndexExportNames.join(', ')}`,
   );
 }
 

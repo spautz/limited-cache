@@ -1,12 +1,5 @@
 /* eslint-env node */
 
-const exportNamesToPreserve = [
-  'LimitedCache',
-  'LimitedCacheObject',
-  'defaultOptions',
-  'limitedCacheUtil',
-];
-
 const propertyNamesToPreserve = [
   // public options
   'maxCacheSize',
@@ -27,7 +20,7 @@ const propertyNamesToPreserve = [
 ];
 
 const propertyNameMap = {
-  // Keys of the cacheMeta need to always be mangled to the same token
+  // Each cacheMeta key needs to be mangled to the same token for continuity
   limitedCacheMetaVersion: 'mv',
   options: 'mo',
   cache: 'mc',
@@ -40,6 +33,5 @@ const propertyNameMap = {
   numItemsToExamineForPurge: 'on',
 };
 
-module.exports.exportNamesToPreserve = exportNamesToPreserve;
 module.exports.propertyNamesToPreserve = propertyNamesToPreserve;
 module.exports.propertyNameMap = propertyNameMap;
