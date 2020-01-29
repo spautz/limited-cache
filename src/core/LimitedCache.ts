@@ -4,6 +4,7 @@ import {
   lowLevelHas,
   lowLevelSet,
   lowLevelRemove,
+  lowLevelReset,
   lowLevelSetOptions,
   lowLevelDoMaintenance,
 } from './lowLevelFunctions';
@@ -29,7 +30,7 @@ function LimitedCache<T = any>(options?: LimitedCacheOptions): LimitedCacheInsta
       lowLevelRemove(cacheMeta, cacheKey);
       return true;
     },
-    // remove: lowLevelRemove.bind(null, cacheMeta),
+    reset: lowLevelReset.bind(null, cacheMeta),
     getCacheMeta: (): LimitedCacheMeta => cacheMeta,
     getOptions: (): LimitedCacheOptionsReadonly => cacheMeta.options,
     setOptions: lowLevelSetOptions.bind(null, cacheMeta),

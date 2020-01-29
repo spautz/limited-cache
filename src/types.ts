@@ -15,6 +15,7 @@ export interface LimitedCacheInstance<ItemType = any> {
   has: (cacheKey: string) => boolean;
   set: (cacheKey: string, item: ItemType) => ItemType;
   remove: (cacheKey: string) => true;
+  reset: () => LimitedCacheMeta;
   getCacheMeta: () => LimitedCacheMeta;
   getOptions: () => LimitedCacheOptionsFull;
   setOptions: (newOptions: LimitedCacheOptions) => LimitedCacheOptionsReadonly;
@@ -22,7 +23,7 @@ export interface LimitedCacheInstance<ItemType = any> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface LimitedCacheObjectInterface<ItemType = any> {
+export interface LimitedCacheObjectInstance<ItemType = any> {
   [key: string]: ItemType;
 }
 

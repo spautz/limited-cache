@@ -1,37 +1,45 @@
-import { useRef } from 'react';
+import { useMemo, useRef, DependencyList } from 'react';
 
 import {
   LimitedCache,
   LimitedCacheObject,
   // types
 } from './index';
-import { LimitedCacheInstance, LimitedCacheObjectInterface, LimitedCacheOptions } from './types';
+import { LimitedCacheInstance, LimitedCacheObjectInstance, LimitedCacheOptions } from './types';
 
-const useLimitedCache = (options: LimitedCacheOptions): LimitedCacheInstance => {
+const useLimitedCache = (
+  options?: LimitedCacheOptions,
+  deps?: DependencyList,
+): LimitedCacheInstance => {
   const lastOptionsRef = useRef(options);
-  const limitedCacheRef = useRef(LimitedCache(options));
+  const limitedCache = useRef(LimitedCache(options)).current;
 
   if (options !== lastOptionsRef.current) {
     lastOptionsRef.current = options;
-    limitedCacheRef.current.setOptions(options);
+    if (options) {
+      limitedCache.setOptions(options);
+    }
   }
 
-  return limitedCacheRef.current;
+  // Piggyback on useMemo's existing shallow comparison, to keep things small
+  useMemo(limitedCache.reset, deps || []);
+
+  return limitedCache;
 };
 
 const useLimitedCacheObject = (
-  options: LimitedCacheOptions,
+  options?: LimitedCacheOptions,
+  deps?: DependencyList,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): LimitedCacheObjectInterface<any> => {
-  const lastOptionsRef = useRef(options);
-  const limitedCacheRef = useRef(LimitedCacheObject(options));
+): LimitedCacheObjectInstance<any> => {
+  const limitedCacheRef = useRef<LimitedCacheObjectInstance>();
 
-  if (options !== lastOptionsRef.current) {
-    lastOptionsRef.current = options;
-    limitedCacheRef.current.setOptions(options);
-  }
+  // Piggyback on useMemo's existing shallow comparison, to keep things small
+  useMemo(() => {
+    limitedCacheRef.current = LimitedCacheObject(options);
+  }, deps || []);
 
-  return limitedCacheRef.current;
+  return limitedCacheRef.current as LimitedCacheObjectInstance;
 };
 
 export { useLimitedCache, useLimitedCacheObject };
