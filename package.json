@@ -21,6 +21,7 @@
     "LICENSE",
     "README.md"
   ],
+  "bin": {},
   "main": "index.cjs.js",
   "module": "dist/index.esm.js",
   "jsnext:main": "dist/index.esm.js",
