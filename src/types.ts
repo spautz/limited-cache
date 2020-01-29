@@ -23,7 +23,7 @@ export interface LimitedCacheInstance<ItemType = any> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface LimitedCacheObjectInterface<ItemType = any> {
+export interface LimitedCacheObjectInstance<ItemType = any> {
   [key: string]: ItemType;
 }
 

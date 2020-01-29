@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import { LimitedCache /* LimitedCacheObject, limitedCacheUtil */ } from '../src';
-import { useLimitedCache /* useLimitedCacheObject, useLimitedCacheMeta */ } from '../src/hooks';
+import { LimitedCache } from '../src';
+import { useLimitedCache } from '../src/hooks';
 import { LimitedCacheInstance, LimitedCacheOptions } from '../src/types';
 
 describe('useLimitedCache', () => {
@@ -44,5 +44,16 @@ describe('useLimitedCache', () => {
     expect(typeof cacheMeta.options).toBe('object');
 
     expect(cacheMeta.options.maxCacheSize).toEqual(123);
+  });
+
+  it('should not update options when not necessary', () => {
+    const firstResultOptions = result.current.getOptions();
+    const firstResultOptionValues = { ...firstResultOptions };
+
+    rerender(null);
+
+    const newOptions = result.current.getOptions();
+    expect(newOptions).toStrictEqual(firstResultOptions);
+    expect(newOptions).toMatchObject(firstResultOptionValues);
   });
 });

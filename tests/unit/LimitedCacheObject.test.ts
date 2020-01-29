@@ -2,17 +2,17 @@
 /* eslint-disable no-prototype-builtins, @typescript-eslint/no-explicit-any */
 
 import LimitedCacheObject from '../../src/core/LimitedCacheObject';
-import { LimitedCacheObjectInterface } from '../../src/types';
+import { LimitedCacheObjectInstance } from '../../src/types';
 
 describe('LimitedCacheObject', () => {
   it('initializes without options', () => {
-    const myCache: LimitedCacheObjectInterface = LimitedCacheObject();
+    const myCache: LimitedCacheObjectInstance = LimitedCacheObject();
 
     expect(myCache).toBeTruthy();
   });
 
   it('initializes with options', () => {
-    const myCache: LimitedCacheObjectInterface = LimitedCacheObject({
+    const myCache: LimitedCacheObjectInstance = LimitedCacheObject({
       maxCacheSize: 123,
       maxCacheTime: 456,
       warnIfItemPurgedBeforeTime: 789,
@@ -24,7 +24,7 @@ describe('LimitedCacheObject', () => {
   });
 
   describe('look like a standard object', () => {
-    let myCache: LimitedCacheObjectInterface<any>;
+    let myCache: LimitedCacheObjectInstance<any>;
     beforeEach(() => {
       myCache = LimitedCacheObject<any>();
     });

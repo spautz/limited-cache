@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import { LimitedCacheObject, LimitedCacheObjectInterface } from '../src';
+import { LimitedCacheObject, LimitedCacheObjectInstance } from '../src';
 
 // To avoid race conditions or timing issues, since some expect() checks can take 10+ ms when busy,
 // we use a long cache timeout even for 'immediate' expiration, and use delays slightly longer than that
@@ -8,7 +8,7 @@ const timeoutPromise = (): Promise<null> =>
   new Promise((resolve) => setTimeout(resolve, CACHE_TIMEOUT + 2));
 
 describe('maxCacheTime scenarios', () => {
-  let myCache: LimitedCacheObjectInterface;
+  let myCache: LimitedCacheObjectInstance;
   beforeEach(() => {
     myCache = LimitedCacheObject({
       maxCacheTime: CACHE_TIMEOUT,
