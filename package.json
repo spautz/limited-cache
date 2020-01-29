@@ -19,6 +19,7 @@
   "module": "index.esm.js",
   "jsnext:main": "index.esm.js",
   "types": "index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "____ BASE COMMANDS _________________________________________________": "",
     "build": "rollup -c",
