@@ -7,14 +7,15 @@ const {
   assign: objectAssign,
   prototype: { hasOwnProperty },
 } = Object;
+const dateNow = Date.now;
 
 /* Initialization and options */
 
-const lowLevelInit = (options?: LimitedCacheOptions): LimitedCacheMeta => {
+const lowLevelInit = (options: LimitedCacheOptions = {}): LimitedCacheMeta => {
   // This is the cacheMeta. It is created once, and persists per instance
   return {
     limitedCacheMetaVersion: 1,
-    options: options ? { ...defaultOptions, ...options } : { ...defaultOptions },
+    options: { ...defaultOptions, ...options },
     cache: {},
     recentCacheKeys: [],
     cacheKeyTimestamps: objectCreate(null),
@@ -45,7 +46,7 @@ const _cacheKeyHasExpired = (
 
 const lowLevelDoMaintenance = (cacheMeta: LimitedCacheMeta): LimitedCacheMeta => {
   const { cache, cacheKeyTimestamps, recentCacheKeys } = cacheMeta;
-  const now = Date.now();
+  const now = dateNow();
 
   // Rebuild cache from recentCacheKeys only, checking timestamps to auto-remove expired
   const [newRecentKeys, newCache, newTimestamps] = recentCacheKeys.reduce(
@@ -186,7 +187,7 @@ const lowLevelReset = (cacheMeta: LimitedCacheMeta): LimitedCacheMeta => {
 const lowLevelHas = (cacheMeta: LimitedCacheMeta, cacheKey: string): boolean => {
   const { cache } = cacheMeta;
   if (hasOwnProperty.call(cache, cacheKey) && cache[cacheKey] !== undefined) {
-    if (!_cacheKeyHasExpired(cacheMeta, cacheKey, Date.now())) {
+    if (!_cacheKeyHasExpired(cacheMeta, cacheKey, dateNow())) {
       return true;
     }
     // If it's expired, clear the value so that we can short-circuit future lookups
@@ -213,7 +214,7 @@ const lowLevelSet = (
   cacheKey: string,
   item: any, // eslint-disable-line @typescript-eslint/no-explicit-any
 ): LimitedCacheMeta => {
-  const now = Date.now();
+  const now = dateNow();
   if (cacheMeta.cache[cacheKey] !== item) {
     // The cache itself is immutable (but the rest of cacheMeta is not)
     cacheMeta.cache = {

@@ -15,6 +15,7 @@ const propertyNamesToPreserve = [
   'setOptions',
   // React
   'current',
+  'useMemo',
   'useRef',
   // Others
   '__esModule',
