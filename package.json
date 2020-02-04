@@ -21,6 +21,7 @@
     "LICENSE",
     "README.md"
   ],
+  "source": "src/index.ts",
   "main": "index.cjs.js",
   "module": "dist/index.esm.js",
   "jsnext:main": "dist/index.esm.js",
@@ -31,9 +32,9 @@
     "build": "rollup -c",
     "build:check": "node ./scripts/check-build.js",
     "clean": "rimraf dist/",
-    "format": "prettier --write \"**/*.{css,html,js,json,less,md,scss,ts}\"",
-    "format:check": "prettier --list-different \"**/*.{css,html,js,json,less,md,scss,ts}\"",
-    "lint": "eslint \"**/*.{js,json,ts}\"",
+    "format": "prettier --write \"**/*.{css,html,jsx?,json,less,md,scss,tsx?}\"",
+    "format:check": "prettier --list-different \"**/*.{css,html,jsx?,json,less,md,scss,tsx?}\"",
+    "lint": "eslint \"**/*.{jsx?,json,tsx?}\"",
     "prepare": "yon build",
     "test": "jest",
     "test:clean": "rimraf coverage/",
@@ -41,7 +42,6 @@
     "test:report": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "test:watch": "jest --watch",
     "types": "tsc --noEmit src/index.ts src/hooks.ts",
-    "types:everything": "find . -name '*.ts' | grep -v node_modules | xargs tsc --noEmit",
     "____ HOOKS _________________________________________________________": "",
     "prebuild": "yon clean",
     "postbuild": "yon build:check",
@@ -55,36 +55,40 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@rollup/plugin-replace": "^2.3.0",
+    "@rollup/plugin-replace": "^2.3.1",
     "@types/jest": "^25.1.1",
-    "@types/node": "^13.5.2",
+    "@types/node": "^13.7.0",
     "@types/react": "^16.9.19",
-    "@typescript-eslint/eslint-plugin": "^2.18.0",
-    "@typescript-eslint/parser": "^2.18.0",
+    "@typescript-eslint/eslint-plugin": "^2.19.0",
+    "@typescript-eslint/parser": "^2.19.0",
     "coveralls": "^3.0.9",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
     "husky": "^4.2.1",
     "jest": "^25.1.0",
-    "lint-staged": "^10.0.4",
+    "lint-staged": "^10.0.7",
     "prettier": "^1.19.1",
-    "react": "^16.8.0",
+    "react": "^16.12.0",
     "react-hooks-testing-library": "^0.6.0",
-    "react-test-renderer": "^16.8.0",
+    "react-test-renderer": "^16.12.0",
     "rimraf": "^3.0.1",
-    "rollup": "^1.30.1",
+    "rollup": "^1.31.0",
     "rollup-plugin-terser": "^5.2.0",
     "rollup-plugin-typescript2": "^0.25.3",
-    "ts-jest": "^25.0.0",
+    "ts-jest": "^25.2.0",
     "tslib": "^1.10.0",
     "typescript": "^3.7.5",
     "yarn-or-npm": "^3.0.1"
   },
-  "optionalDependencies": {
-    "react": "^16.8.0"
+  "peerDependencies": {
+    "react": ">=16.8.0"
   },
-  "peerDependencies": {},
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
   "jest": {
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
@@ -108,7 +112,7 @@
     ]
   },
   "lint-staged": {
-    "**/*.{css,html,js,json,less,md,scss,ts}": [
+    "**/*.{css,html,jsx?,json,less,md,scss,tsx?}": [
       "prettier --write"
     ]
   },

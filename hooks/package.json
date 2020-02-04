@@ -1,10 +1,11 @@
 {
+  "source": "../src/hooks.ts",
   "main": "index.cjs.js",
   "module": "../dist/hooks.esm.js",
   "jsnext:main": "../dist/hooks.esm.js",
   "types": "../dist/hooks.d.ts",
   "sideEffects": false,
-  "dependencies": {
-    "react": "^16.8.0"
+  "peerDependencies": {
+    "react": ">=16.8.0"
   }
 }

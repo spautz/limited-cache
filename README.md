@@ -1,4 +1,4 @@
-# limited-cache
+# Limited-Cache
 
 A minimal JS cache. Like using an object to store keys and values, except it won't grow forever
 
