@@ -1,4 +1,5 @@
 /* eslint-env node */
+const React = require('react');
 
 const propertyNamesToPreserve = [
   // public options
@@ -13,10 +14,18 @@ const propertyNamesToPreserve = [
   'reset',
   'doMaintenance',
   'setOptions',
+  // low-level functions
+  'lowLevelInit',
+  'lowLevelGet',
+  'lowLevelHas',
+  'lowLevelSet',
+  'lowLevelRemove',
+  'lowLevelReset',
+  'lowLevelDoMaintenance',
+  'lowLevelSetOptions',
   // React
   'current',
-  'useMemo',
-  'useRef',
+  ...Object.keys(React),
   // Others
   '__esModule',
 ];

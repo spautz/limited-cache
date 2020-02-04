@@ -32,9 +32,9 @@
     "build": "rollup -c",
     "build:check": "node ./scripts/check-build.js",
     "clean": "rimraf dist/",
-    "format": "prettier --write \"**/*.{css,html,jsx?,json,less,md,scss,tsx?}\"",
-    "format:check": "prettier --list-different \"**/*.{css,html,jsx?,json,less,md,scss,tsx?}\"",
-    "lint": "eslint \"**/*.{jsx?,json,tsx?}\"",
+    "format": "prettier --write \"**/*.{css,html,js,jsx,json,less,md,scss,ts,tsx}\"",
+    "format:check": "prettier --list-different \"**/*.{css,html,js,jsx,json,less,md,scss,ts,tsx}\"",
+    "lint": "eslint \"**/*.{js,jsx,json,ts,tsx}\"",
     "prepare": "yon build",
     "test": "jest",
     "test:clean": "rimraf coverage/",
@@ -112,7 +112,7 @@
     ]
   },
   "lint-staged": {
-    "**/*.{css,html,jsx?,json,less,md,scss,tsx?}": [
+    "**/*.{css,html,js,jsx,json,less,md,scss,ts,tsx}": [
       "prettier --write"
     ]
   },
