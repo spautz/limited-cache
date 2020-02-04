@@ -6,5 +6,15 @@ export { default as LimitedCacheObject } from './core/LimitedCacheObject';
 export * from './core/LimitedCacheObject';
 export { default as limitedCacheUtil } from './core/limitedCacheUtil';
 export * from './core/limitedCacheUtil';
+export {
+  lowLevelInit,
+  lowLevelGet,
+  lowLevelHas,
+  lowLevelSet,
+  lowLevelRemove,
+  lowLevelReset,
+  lowLevelDoMaintenance,
+  lowLevelSetOptions,
+} from './core/lowLevelFunctions';
 
 export * from './types';

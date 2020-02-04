@@ -12,10 +12,31 @@ const {
   LimitedCacheObject,
   limitedCacheUtil,
   defaultOptions,
+  lowLevelDoMaintenance,
+  lowLevelGet,
+  lowLevelHas,
+  lowLevelInit,
+  lowLevelRemove,
+  lowLevelReset,
+  lowLevelSet,
+  lowLevelSetOptions,
   ...unrecognizedIndexExports
 } = require('../');
 
-const indexExportsToCheck = { LimitedCache, LimitedCacheObject, limitedCacheUtil, defaultOptions };
+const indexExportsToCheck = {
+  LimitedCache,
+  LimitedCacheObject,
+  limitedCacheUtil,
+  defaultOptions,
+  lowLevelDoMaintenance,
+  lowLevelGet,
+  lowLevelHas,
+  lowLevelInit,
+  lowLevelRemove,
+  lowLevelReset,
+  lowLevelSet,
+  lowLevelSetOptions,
+};
 Object.keys(indexExportsToCheck).forEach((exportName) => {
   if (!indexExportsToCheck[exportName]) {
     console.info('Exports from index: ', {
@@ -23,6 +44,16 @@ Object.keys(indexExportsToCheck).forEach((exportName) => {
       LimitedCacheObject,
       limitedCacheUtil,
       defaultOptions,
+      lowLevelFunctions: {
+        lowLevelDoMaintenance,
+        lowLevelGet,
+        lowLevelHas,
+        lowLevelInit,
+        lowLevelRemove,
+        lowLevelReset,
+        lowLevelSet,
+        lowLevelSetOptions,
+      },
       ...unrecognizedIndexExports,
     });
     throw new Error(`Missing export from index: ${exportName}`);

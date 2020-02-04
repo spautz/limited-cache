@@ -27,7 +27,7 @@ recentResults.get('abc');
 recentResults.reset();
 ```
 
-Use `LimitedCacheObject` for a nicer developer experience, using Proxies:
+Use `LimitedCacheObject` for a nicer developer experience, using Proxy:
 
 ```javascript
 const recentResults = LimitedCacheObject();
@@ -38,10 +38,12 @@ React hooks are available for both:
 
 ```javascript
 const cache = useLimitedCache();
+const cache2 = useLimitedCache({ maxCacheTime: 60000 }, [depsCanGoHere]);
 ```
 
 ```javascript
 const cache = useLimitedCacheObject();
+const cache2 = useLimitedCacheObject({ maxCacheTime: 60000 }, [depsCanGoHere]);
 ```
 
 Low-level functions using plain objects, if you need to stay serializable:
@@ -109,6 +111,12 @@ These functions are grouped together as `limitedCacheUtil`. The other interfaces
 - `reset(cacheMeta)`
 - `setOptions(cacheMeta, options)` - you can update options anytime
 
+You can also import these functions individually, if you want to optimize tree-shaking:
+
+```javascript
+import { lowLevelInit, lowLevelGet, lowLevelSet } from 'limited-cache';
+```
+
 ## FAQ
 
 **Immutable?**
@@ -119,10 +127,13 @@ The cache itself is, but the low-level cacheMeta is persistent.
 
 Only `reset`. The other actions aren't as optimizable, so they're omitted to keep this small.
 
+**When are old items removed?**
+
+When new items are added, or if you try to `get` an item that has expired.
+
 **Is this a least-recently-used cache?**
 
 No: For performance it only tracks by `set` time.
 
-**When are old items removed?**
-
-When new items are added, or if you try to `get` an item that has expired.
+If you want items to expire based on when they were last accessed (instead of when they were set), you can `set`
+the value that already exists: that's optimized to only update the timestamp.
