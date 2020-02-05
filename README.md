@@ -24,6 +24,7 @@ const recentResults = LimitedCache({
 });
 recentResults.set('abc', thingToSave);
 recentResults.get('abc');
+recentResults.has('abc');
 recentResults.reset();
 ```
 
@@ -64,7 +65,9 @@ return {
 };
 ```
 
-## Import
+## Install and Import
+
+`npm install limited-cache` or `yarn add limited-cache`
 
 The default import is available for basic usage, or you can import the specific pieces you want.
 
