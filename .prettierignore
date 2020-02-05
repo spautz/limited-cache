@@ -1,3 +1,17 @@
+# Whitelist supported files only
+**/*.*
+!**/*.css
+!**/*.html
+!**/*.js
+!**/*.jsx
+!**/*.json
+!**/*.less
+!**/*.md
+!**/*.scss
+!**/*.ts
+!**/*.tsx
+
+# Unless they're somewhere we can ignore
 dist/
 coverage/
 node_modules/
