@@ -11,8 +11,14 @@
     "autoexpire"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/limited-cache",
-  "repository": "github:spautz/limited-cache",
+  "homepage": "https://github.com/spautz/limited-cache#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spautz/limited-cache.git"
+  },
+  "bugs": {
+    "url": "https://github.com/spautz/limited-cache/issues"
+  },
   "author": "Steven Pautz <spautz@gmail.com>",
   "files": [
     "dist/",
