@@ -36,6 +36,7 @@
     "format:check": "prettier --list-different \"**/*.{css,html,js,jsx,json,less,md,scss,ts,tsx}\"",
     "lint": "eslint \"**/*.{js,jsx,json,ts,tsx}\"",
     "prepare": "yon build",
+    "release": "standard-version --sign --release-as ",
     "test": "jest",
     "test:clean": "rimraf coverage/",
     "test:coverage": "jest --coverage",
@@ -44,6 +45,7 @@
     "types": "tsc --noEmit src/index.ts src/hooks.ts",
     "____ HOOKS _________________________________________________________": "",
     "prebuild": "yon clean",
+    "prerelease": "yon clean",
     "postbuild": "yon build:check",
     "prepublishOnly": "yon check && yon build",
     "pretest": "yon test:clean",
@@ -76,6 +78,7 @@
     "rollup": "^1.31.0",
     "rollup-plugin-terser": "^5.2.0",
     "rollup-plugin-typescript2": "^0.25.3",
+    "standard-version": "^7.1.0",
     "ts-jest": "^25.2.0",
     "tslib": "^1.10.0",
     "typescript": "^3.7.5",
@@ -119,6 +122,11 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
+    }
+  },
+  "standard-version": {
+    "scripts": {
+      "postchangelog": "yon format"
     }
   }
 }
