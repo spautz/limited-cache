@@ -3,7 +3,7 @@
   "main": "index.cjs.js",
   "module": "../dist/hooks.esm.js",
   "jsnext:main": "../dist/hooks.esm.js",
-  "types": "../dist/hooks.d.ts",
+  "types": "../dist/src/hooks.d.ts",
   "sideEffects": false,
   "peerDependencies": {
     "react": ">=16.8.0"
