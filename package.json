@@ -48,7 +48,7 @@
     "test:coverage": "jest --coverage",
     "test:report": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "test:watch": "jest --watch",
-    "types": "tsc --noEmit src/index.ts src/hooks.ts",
+    "types": "tsc --noEmit --p tsconfig.json",
     "____ HOOKS _________________________________________________________": "",
     "prebuild": "yon clean",
     "prerelease": "yon clean",
