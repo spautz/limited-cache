@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/spautz/limited-cache/compare/v0.2.0...v0.2.1) (2020-02-13)
+
+### Bug Fixes
+
+- Fix paths to typings ([#13](https://github.com/spautz/limited-cache/issues/13)) ([a03ee13](https://github.com/spautz/limited-cache/commit/a03ee133301c0208fda5a6ed3b2040cf5b043016))
+
 ## [0.2.0](https://github.com/spautz/limited-cache/compare/v0.1.1...v0.2.0) (2020-02-05)
 
 ### Features
