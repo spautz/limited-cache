@@ -40,7 +40,6 @@ const propertyNameMap = {
   autoMaintenanceCount: 'mn',
   // Private options still need to be stable, but the names don't matter much
   warnIfItemPurgedBeforeTime: 'ow',
-  autoMaintenanceMultiplier: 'oa',
   numItemsToExamineForPurge: 'on',
 };
 

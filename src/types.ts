@@ -5,8 +5,8 @@ export interface LimitedCacheOptionsFull {
   maxCacheTime: number;
   /** (dev only) A warning will be emitted if an item rotates out of the cache before this many milliseconds have passed, to indicate the size is too small */
   warnIfItemPurgedBeforeTime: number;
-  /** (dev only) Internal cleanup of old keys will be performed after autoMaintenanceMultiplier * maxCacheSize operations */
-  autoMaintenanceMultiplier: number;
+  /** (private) Internal cleanup of old keys will be performed after this many operations */
+  autoMaintenanceCount: number;
   /** (private) Internal optimization to adjust how much searching will be done to find expired items */
   numItemsToExamineForPurge: number;
 }

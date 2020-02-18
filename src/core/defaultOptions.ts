@@ -2,12 +2,12 @@ import { LimitedCacheOptionsReadonly } from '../types';
 
 const defaultOptions: LimitedCacheOptionsReadonly = {
   // Public
-  maxCacheSize: 500,
+  maxCacheSize: 100,
   maxCacheTime: 0,
   // Development-only
   warnIfItemPurgedBeforeTime: 5000,
-  autoMaintenanceMultiplier: 2,
   // Development-only and private/secret
+  autoMaintenanceCount: 500,
   numItemsToExamineForPurge: 20,
 };
 
