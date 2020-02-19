@@ -23,6 +23,7 @@
   "files": [
     "dist/",
     "hooks/",
+    "src/",
     "index.cjs.js",
     "LICENSE",
     "README.md"
@@ -64,6 +65,7 @@
   "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-replace": "^2.3.1",
+    "@testing-library/react-hooks": "^3.2.1",
     "@types/jest": "^25.1.2",
     "@types/node": "^13.7.1",
     "@types/react": "^16.9.19",
@@ -78,7 +80,6 @@
     "lint-staged": "^10.0.7",
     "prettier": "^1.19.1",
     "react": "^16.12.0",
-    "react-hooks-testing-library": "^0.6.0",
     "react-test-renderer": "^16.12.0",
     "rimraf": "^3.0.2",
     "rollup": "^1.31.0",
