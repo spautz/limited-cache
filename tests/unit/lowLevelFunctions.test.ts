@@ -44,9 +44,9 @@ describe('lowLevelFunctions', () => {
       expect(myCacheMeta.options).toEqual({
         maxCacheSize: 123,
         maxCacheTime: 456,
-        warnIfItemPurgedBeforeTime: 0,
-        autoMaintenanceCount: 2,
-        numItemsToExamineForPurge: 10,
+        warnIfItemPurgedBeforeTime: 5000,
+        autoMaintenanceCount: 500,
+        numItemsToExamineForPurge: 20,
       });
     });
   });
@@ -198,6 +198,7 @@ describe('lowLevelFunctions', () => {
         maxCacheSize: 5,
         maxCacheTime: 1000,
         autoMaintenanceCount: Number.MAX_SAFE_INTEGER,
+        warnIfItemPurgedBeforeTime: 0,
       });
 
       // Set 5 items, then 5 more
@@ -249,7 +250,7 @@ describe('lowLevelFunctions', () => {
       expect(lowLevelHas(myCacheMeta, 'n=10')).toEqual(true);
     });
 
-    it.only('performs maintenance after many actions', () => {
+    it('performs maintenance after many actions', () => {
       myCacheMeta = lowLevelInit({
         maxCacheSize: 10,
         maxCacheTime: 1000,
@@ -313,6 +314,14 @@ describe('lowLevelFunctions', () => {
     it('remove a present key', () => {
       myCacheMeta = lowLevelRemove(myCacheMeta, 'abc');
 
+      expect(myCacheMeta.cache).toEqual({ abc: undefined });
+    });
+
+    it('remove a present key multiple times', () => {
+      myCacheMeta = lowLevelRemove(myCacheMeta, 'abc');
+      expect(myCacheMeta.cache).toEqual({ abc: undefined });
+
+      myCacheMeta = lowLevelRemove(myCacheMeta, 'abc');
       expect(myCacheMeta.cache).toEqual({ abc: undefined });
     });
   });

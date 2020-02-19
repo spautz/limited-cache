@@ -16,12 +16,19 @@ const dateNow = Date.now;
 
 /* Initialization and options */
 
-const naturalNumber = (value: number): number => Math.max(value, 0) || 0;
+const positiveNumberOrZero = (value: number): number => Math.max(value, 0) || 0;
 
 const normalizeOptions = (cacheMetaOptions: LimitedCacheOptionsFull): LimitedCacheOptionsFull => {
-  cacheMetaOptions.autoMaintenanceCount = naturalNumber(cacheMetaOptions.autoMaintenanceCount);
-  cacheMetaOptions.maxCacheSize = naturalNumber(cacheMetaOptions.maxCacheSize);
-  cacheMetaOptions.maxCacheTime = naturalNumber(cacheMetaOptions.maxCacheTime);
+  cacheMetaOptions.autoMaintenanceCount = positiveNumberOrZero(
+    cacheMetaOptions.autoMaintenanceCount,
+  );
+  cacheMetaOptions.maxCacheSize = positiveNumberOrZero(cacheMetaOptions.maxCacheSize);
+  cacheMetaOptions.maxCacheTime = positiveNumberOrZero(cacheMetaOptions.maxCacheTime);
+  if (process.env.NODE_ENV !== 'production') {
+    cacheMetaOptions.warnIfItemPurgedBeforeTime = positiveNumberOrZero(
+      cacheMetaOptions.warnIfItemPurgedBeforeTime,
+    );
+  }
   return cacheMetaOptions;
 };
 
@@ -42,7 +49,9 @@ const lowLevelInit = (options?: LimitedCacheOptions): LimitedCacheMeta => {
     cacheKeyTimestamps: objectCreate(null),
     autoMaintenanceCount: 0,
   };
-  newCacheMeta.autoMaintenanceCount = naturalNumber(newCacheMeta.options.autoMaintenanceCount);
+  newCacheMeta.autoMaintenanceCount = positiveNumberOrZero(
+    newCacheMeta.options.autoMaintenanceCount,
+  );
   return newCacheMeta;
 };
 
