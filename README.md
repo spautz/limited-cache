@@ -83,11 +83,11 @@ import { useLimitedCache, useLimitedCacheObject } from 'limited-cache/hooks';
 
 ## Options
 
-#### `maxCacheSize` (number, default: 500)
+#### `maxCacheSize` (number, default: 100)
 
 Number of key/value pairs to keep in the cache. Items will be removed to stay within the limit.
 
-#### `maxCacheTime` (milliseconds, default: none)
+#### `maxCacheTime` (milliseconds, default: 0)
 
 Time after which an item is removed. Use a falsy value to disable.
 
@@ -95,11 +95,6 @@ Time after which an item is removed. Use a falsy value to disable.
 
 If an item rotates out of the cache before this time passes, emits a warning telling you increase the cache size.
 Use a falsy value to disable.
-
-#### `autoMaintenanceMultiplier` (number, default: 2, development only)
-
-Some under-the-hood performance optimizations result in `undefined` values left in the cache, temporarily.
-They are auto-purged after `autoMaintenanceMultiplier * maxCacheSize` operations.
 
 ## Low-level functions
 

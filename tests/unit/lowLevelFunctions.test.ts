@@ -23,7 +23,7 @@ describe('lowLevelFunctions', () => {
         maxCacheSize: 123,
         maxCacheTime: 456,
         warnIfItemPurgedBeforeTime: 789,
-        autoMaintenanceMultiplier: 10,
+        autoMaintenanceCount: 10,
         numItemsToExamineForPurge: 100,
       };
 
@@ -45,7 +45,7 @@ describe('lowLevelFunctions', () => {
         maxCacheSize: 123,
         maxCacheTime: 456,
         warnIfItemPurgedBeforeTime: 0,
-        autoMaintenanceMultiplier: 2,
+        autoMaintenanceCount: 2,
         numItemsToExamineForPurge: 10,
       });
     });
@@ -197,7 +197,7 @@ describe('lowLevelFunctions', () => {
       myCacheMeta = lowLevelInit({
         maxCacheSize: 5,
         maxCacheTime: 1000,
-        autoMaintenanceMultiplier: Number.MAX_SAFE_INTEGER,
+        autoMaintenanceCount: Number.MAX_SAFE_INTEGER,
       });
 
       // Set 5 items, then 5 more
@@ -253,7 +253,7 @@ describe('lowLevelFunctions', () => {
       myCacheMeta = lowLevelInit({
         maxCacheSize: 10,
         maxCacheTime: 1000,
-        autoMaintenanceMultiplier: 1,
+        autoMaintenanceCount: 1,
       });
 
       // Automaintenance should be done after 10 "set" actions (i.e., on the 11th)
