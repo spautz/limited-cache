@@ -1,4 +1,6 @@
 {
+  "name": "limited-cache--hooks",
+  "private": true,
   "source": "../src/hooks.ts",
   "main": "index.cjs.js",
   "module": "../dist/hooks.esm.js",
