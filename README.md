@@ -134,4 +134,4 @@ When new items are added, or if you try to `get` an item that has expired.
 No: For performance it only tracks by `set` time.
 
 If you want items to expire based on when they were last accessed (instead of when they were set), you can `set`
-the value that already exists: that's optimized to only update the timestamp.
+the value that already exists: only the timestamp will be updated.

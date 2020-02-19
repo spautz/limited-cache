@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import { LimitedCache } from '../src';
+import { defaultOptions, LimitedCache } from '../src';
 import { useLimitedCache } from '../src/hooks';
 import { LimitedCacheInstance, LimitedCacheOptions } from '../src/types';
 
@@ -31,6 +31,24 @@ describe('useLimitedCache', () => {
     expect(result.current).toStrictEqual(firstResult);
   });
 
+  it('should honor options', () => {
+    ({ result, rerender } = renderHook(() =>
+      useLimitedCache({
+        maxCacheSize: 123,
+        maxCacheTime: 9999,
+      }),
+    ));
+    const firstResult = result.current;
+
+    expect(result.current).toStrictEqual(firstResult);
+    const cacheMeta = result.current.getCacheMeta();
+    expect(typeof cacheMeta).toBe('object');
+    expect(typeof cacheMeta.options).toBe('object');
+
+    expect(cacheMeta.options.maxCacheSize).toEqual(123);
+    expect(cacheMeta.options.maxCacheTime).toEqual(9999);
+  });
+
   it('should update options', () => {
     const firstResult = result.current;
 
@@ -44,6 +62,7 @@ describe('useLimitedCache', () => {
     expect(typeof cacheMeta.options).toBe('object');
 
     expect(cacheMeta.options.maxCacheSize).toEqual(123);
+    expect(cacheMeta.options.maxCacheTime).toEqual(defaultOptions.maxCacheTime);
   });
 
   it('should not update options when not necessary', () => {
