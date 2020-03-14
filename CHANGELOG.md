@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### BREAKING CHANGES
 
-- Adjust default options and honor negative values ([#14](https://github.com/spautz/limited-cache/issues/14)) ([8154ab4](https://github.com/spautz/limited-cache/commit/8154ab41cd7bd7a59e910dae16456376a6fb14aa))
+- Adjust default options and allow negative option values ([#14](https://github.com/spautz/limited-cache/issues/14)) ([8154ab4](https://github.com/spautz/limited-cache/commit/8154ab41cd7bd7a59e910dae16456376a6fb14aa))
 
 ### Bug Fixes
 
