@@ -35,12 +35,25 @@
   "types": "dist/src/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "____ BASE COMMANDS _________________________________________________": "",
+    "____ LIFECYCLE HOOKS _______________________________________________": "",
+    "prepare": "yon run build",
+    "prepublishOnly": "yon run verify && yon run build",
+    "prebuild": "yon run build:clean",
+    "postbuild": "yon run build:verify",
+    "prerelease": "yon run clean",
+    "pretest": "yon run test:clean",
+    "____ BATCH COMMANDS ________________________________________________": "",
+    "clean": "yon build:clean && yon run test:clean",
+    "stage": "yon run format         && yon run types && yon run lint",
+    "verify": "yon run format:verify && yon run types && yon run lint",
+    "all": "yon run stage && yon run test:coverage && yon run build",
+    "ci": "yon run verify && yon run test:report   && yon run build",
+    "____ INDIVIDUAL COMMANDS ___________________________________________": "",
     "build": "rollup -c",
-    "build:check": "node ./scripts/check-build.js",
-    "clean": "rimraf dist/",
+    "build:clean": "rimraf dist/",
+    "build:verify": "node ./scripts/verify-build.js",
     "format": "prettier --write \"**/*.*\"",
-    "format:check": "prettier --list-different \"**/*.*\"",
+    "format:verify": "prettier --list-different \"**/*.*\"",
     "lint": "eslint \"**/*.{js,jsx,json,ts,tsx}\"",
     "release": "standard-version --sign --release-as ",
     "test": "jest",
@@ -48,19 +61,7 @@
     "test:coverage": "jest --coverage",
     "test:report": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "test:watch": "jest --watch",
-    "types": "tsc --noEmit --p tsconfig.json",
-    "____ HOOKS _________________________________________________________": "",
-    "prebuild": "yon clean",
-    "prepare": "yon build",
-    "prerelease": "yon clean",
-    "postbuild": "yon build:check",
-    "prepublishOnly": "yon check && yon build",
-    "pretest": "yon test:clean",
-    "____ INTEGRATION ___________________________________________________": "",
-    "dev": "yon run format && yon run types && yon run lint",
-    "check": "yon format:check && yon run types && yon run lint",
-    "ci": "yon run check && yon run test:report && yon run build",
-    "all": "yon run dev && yon run test:coverage && yon run build"
+    "types": "tsc --noEmit --p tsconfig.json"
   },
   "dependencies": {},
   "devDependencies": {
@@ -127,12 +128,13 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn run verify && yarn run test"
     }
   },
   "standard-version": {
     "scripts": {
-      "postchangelog": "yon format"
+      "postchangelog": "yon run format"
     }
   }
 }
