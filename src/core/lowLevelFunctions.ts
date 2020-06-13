@@ -32,14 +32,16 @@ const normalizeOptions = (cacheMetaOptions: LimitedCacheOptionsFull): LimitedCac
   return cacheMetaOptions;
 };
 
-const lowLevelSetOptions = (
-  cacheMeta: LimitedCacheMeta,
+const lowLevelSetOptions = <ItemType = any>(
+  cacheMeta: LimitedCacheMeta<ItemType>,
   options: LimitedCacheOptions,
 ): LimitedCacheOptionsReadonly => {
   return normalizeOptions(objectAssign(cacheMeta.options, options));
 };
 
-const lowLevelInit = (options?: LimitedCacheOptions): LimitedCacheMeta => {
+const lowLevelInit = <ItemType = any>(
+  options?: LimitedCacheOptions,
+): LimitedCacheMeta<ItemType> => {
   // This is the cacheMeta. It is created once, and persists per instance
   const newCacheMeta = {
     limitedCacheMetaVersion: 1,
@@ -58,7 +60,7 @@ const lowLevelInit = (options?: LimitedCacheOptions): LimitedCacheMeta => {
 /* Internal cache manipulation */
 
 const _cacheKeyHasExpired = (
-  cacheMeta: LimitedCacheMeta,
+  cacheMeta: LimitedCacheMeta<any>,
   cacheKey: string,
   now: number,
 ): boolean => {
@@ -69,7 +71,9 @@ const _cacheKeyHasExpired = (
   return !cacheKeyTimestamp || (!!maxCacheTime && now - cacheKeyTimestamp > maxCacheTime);
 };
 
-const lowLevelDoMaintenance = (cacheMeta: LimitedCacheMeta): LimitedCacheMeta => {
+const lowLevelDoMaintenance = <ItemType = any>(
+  cacheMeta: LimitedCacheMeta<ItemType>,
+): LimitedCacheMeta<ItemType> => {
   const { cache, cacheKeyTimestamps, recentCacheKeys } = cacheMeta;
   const now = dateNow();
 
@@ -100,7 +104,7 @@ const lowLevelDoMaintenance = (cacheMeta: LimitedCacheMeta): LimitedCacheMeta =>
 };
 
 const _dropExpiredItemsAtIndex = (
-  cacheMeta: LimitedCacheMeta,
+  cacheMeta: LimitedCacheMeta<any>,
   startIndex: number,
   now: number,
 ): void => {
@@ -125,7 +129,7 @@ const _dropExpiredItemsAtIndex = (
   }
 };
 
-const _purgeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void => {
+const _purgeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta<any>, now: number): void => {
   const {
     cache,
     recentCacheKeys,
@@ -188,7 +192,10 @@ const _purgeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void =
 
 /* Accessors */
 
-const lowLevelRemove = (cacheMeta: LimitedCacheMeta, cacheKey: string): LimitedCacheMeta => {
+const lowLevelRemove = <ItemType = any>(
+  cacheMeta: LimitedCacheMeta<ItemType>,
+  cacheKey: string,
+): LimitedCacheMeta<ItemType> => {
   if (cacheMeta.cacheKeyTimestamps[cacheKey]) {
     if (cacheMeta.cache[cacheKey] !== undefined) {
       cacheMeta.cache = {
@@ -201,7 +208,9 @@ const lowLevelRemove = (cacheMeta: LimitedCacheMeta, cacheKey: string): LimitedC
   return cacheMeta;
 };
 
-const lowLevelReset = (cacheMeta: LimitedCacheMeta): LimitedCacheMeta => {
+const lowLevelReset = <ItemType = any>(
+  cacheMeta: LimitedCacheMeta<ItemType>,
+): LimitedCacheMeta<ItemType> => {
   cacheMeta.cache = {};
   cacheMeta.recentCacheKeys = [];
   cacheMeta.cacheKeyTimestamps = objectCreate(null);
@@ -209,7 +218,10 @@ const lowLevelReset = (cacheMeta: LimitedCacheMeta): LimitedCacheMeta => {
   return cacheMeta;
 };
 
-const lowLevelHas = (cacheMeta: LimitedCacheMeta, cacheKey: string): boolean => {
+const lowLevelHas = <ItemType = any>(
+  cacheMeta: LimitedCacheMeta<ItemType>,
+  cacheKey: string,
+): boolean => {
   const { cache } = cacheMeta;
   if (hasOwnProperty.call(cache, cacheKey) && cache[cacheKey] !== undefined) {
     if (!_cacheKeyHasExpired(cacheMeta, cacheKey, dateNow())) {
@@ -221,24 +233,30 @@ const lowLevelHas = (cacheMeta: LimitedCacheMeta, cacheKey: string): boolean => 
   return false;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const lowLevelGet = (cacheMeta: LimitedCacheMeta, cacheKey?: string): Record<string, any> | any => {
-  if (cacheKey !== undefined) {
-    if (lowLevelHas(cacheMeta, cacheKey)) {
-      return cacheMeta.cache[cacheKey];
-    }
-    return;
+const lowLevelGetOne = <ItemType = any>(
+  cacheMeta: LimitedCacheMeta<ItemType>,
+  cacheKey: string,
+): ItemType | undefined => {
+  if (lowLevelHas(cacheMeta, cacheKey)) {
+    return cacheMeta.cache[cacheKey];
   }
-  // Remove all expired values, and return whatever's left
-  lowLevelDoMaintenance(cacheMeta);
-  return cacheMeta.cache;
+  return;
 };
 
-const lowLevelSet = (
-  cacheMeta: LimitedCacheMeta,
+const lowLevelGetAll = <ItemType = any>(
+  cacheMeta: LimitedCacheMeta<ItemType>,
+): Record<string, ItemType> => {
+  // Remove all expired values, and return whatever's left
+  // Retype because there won't be any `undefined` values after doMaintenance
+  lowLevelDoMaintenance(cacheMeta);
+  return cacheMeta.cache as Record<string, ItemType>;
+};
+
+const lowLevelSet = <ItemType = any>(
+  cacheMeta: LimitedCacheMeta<ItemType>,
   cacheKey: string,
-  item: any, // eslint-disable-line @typescript-eslint/no-explicit-any
-): LimitedCacheMeta => {
+  item: ItemType,
+): LimitedCacheMeta<ItemType> => {
   const now = dateNow();
   if (cacheMeta.cache[cacheKey] !== item) {
     // The cache itself is immutable (but the rest of cacheMeta is not)
@@ -277,7 +295,8 @@ const lowLevelSet = (
 export {
   hasOwnProperty,
   lowLevelInit,
-  lowLevelGet,
+  lowLevelGetOne,
+  lowLevelGetAll,
   lowLevelHas,
   lowLevelSet,
   lowLevelRemove,

@@ -8,7 +8,8 @@ export { default as limitedCacheUtil } from './core/limitedCacheUtil';
 export * from './core/limitedCacheUtil';
 export {
   lowLevelInit,
-  lowLevelGet,
+  lowLevelGetOne,
+  lowLevelGetAll,
   lowLevelHas,
   lowLevelSet,
   lowLevelRemove,

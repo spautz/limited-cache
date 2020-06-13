@@ -23,8 +23,8 @@ const recentResults = LimitedCache({
   maxCacheSize: 100,
 });
 recentResults.set('abc', thingToSave);
-recentResults.get('abc');
-recentResults.has('abc');
+recentResults.get('abc'); // => thingToSave
+recentResults.has('abc'); // => true
 recentResults.reset();
 ```
 

@@ -1,7 +1,8 @@
 import {
   hasOwnProperty,
   lowLevelInit,
-  lowLevelGet,
+  lowLevelGetOne,
+  lowLevelGetAll,
   lowLevelHas,
   lowLevelSet,
   lowLevelRemove,
@@ -15,11 +16,11 @@ const proxyHandler: ProxyHandler<any> = {
       return hasOwnProperty;
     }
 
-    return lowLevelGet(cacheMeta, cacheKey);
+    return lowLevelGetOne(cacheMeta, cacheKey);
   },
   getOwnPropertyDescriptor: (cacheMeta: LimitedCacheMeta, cacheKey: string) => {
     const hasResult = lowLevelHas(cacheMeta, cacheKey);
-    const getResult = lowLevelGet(cacheMeta, cacheKey);
+    const getResult = lowLevelGetOne(cacheMeta, cacheKey);
 
     if (hasResult) {
       return {
@@ -41,11 +42,12 @@ const proxyHandler: ProxyHandler<any> = {
     lowLevelRemove(cacheMeta, cacheKey);
     return true;
   },
-  ownKeys: (cacheMeta: LimitedCacheMeta) => Object.keys(lowLevelGet(cacheMeta)),
+  ownKeys: (cacheMeta: LimitedCacheMeta) => Object.keys(lowLevelGetAll(cacheMeta)),
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function LimitedCacheObject<T = any>(options?: LimitedCacheOptions): LimitedCacheObjectInstance<T> {
+function LimitedCacheObject<ItemType = any>(
+  options?: LimitedCacheOptions,
+): LimitedCacheObjectInstance<ItemType> {
   const cacheMeta = lowLevelInit(options);
   return new Proxy(cacheMeta, proxyHandler);
 }
