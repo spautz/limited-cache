@@ -222,7 +222,7 @@ const lowLevelHas = (cacheMeta: LimitedCacheMeta, cacheKey: string): boolean => 
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const lowLevelGet = (cacheMeta: LimitedCacheMeta, cacheKey?: string): object | any => {
+const lowLevelGet = (cacheMeta: LimitedCacheMeta, cacheKey?: string): Record<string, any> | any => {
   if (cacheKey !== undefined) {
     if (lowLevelHas(cacheMeta, cacheKey)) {
       return cacheMeta.cache[cacheKey];

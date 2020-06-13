@@ -1,3 +1,5 @@
+/* eslint-env node */
+
 module.exports = {
   extends: [
     'eslint:recommended',
@@ -16,10 +18,13 @@ module.exports = {
   rules: {},
   overrides: [
     {
-      files: ['*.js'],
+      files: ['*.{js,ts}'],
       rules: {
-        '@typescript-eslint/ban-ts-ignore': 'off',
-        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/ban-ts-comment': [
+          'off',
+          { 'ts-expect-error': 'allow-with-description' },
+        ],
+        // '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-var-requires': 'off',
       },
     },
