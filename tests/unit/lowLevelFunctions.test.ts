@@ -2,7 +2,8 @@
 import defaultOptions from '../../src/core/defaultOptions';
 import {
   lowLevelInit,
-  lowLevelGet,
+  lowLevelGetOne,
+  lowLevelGetAll,
   lowLevelHas,
   lowLevelSet,
   lowLevelRemove,
@@ -82,7 +83,7 @@ describe('lowLevelFunctions', () => {
     });
   });
 
-  describe('lowLevelGet', () => {
+  describe('lowLevelGetOne', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
       myCacheMeta = lowLevelInit({
@@ -91,7 +92,7 @@ describe('lowLevelFunctions', () => {
     });
 
     it('get a missing key', () => {
-      const result = lowLevelGet(myCacheMeta, 'abc');
+      const result = lowLevelGetOne(myCacheMeta, 'abc');
 
       expect(result).toBeUndefined();
     });
@@ -101,7 +102,7 @@ describe('lowLevelFunctions', () => {
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cacheKeyTimestamps['abc'] = Date.now();
       myCacheMeta.recentCacheKeys = ['abc'];
-      const result = lowLevelGet(myCacheMeta, 'abc');
+      const result = lowLevelGetOne(myCacheMeta, 'abc');
 
       expect(result).toEqual(123);
     });
@@ -111,49 +112,58 @@ describe('lowLevelFunctions', () => {
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cacheKeyTimestamps['abc'] = 1;
       myCacheMeta.recentCacheKeys = ['abc'];
-      const result = lowLevelGet(myCacheMeta, 'abc');
+      const result = lowLevelGetOne(myCacheMeta, 'abc');
 
       expect(result).toEqual(undefined);
     });
+  });
 
-    it('getAll: when empty', () => {
-      const result = lowLevelGet(myCacheMeta);
+  describe('lowLevelGetAll', () => {
+    let myCacheMeta: LimitedCacheMeta;
+    beforeEach(() => {
+      myCacheMeta = lowLevelInit({
+        maxCacheTime: 1000,
+      });
+    });
+
+    it('get all when empty', () => {
+      const result = lowLevelGetAll(myCacheMeta);
 
       expect(result).toEqual({});
     });
 
-    it('getAll: when all present', () => {
+    it('get all when not empty', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cache['def'] = 456;
       myCacheMeta.cacheKeyTimestamps['abc'] = Date.now();
       myCacheMeta.cacheKeyTimestamps['def'] = Date.now();
       myCacheMeta.recentCacheKeys = ['abc', 'def'];
-      const result = lowLevelGet(myCacheMeta);
+      const result = lowLevelGetAll(myCacheMeta);
 
       expect(result).toEqual({ abc: 123, def: 456 });
     });
 
-    it('getAll: when all expired', () => {
+    it('get all when all expired', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cache['def'] = 456;
       myCacheMeta.cacheKeyTimestamps['abc'] = 1;
       myCacheMeta.cacheKeyTimestamps['def'] = 1;
       myCacheMeta.recentCacheKeys = ['abc', 'def'];
-      const result = lowLevelGet(myCacheMeta);
+      const result = lowLevelGetAll(myCacheMeta);
 
       expect(result).toEqual({});
     });
 
-    it('getAll: when some expired', () => {
+    it('get all when some expired', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cache['def'] = 456;
       myCacheMeta.cacheKeyTimestamps['abc'] = 1;
       myCacheMeta.cacheKeyTimestamps['def'] = Date.now();
       myCacheMeta.recentCacheKeys = ['abc', 'def'];
-      const result = lowLevelGet(myCacheMeta);
+      const result = lowLevelGetAll(myCacheMeta);
 
       expect(result).toEqual({ def: 456 });
     });

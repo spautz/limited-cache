@@ -21,7 +21,7 @@ module.exports = {
       files: ['*.{js,ts}'],
       rules: {
         '@typescript-eslint/ban-ts-comment': [
-          'on',
+          'error',
           { 'ts-expect-error': 'allow-with-description' },
         ],
         '@typescript-eslint/no-var-requires': 'off',

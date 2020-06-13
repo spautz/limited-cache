@@ -1,3 +1,8 @@
+// This makes it easy to ensure that ItemType gets passed to any nested generics:
+// If the default value is `unknown` then errors will appear, but we can still use
+// `any` to make things easier for consumers.
+export type DefaultItemType = any;
+
 export interface LimitedCacheOptionsFull {
   /** Items will be removed to keep the cache within the maxCacheSize limit */
   maxCacheSize: number;
@@ -14,7 +19,7 @@ export interface LimitedCacheOptionsFull {
 export type LimitedCacheOptions = Partial<LimitedCacheOptionsFull> | null;
 export type LimitedCacheOptionsReadonly = Readonly<LimitedCacheOptionsFull>;
 
-export interface LimitedCacheInstance<ItemType = any> {
+export interface LimitedCacheInstance<ItemType = DefaultItemType> {
   /** Return the requested item, if it has not expired. */
   get: (cacheKey: string) => ItemType | undefined;
   /** Return all non-expired items. */
@@ -37,14 +42,14 @@ export interface LimitedCacheInstance<ItemType = any> {
   doMaintenance: () => LimitedCacheMeta<ItemType>;
 }
 
-export interface LimitedCacheObjectInstance<ItemType = any> {
+export interface LimitedCacheObjectInstance<ItemType = DefaultItemType> {
   [key: string]: ItemType;
 }
 
 /**
  *  A serializable representation of the cache internals, suitable for long-term storage
  */
-export interface LimitedCacheMeta<ItemType = any> {
+export interface LimitedCacheMeta<ItemType = DefaultItemType> {
   limitedCacheMetaVersion: number;
   options: LimitedCacheOptionsReadonly;
   cache: Record<string, ItemType | undefined>;

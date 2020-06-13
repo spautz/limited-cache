@@ -4,6 +4,7 @@ import {
   LimitedCacheOptionsReadonly,
   LimitedCacheMeta,
   LimitedCacheOptionsFull,
+  DefaultItemType,
 } from '../types';
 
 // To help minimization
@@ -32,14 +33,14 @@ const normalizeOptions = (cacheMetaOptions: LimitedCacheOptionsFull): LimitedCac
   return cacheMetaOptions;
 };
 
-const lowLevelSetOptions = <ItemType = any>(
+const lowLevelSetOptions = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
   options: LimitedCacheOptions,
 ): LimitedCacheOptionsReadonly => {
   return normalizeOptions(objectAssign(cacheMeta.options, options));
 };
 
-const lowLevelInit = <ItemType = any>(
+const lowLevelInit = <ItemType = DefaultItemType>(
   options?: LimitedCacheOptions,
 ): LimitedCacheMeta<ItemType> => {
   // This is the cacheMeta. It is created once, and persists per instance
@@ -60,7 +61,7 @@ const lowLevelInit = <ItemType = any>(
 /* Internal cache manipulation */
 
 const _cacheKeyHasExpired = (
-  cacheMeta: LimitedCacheMeta<any>,
+  cacheMeta: LimitedCacheMeta,
   cacheKey: string,
   now: number,
 ): boolean => {
@@ -71,7 +72,7 @@ const _cacheKeyHasExpired = (
   return !cacheKeyTimestamp || (!!maxCacheTime && now - cacheKeyTimestamp > maxCacheTime);
 };
 
-const lowLevelDoMaintenance = <ItemType = any>(
+const lowLevelDoMaintenance = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
 ): LimitedCacheMeta<ItemType> => {
   const { cache, cacheKeyTimestamps, recentCacheKeys } = cacheMeta;
@@ -89,9 +90,9 @@ const lowLevelDoMaintenance = <ItemType = any>(
       return acc;
     },
     [
-      [] as LimitedCacheMeta['recentCacheKeys'],
-      {} as LimitedCacheMeta['cache'],
-      objectCreate(null) as LimitedCacheMeta['cacheKeyTimestamps'],
+      [] as typeof cacheMeta['recentCacheKeys'],
+      {} as typeof cacheMeta['cache'],
+      objectCreate(null) as typeof cacheMeta['cacheKeyTimestamps'],
     ],
   );
 
@@ -104,7 +105,7 @@ const lowLevelDoMaintenance = <ItemType = any>(
 };
 
 const _dropExpiredItemsAtIndex = (
-  cacheMeta: LimitedCacheMeta<any>,
+  cacheMeta: LimitedCacheMeta,
   startIndex: number,
   now: number,
 ): void => {
@@ -129,7 +130,7 @@ const _dropExpiredItemsAtIndex = (
   }
 };
 
-const _purgeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta<any>, now: number): void => {
+const _purgeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void => {
   const {
     cache,
     recentCacheKeys,
@@ -192,7 +193,7 @@ const _purgeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta<any>, now: number): v
 
 /* Accessors */
 
-const lowLevelRemove = <ItemType = any>(
+const lowLevelRemove = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
   cacheKey: string,
 ): LimitedCacheMeta<ItemType> => {
@@ -208,7 +209,7 @@ const lowLevelRemove = <ItemType = any>(
   return cacheMeta;
 };
 
-const lowLevelReset = <ItemType = any>(
+const lowLevelReset = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
 ): LimitedCacheMeta<ItemType> => {
   cacheMeta.cache = {};
@@ -218,7 +219,7 @@ const lowLevelReset = <ItemType = any>(
   return cacheMeta;
 };
 
-const lowLevelHas = <ItemType = any>(
+const lowLevelHas = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
   cacheKey: string,
 ): boolean => {
@@ -233,7 +234,7 @@ const lowLevelHas = <ItemType = any>(
   return false;
 };
 
-const lowLevelGetOne = <ItemType = any>(
+const lowLevelGetOne = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
   cacheKey: string,
 ): ItemType | undefined => {
@@ -243,16 +244,16 @@ const lowLevelGetOne = <ItemType = any>(
   return;
 };
 
-const lowLevelGetAll = <ItemType = any>(
+const lowLevelGetAll = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
 ): Record<string, ItemType> => {
   // Remove all expired values, and return whatever's left
-  // Retype because there won't be any `undefined` values after doMaintenance
   lowLevelDoMaintenance(cacheMeta);
+  // Retype because there won't be any `undefined` values after doMaintenance
   return cacheMeta.cache as Record<string, ItemType>;
 };
 
-const lowLevelSet = <ItemType = any>(
+const lowLevelSet = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
   cacheKey: string,
   item: ItemType,

@@ -7,7 +7,12 @@ import {
   lowLevelSet,
   lowLevelRemove,
 } from './lowLevelFunctions';
-import { LimitedCacheOptions, LimitedCacheObjectInstance, LimitedCacheMeta } from '../types';
+import {
+  LimitedCacheOptions,
+  LimitedCacheObjectInstance,
+  LimitedCacheMeta,
+  DefaultItemType,
+} from '../types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const proxyHandler: ProxyHandler<any> = {
@@ -45,7 +50,7 @@ const proxyHandler: ProxyHandler<any> = {
   ownKeys: (cacheMeta: LimitedCacheMeta) => Object.keys(lowLevelGetAll(cacheMeta)),
 };
 
-function LimitedCacheObject<ItemType = any>(
+function LimitedCacheObject<ItemType = DefaultItemType>(
   options?: LimitedCacheOptions,
 ): LimitedCacheObjectInstance<ItemType> {
   const cacheMeta = lowLevelInit(options);
