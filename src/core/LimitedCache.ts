@@ -18,16 +18,16 @@ import {
 } from '../types';
 
 // Most public functions just call a low-level function directly, passing the cacheMeta.
-// Doing this via a helper function makes the typings easier, and minifies better.
+// Doing this via a helper function makes the typeChecks easier, and minifies better.
 const bindFunctionToCacheMeta = <ItemType>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fn: (cacheMeta: LimitedCacheMeta<ItemType>, ...otherArgs: any) => any,
   cacheMeta: LimitedCacheMeta<ItemType>,
 ) => fn.bind(null, cacheMeta);
 
-function LimitedCache<ItemType = DefaultItemType>(
+const LimitedCache = <ItemType = DefaultItemType>(
   options?: LimitedCacheOptions,
-): LimitedCacheInstance<ItemType> {
+): LimitedCacheInstance<ItemType> => {
   const cacheMeta = lowLevelInit<ItemType>(options);
 
   return {
@@ -48,6 +48,6 @@ function LimitedCache<ItemType = DefaultItemType>(
     setOptions: bindFunctionToCacheMeta<ItemType>(lowLevelSetOptions, cacheMeta),
     doMaintenance: bindFunctionToCacheMeta<ItemType>(lowLevelDoMaintenance, cacheMeta),
   };
-}
+};
 
 export default LimitedCache;

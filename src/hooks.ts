@@ -1,18 +1,19 @@
 import { useMemo, useRef, DependencyList } from 'react';
 
 import {
+  DefaultItemType,
   LimitedCache,
   LimitedCacheObject,
   // types
 } from './index';
 import { LimitedCacheInstance, LimitedCacheObjectInstance, LimitedCacheOptions } from './types';
 
-const useLimitedCache = (
+const useLimitedCache = <ItemType = DefaultItemType>(
   options?: LimitedCacheOptions,
   deps?: DependencyList,
-): LimitedCacheInstance => {
+): LimitedCacheInstance<ItemType> => {
   const lastOptionsRef = useRef(options);
-  const limitedCache = useRef(LimitedCache(options)).current;
+  const limitedCache = useRef(LimitedCache<ItemType>(options)).current;
 
   if (options !== lastOptionsRef.current) {
     lastOptionsRef.current = options;
@@ -27,19 +28,19 @@ const useLimitedCache = (
   return limitedCache;
 };
 
-const useLimitedCacheObject = (
+const useLimitedCacheObject = <ItemType = DefaultItemType>(
   options?: LimitedCacheOptions,
   deps?: DependencyList,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): LimitedCacheObjectInstance<any> => {
+): LimitedCacheObjectInstance<ItemType> => {
   const limitedCacheRef = useRef<LimitedCacheObjectInstance>();
 
   // Piggyback on useMemo's existing shallow comparison, to keep things small
   useMemo(() => {
-    limitedCacheRef.current = LimitedCacheObject(options);
+    limitedCacheRef.current = LimitedCacheObject<ItemType>(options);
   }, deps || []);
 
-  return limitedCacheRef.current as LimitedCacheObjectInstance;
+  return limitedCacheRef.current as LimitedCacheObjectInstance<ItemType>;
 };
 
 export { useLimitedCache, useLimitedCacheObject };

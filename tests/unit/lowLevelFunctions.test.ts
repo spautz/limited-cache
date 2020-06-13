@@ -7,6 +7,7 @@ import {
   lowLevelHas,
   lowLevelSet,
   lowLevelRemove,
+  lowLevelReset,
 } from '../../src/core/lowLevelFunctions';
 import { LimitedCacheMeta } from '../../src/types';
 
@@ -315,24 +316,38 @@ describe('lowLevelFunctions', () => {
       myCacheMeta = lowLevelSet(myCacheMeta, 'abc', 123);
     });
 
-    it('remove an absent key', () => {
+    it('removes an absent key', () => {
       myCacheMeta = lowLevelRemove(myCacheMeta, 'ghi');
 
       expect(myCacheMeta.cache).toEqual({ abc: 123 });
     });
 
-    it('remove a present key', () => {
+    it('removes a present key', () => {
       myCacheMeta = lowLevelRemove(myCacheMeta, 'abc');
 
       expect(myCacheMeta.cache).toEqual({ abc: undefined });
     });
 
-    it('remove a present key multiple times', () => {
+    it('removes a present key multiple times', () => {
       myCacheMeta = lowLevelRemove(myCacheMeta, 'abc');
       expect(myCacheMeta.cache).toEqual({ abc: undefined });
 
       myCacheMeta = lowLevelRemove(myCacheMeta, 'abc');
       expect(myCacheMeta.cache).toEqual({ abc: undefined });
+    });
+  });
+
+  describe('lowLevelReset', () => {
+    let myCacheMeta: LimitedCacheMeta;
+    beforeEach(() => {
+      myCacheMeta = lowLevelInit();
+      myCacheMeta = lowLevelSet(myCacheMeta, 'abc', 123);
+    });
+
+    it('does what it says', () => {
+      myCacheMeta = lowLevelReset(myCacheMeta);
+
+      expect(myCacheMeta.cache).toEqual({});
     });
   });
 });

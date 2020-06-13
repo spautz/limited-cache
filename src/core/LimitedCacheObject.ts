@@ -14,8 +14,9 @@ import {
   DefaultItemType,
 } from '../types';
 
+// The `any` here doesn't escape out anywhere: it's overridden by the constructor below
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const proxyHandler: ProxyHandler<any> = {
+const proxyHandler: ProxyHandler<LimitedCacheObjectInstance<any>> = {
   get: (cacheMeta: LimitedCacheMeta, cacheKey: string) => {
     if (cacheKey === 'hasOwnProperty') {
       return hasOwnProperty;
@@ -50,11 +51,11 @@ const proxyHandler: ProxyHandler<any> = {
   ownKeys: (cacheMeta: LimitedCacheMeta) => Object.keys(lowLevelGetAll(cacheMeta)),
 };
 
-function LimitedCacheObject<ItemType = DefaultItemType>(
+const LimitedCacheObject = <ItemType = DefaultItemType>(
   options?: LimitedCacheOptions,
-): LimitedCacheObjectInstance<ItemType> {
+): LimitedCacheObjectInstance<ItemType> => {
   const cacheMeta = lowLevelInit(options);
   return new Proxy(cacheMeta, proxyHandler);
-}
+};
 
 export default LimitedCacheObject;
