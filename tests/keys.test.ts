@@ -35,15 +35,13 @@ describe('key names', () => {
   });
 
   it('number', () => {
-    /* eslint-disable @typescript-eslint/ban-ts-ignore */
-    // @ts-ignore
+    // @ts-expect-error description here
     limitedCacheUtil.set(myCacheMeta, 123, 123);
 
-    // @ts-ignore
+    // @ts-expect-error description here
     expect(limitedCacheUtil.has(myCacheMeta, 123)).toEqual(true);
-    // @ts-ignore
+    // @ts-expect-error description here
     expect(limitedCacheUtil.get(myCacheMeta, 123)).toEqual(123);
-    /* eslint-enable */
   });
 
   it('special character: "-"', () => {

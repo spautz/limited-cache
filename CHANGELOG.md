@@ -8,12 +8,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 - Bump and modernize devDependencies ([#16](https://github.com/spautz/limited-cache/issues/16)) ([8c199d6](https://github.com/spautz/limited-cache/commit/8c199d65043266907c04a1fa5e6d4ccc2cd92dc4))
 
-## [0.4.0](https://github.com/spautz/limited-cache/compare/v0.3.0...v0.4.0) (2020-03-14)
-
-### Bug Fixes
-
-- Bump and modernize devDependencies ([#16](https://github.com/spautz/limited-cache/issues/16)) ([8c199d6](https://github.com/spautz/limited-cache/commit/8c199d65043266907c04a1fa5e6d4ccc2cd92dc4))
-
 ## [0.3.0](https://github.com/spautz/limited-cache/compare/v0.2.1...v0.3.0) (2020-02-19)
 
 ### BREAKING CHANGES
