@@ -66,7 +66,7 @@ return {
 };
 ```
 
-Generics for Typescript:
+Typescript generics, if you want to define types for items in the cache:
 
 ```typescript
 const stringCache = LimitedCache<string>();
