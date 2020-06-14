@@ -4,11 +4,15 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [0.4.1](https://github.com/spautz/limited-cache/compare/v0.4.0...v0.4.1) (2020-06-13)
 
-- Update devDependencies: No changes expected
+> Update devDependencies for security, update configs for dev tools
+
+- No changes expected in limited-cache itself
 
 ## [0.4.0](https://github.com/spautz/limited-cache/compare/v0.3.0...v0.4.0) (2020-03-14)
 
-- Update devDependencies: No changes expected
+> Update devDependencies, the build system, and the package distribution
+
+- No changes expected in limited-cache itself
 
 ## [0.3.0](https://github.com/spautz/limited-cache/compare/v0.2.1...v0.3.0) (2020-02-19)
 
