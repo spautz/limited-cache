@@ -57,14 +57,14 @@ describe('LimitedCache', () => {
     });
 
     it('getAll: when empty', () => {
-      const result = myCache.get();
+      const result = myCache.getAll();
 
       expect(result).toEqual({});
     });
 
     it('getAll: when present', () => {
       myCache.set('abc', 123);
-      const result = myCache.get();
+      const result = myCache.getAll();
 
       expect(result).toEqual({ abc: 123 });
     });

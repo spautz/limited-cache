@@ -23,7 +23,7 @@ describe('maxCacheSize scenarios', () => {
     for (let n = 1; n <= 1000; n++) {
       myCache.set(`n=${n}`, n);
 
-      const allKeys = Object.keys(myCache.get());
+      const allKeys = Object.keys(myCache.getAll());
       expect(allKeys.length).toEqual(Math.min(20, n));
     }
   });
@@ -38,19 +38,19 @@ describe('maxCacheSize scenarios', () => {
     for (let n = 1; n <= 10; n++) {
       myCache.set(`n=${n}`, n);
 
-      const allKeys = Object.keys(myCache.get());
+      const allKeys = Object.keys(myCache.getAll());
       expect(allKeys.length).toEqual(20);
     }
     for (let n = 1; n <= 100; n++) {
       myCache.set(`n=${n}`, n);
 
-      const allKeys = Object.keys(myCache.get());
+      const allKeys = Object.keys(myCache.getAll());
       expect(allKeys.length).toEqual(20);
     }
     for (let n = 1; n <= 1000; n++) {
       myCache.set(`n=${n}`, n);
 
-      const allKeys = Object.keys(myCache.get());
+      const allKeys = Object.keys(myCache.getAll());
       expect(allKeys.length).toEqual(20);
     }
   });
@@ -67,7 +67,7 @@ describe('maxCacheSize scenarios', () => {
       const n = Math.floor(Math.random() * 100) + 1;
       myCache.set(`n=${n}`, i);
 
-      const allKeys = Object.keys(myCache.get());
+      const allKeys = Object.keys(myCache.getAll());
       expect(allKeys.length).toEqual(20);
     }
   });
@@ -83,7 +83,7 @@ describe('maxCacheSize scenarios', () => {
     for (let n = 1; n <= 5; n++) {
       myCache.set(`n=${n}`, n);
     }
-    expect(Object.keys(myCache.get())).toEqual(['n=1', 'n=2', 'n=3', 'n=4', 'n=5']);
+    expect(Object.keys(myCache.getAll())).toEqual(['n=1', 'n=2', 'n=3', 'n=4', 'n=5']);
 
     await timeoutPromise();
 
@@ -91,7 +91,7 @@ describe('maxCacheSize scenarios', () => {
     for (let n = 6; n <= 10; n++) {
       myCache.set(`n=${n}`, n);
     }
-    expect(Object.keys(myCache.get())).toEqual(['n=6', 'n=7', 'n=8', 'n=9', 'n=10']);
+    expect(Object.keys(myCache.getAll())).toEqual(['n=6', 'n=7', 'n=8', 'n=9', 'n=10']);
   });
 
   it('warns if a freshly-added item is pushed out too quickly', async () => {
@@ -110,7 +110,7 @@ describe('maxCacheSize scenarios', () => {
     // This pushes out the still-fresh `n=1`
     myCache.set('abc', 123);
 
-    expect(Object.keys(myCache.get())).toEqual(['n=2', 'n=3', 'n=4', 'n=5', 'abc']);
+    expect(Object.keys(myCache.getAll())).toEqual(['n=2', 'n=3', 'n=4', 'n=5', 'abc']);
 
     // And we should have seen a warning about the force-removed key
     const consoleWarnCalls = consoleWarnSpy.mock.calls;

@@ -1,5 +1,6 @@
 import {
-  lowLevelGet,
+  lowLevelGetOne,
+  lowLevelGetAll,
   lowLevelHas,
   lowLevelInit,
   lowLevelDoMaintenance,
@@ -11,7 +12,8 @@ import {
 
 const limitedCacheUtil = {
   init: lowLevelInit,
-  get: lowLevelGet,
+  get: lowLevelGetOne,
+  getAll: lowLevelGetAll,
   has: lowLevelHas,
   set: lowLevelSet,
   remove: lowLevelRemove,

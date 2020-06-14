@@ -8,6 +8,7 @@ const propertyNamesToPreserve = [
   // methods on limitedCacheUtil
   'init',
   'get',
+  'getAll',
   'has',
   'set',
   'remove',
@@ -16,7 +17,8 @@ const propertyNamesToPreserve = [
   'setOptions',
   // low-level functions
   'lowLevelInit',
-  'lowLevelGet',
+  'lowLevelGetOne',
+  'lowLevelGetAll',
   'lowLevelHas',
   'lowLevelSet',
   'lowLevelRemove',

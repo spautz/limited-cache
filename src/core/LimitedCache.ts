@@ -1,6 +1,7 @@
 import {
   lowLevelInit,
-  lowLevelGet,
+  lowLevelGetOne,
+  lowLevelGetAll,
   lowLevelHas,
   lowLevelSet,
   lowLevelRemove,
@@ -13,16 +14,27 @@ import {
   LimitedCacheOptionsReadonly,
   LimitedCacheInstance,
   LimitedCacheMeta,
+  DefaultItemType,
 } from '../types';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function LimitedCache<T = any>(options?: LimitedCacheOptions): LimitedCacheInstance<T> {
-  const cacheMeta = lowLevelInit(options);
+// Most public functions just call a low-level function directly, passing the cacheMeta.
+// Doing this via a helper function makes the typeChecks easier, and minifies better.
+const bindFunctionToCacheMeta = <ItemType>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  fn: (cacheMeta: LimitedCacheMeta<ItemType>, ...otherArgs: any) => any,
+  cacheMeta: LimitedCacheMeta<ItemType>,
+) => fn.bind(null, cacheMeta);
+
+const LimitedCache = <ItemType = DefaultItemType>(
+  options?: LimitedCacheOptions,
+): LimitedCacheInstance<ItemType> => {
+  const cacheMeta = lowLevelInit<ItemType>(options);
 
   return {
-    get: lowLevelGet.bind(null, cacheMeta),
-    has: lowLevelHas.bind(null, cacheMeta),
-    set: (cacheKey, item): T => {
+    get: bindFunctionToCacheMeta<ItemType>(lowLevelGetOne, cacheMeta),
+    getAll: bindFunctionToCacheMeta<ItemType>(lowLevelGetAll, cacheMeta),
+    has: bindFunctionToCacheMeta<ItemType>(lowLevelHas, cacheMeta),
+    set: (cacheKey, item): ItemType => {
       lowLevelSet(cacheMeta, cacheKey, item);
       return item;
     },
@@ -30,12 +42,12 @@ function LimitedCache<T = any>(options?: LimitedCacheOptions): LimitedCacheInsta
       lowLevelRemove(cacheMeta, cacheKey);
       return true;
     },
-    reset: lowLevelReset.bind(null, cacheMeta),
-    getCacheMeta: (): LimitedCacheMeta => cacheMeta,
+    reset: bindFunctionToCacheMeta<ItemType>(lowLevelReset, cacheMeta),
+    getCacheMeta: (): LimitedCacheMeta<ItemType> => cacheMeta,
     getOptions: (): LimitedCacheOptionsReadonly => cacheMeta.options,
-    setOptions: lowLevelSetOptions.bind(null, cacheMeta),
-    doMaintenance: lowLevelDoMaintenance.bind(null, cacheMeta),
+    setOptions: bindFunctionToCacheMeta<ItemType>(lowLevelSetOptions, cacheMeta),
+    doMaintenance: bindFunctionToCacheMeta<ItemType>(lowLevelDoMaintenance, cacheMeta),
   };
-}
+};
 
 export default LimitedCache;

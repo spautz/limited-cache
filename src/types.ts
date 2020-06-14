@@ -1,3 +1,9 @@
+// This makes it easy to ensure that ItemType gets passed to any nested generics:
+// Using `unknown` helps catch errors during development but is a pain for consumers.
+// Using `any` is nicer for consumers, but errors could slip through during development.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type DefaultItemType = any;
+
 export interface LimitedCacheOptionsFull {
   /** Items will be removed to keep the cache within the maxCacheSize limit */
   maxCacheSize: number;
@@ -14,10 +20,11 @@ export interface LimitedCacheOptionsFull {
 export type LimitedCacheOptions = Partial<LimitedCacheOptionsFull> | null;
 export type LimitedCacheOptionsReadonly = Readonly<LimitedCacheOptionsFull>;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface LimitedCacheInstance<ItemType = any> {
-  /** Return the requested item, if it has not expired. Return all items if no cacheKey is specified */
-  get: (cacheKey?: string) => ItemType;
+export interface LimitedCacheInstance<ItemType = DefaultItemType> {
+  /** Return the requested item, if it has not expired. */
+  get: (cacheKey: string) => ItemType | undefined;
+  /** Return all non-expired items. */
+  getAll: () => Record<string, ItemType>;
   /** Indicate whether or not the requested item is present and has not expired */
   has: (cacheKey: string) => boolean;
   /** Add the item to the cache, or update its timestamp if it already exists */
@@ -25,32 +32,28 @@ export interface LimitedCacheInstance<ItemType = any> {
   /** Remove the requested item from the cache, if necessary */
   remove: (cacheKey: string) => true;
   /** Remove all items and all timestamps from the cache */
-  reset: () => LimitedCacheMeta;
+  reset: () => LimitedCacheMeta<ItemType>;
   /** Return a serializable representation of the cache internals, suitable for long-term storage */
-  getCacheMeta: () => LimitedCacheMeta;
+  getCacheMeta: () => LimitedCacheMeta<ItemType>;
   /** Return the cache's current values for all options */
   getOptions: () => LimitedCacheOptionsFull;
   /** Update one or more of the cache's options */
   setOptions: (newOptions: LimitedCacheOptions) => LimitedCacheOptionsReadonly;
   /** Reduces cache size by cleaning up old keys and expired items */
-  doMaintenance: () => LimitedCacheMeta;
+  doMaintenance: () => LimitedCacheMeta<ItemType>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface LimitedCacheObjectInstance<ItemType = any> {
+export interface LimitedCacheObjectInstance<ItemType = DefaultItemType> {
   [key: string]: ItemType;
 }
 
 /**
  *  A serializable representation of the cache internals, suitable for long-term storage
  */
-export interface LimitedCacheMeta {
+export interface LimitedCacheMeta<ItemType = DefaultItemType> {
   limitedCacheMetaVersion: number;
   options: LimitedCacheOptionsReadonly;
-  cache: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [propName: string]: any;
-  };
+  cache: Record<string, ItemType | undefined>;
   recentCacheKeys: Array<string>;
   cacheKeyTimestamps: { [propName: string]: number | undefined };
   autoMaintenanceCount: number;
