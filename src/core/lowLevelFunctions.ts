@@ -7,7 +7,7 @@ import {
   DefaultItemType,
 } from '../types';
 
-// To help minimization
+// To help minification
 const {
   create: objectCreate,
   assign: objectAssign,
