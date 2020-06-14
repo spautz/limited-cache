@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/spautz/limited-cache/compare/v0.4.1...v0.5.0) (2020-06-14)
+
+### Features
+
+- Typescript: Add generic typings for all cache types ([#22](https://github.com/spautz/limited-cache/issues/22)) ([55cf158](https://github.com/spautz/limited-cache/commit/55cf15894696069b9c57baf1e63873f1b6cdd878))
+
 ## [0.4.1](https://github.com/spautz/limited-cache/compare/v0.4.0...v0.4.1) (2020-06-13)
 
 > Update devDependencies for security, update configs for dev tools
