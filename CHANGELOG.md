@@ -2,21 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.1](https://github.com/spautz/limited-cache/compare/v0.4.0...v0.4.1) (2020-06-13)
+
+- Update devDependencies: No changes expected
+
 ## [0.4.0](https://github.com/spautz/limited-cache/compare/v0.3.0...v0.4.0) (2020-03-14)
 
-### Bug Fixes
-
-- Bump and modernize devDependencies ([#16](https://github.com/spautz/limited-cache/issues/16)) ([8c199d6](https://github.com/spautz/limited-cache/commit/8c199d65043266907c04a1fa5e6d4ccc2cd92dc4))
+- Update devDependencies: No changes expected
 
 ## [0.3.0](https://github.com/spautz/limited-cache/compare/v0.2.1...v0.3.0) (2020-02-19)
 
 ### BREAKING CHANGES
 
 - Adjust default options and allow negative option values ([#14](https://github.com/spautz/limited-cache/issues/14)) ([8154ab4](https://github.com/spautz/limited-cache/commit/8154ab41cd7bd7a59e910dae16456376a6fb14aa))
-
-### Bug Fixes
-
-- Clean up tests ([#15](https://github.com/spautz/limited-cache/issues/15)) ([e18a7bf](https://github.com/spautz/limited-cache/commit/e18a7bf88541d5c25e1d2cf84d85356d1b1e30e5))
 
 ### [0.2.1](https://github.com/spautz/limited-cache/compare/v0.2.0...v0.2.1) (2020-02-13)
 
