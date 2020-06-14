@@ -56,12 +56,12 @@ const reduxState = {
   cacheMeta: limitedCacheUtil.init(),
 };
 
-// cacheMeta is a plain, serializable object for the cache's internal state
+// cacheMeta is a plain, serializable object that contains the cache's internal state
 cacheMeta = limitedCacheUtil.set(cacheMeta, 'abc', thingToSave);
 
 return {
   ...reduxState,
-  childIdsByParentId: limitedCacheUtil.get(cacheMeta),
+  childIdsByParentId: limitedCacheUtil.getAll(cacheMeta),
   cacheMeta,
 };
 ```
@@ -110,8 +110,8 @@ Use a falsy value to disable.
 These functions are grouped together as `limitedCacheUtil`. The other interfaces are built on top of these.
 
 - `init(options)`
-- `get(cacheMeta)` - returns the entire cache
 - `get(cacheMeta, cacheKey)`
+- `getAll(cacheMeta)` - returns the entire cache, excluding expired items
 - `has(cacheMeta, cacheKey)`
 - `set(cacheMeta, cacheKey, value)`
 - `remove(cacheMeta, cacheKey)`
@@ -121,7 +121,7 @@ These functions are grouped together as `limitedCacheUtil`. The other interfaces
 You can also import these functions individually, if you want to optimize tree-shaking and minification:
 
 ```javascript
-import { lowLevelInit, lowLevelGet, lowLevelSet } from 'limited-cache';
+import { lowLevelInit, lowLevelGetOne, lowLevelGetAll, lowLevelSet } from 'limited-cache';
 ```
 
 ## FAQ
