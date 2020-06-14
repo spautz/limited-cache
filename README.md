@@ -11,7 +11,7 @@ A minimal JS cache. Like using an object to store keys and values, except it won
 
 A plain Javascript object is often good enough for simple key-value caching.
 
-The problem is that a simple object cache can grow forever. This library adds a size limit, plus `maxCacheTime` and
+The problem is that a plain object cache can grow forever. This library adds a size limit, plus `maxCacheTime` and
 smarter removal of old items.
 
 ## Example
@@ -23,8 +23,9 @@ const recentResults = LimitedCache({
   maxCacheSize: 100,
 });
 recentResults.set('abc', thingToSave);
-recentResults.get('abc'); // => thingToSave
-recentResults.has('abc'); // => true
+recentResults.get('abc');
+recentResults.has('abc');
+recentResults.getAll();
 recentResults.reset();
 ```
 
@@ -47,7 +48,7 @@ const cache = useLimitedCacheObject();
 const cache2 = useLimitedCacheObject({ maxCacheTime: 60000 }, [depsCanGoHere]);
 ```
 
-Low-level functions using plain objects, if you need to stay serializable:
+Low-level functions using plain objects, if you need to stay serializable or want to store offline:
 
 ```javascript
 const reduxState = {
@@ -63,6 +64,14 @@ return {
   childIdsByParentId: limitedCacheUtil.get(cacheMeta),
   cacheMeta,
 };
+```
+
+Generics for Typescript:
+
+```typescript
+const stringCache = LimitedCache<string>();
+const myClassCache = useLimitedCache<SomeClass>();
+const offlineCacheMeta = lowLevelInit<SomeObjectShape>();
 ```
 
 ## Install and Import
@@ -109,7 +118,7 @@ These functions are grouped together as `limitedCacheUtil`. The other interfaces
 - `reset(cacheMeta)`
 - `setOptions(cacheMeta, options)` - you can update options anytime
 
-You can also import these functions individually, if you want to optimize tree-shaking:
+You can also import these functions individually, if you want to optimize tree-shaking and minification:
 
 ```javascript
 import { lowLevelInit, lowLevelGet, lowLevelSet } from 'limited-cache';
@@ -119,11 +128,11 @@ import { lowLevelInit, lowLevelGet, lowLevelSet } from 'limited-cache';
 
 **Immutable?**
 
-The cache itself is, but the low-level cacheMeta is persistent.
+The cache itself is, but the low-level cacheMeta is persistent/mutated.
 
 **API for bulk operations?**
 
-Only `reset`. The other actions aren't as optimizable, so they're omitted to keep this small.
+Only `reset` and `getAll`. The other actions aren't as optimizable, so they're omitted to keep this small.
 
 **When are old items removed?**
 
@@ -134,4 +143,4 @@ When new items are added, or if you try to `get` an item that has expired.
 No: For performance it only tracks by `set` time.
 
 If you want items to expire based on when they were last accessed (instead of when they were set), you can `set`
-the value that already exists: only the timestamp will be updated.
+the value that already exists: only the timestamp will be updated, so performance won't suffer.
