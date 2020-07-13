@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     /* Basic Options */
-    "target": "esnext",
+    "target": "ES2019",
     "module": "esnext",
-    "lib": ["dom", "es2017"],
+    "lib": ["dom", "ES2019"],
     "allowJs": true,
     "declaration": true,
     "jsx": "react",
