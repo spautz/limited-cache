@@ -12,6 +12,9 @@
   ],
   "license": "MIT",
   "homepage": "https://github.com/spautz/limited-cache#readme",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/spautz/limited-cache.git"
