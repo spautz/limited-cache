@@ -1,5 +1,5 @@
+import { hasOwnProperty } from './builtIns';
 import {
-  hasOwnProperty,
   lowLevelInit,
   lowLevelGetOne,
   lowLevelGetAll,

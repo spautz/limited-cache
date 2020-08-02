@@ -25,10 +25,10 @@
     "README.md"
   ],
   "source": "src/index.ts",
-  "main": "index.cjs.js",
+  "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "jsnext:main": "dist/index.esm.js",
-  "types": "dist/src/index.d.ts",
+  "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
     "____ LIFECYCLE HOOKS _______________________________________________": "",
@@ -45,9 +45,10 @@
     "ci": "yon run clean && yon run checkup && yon run test:report",
     "all": "yon run clean && yon run dev && yon run test && yon run build",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
-    "build": "rollup -c",
+    "build": "tsdx build",
     "build:clean": "rimraf dist/",
     "build:checkup": "node ./scripts/verify-build.js",
+    "build:watch": "tsdx build --watch",
     "format": "prettier --write \"**/*.*\"",
     "format:checkup": "prettier --list-different \"**/*.*\"",
     "lint": "eslint \"**/*.{js,jsx,json,ts,tsx}\"",
@@ -59,9 +60,10 @@
     "test:watch": "jest --coverage --watch",
     "types": "tsc --noEmit --p tsconfig.json"
   },
-  "dependencies": {},
+  "dependencies": {
+    "tsdx": "^0.13.2"
+  },
   "devDependencies": {
-    "@rollup/plugin-replace": "^2.3.3",
     "@testing-library/react-hooks": "^3.4.1",
     "@types/jest": "^26.0.8",
     "@types/node": "^14.0.27",
@@ -78,9 +80,6 @@
     "react": "^16.13.1",
     "react-test-renderer": "^16.13.1",
     "rimraf": "^3.0.2",
-    "rollup": "2.23.0",
-    "rollup-plugin-terser": "^6.1.0",
-    "rollup-plugin-typescript2": "^0.27.1",
     "standard-version": "^8.0.2",
     "ts-jest": "^26.1.4",
     "tslib": "^2.0.0",

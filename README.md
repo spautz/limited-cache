@@ -79,13 +79,13 @@ const offlineCacheMeta = lowLevelInit<SomeObjectShape>();
 `npm install limited-cache` or `yarn add limited-cache`
 
 ```javascript
-import { LimitedCache, LimitedCacheObject, limitedCacheUtil } from 'limited-cache';
-```
-
-The react hook constructors are a separate package.
-
-```javascript
-import { useLimitedCache, useLimitedCacheObject } from 'limited-cache/hooks';
+import {
+  LimitedCache,
+  LimitedCacheObject,
+  limitedCacheUtil,
+  useLimitedCache,
+  useLimitedCacheObject,
+} from 'limited-cache';
 ```
 
 ## Options
