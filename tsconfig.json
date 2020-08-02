@@ -8,6 +8,7 @@
     "declaration": true,
     "jsx": "react",
     "sourceMap": true,
+    "rootDir": "./src",
     "removeComments": false,
     /* Strict Type-Checking Options */
     "strict": true,
