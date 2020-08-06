@@ -21,8 +21,6 @@ const {
   lowLevelReset,
   lowLevelSet,
   lowLevelSetOptions,
-  useLimitedCache,
-  useLimitedCacheObject,
   ...unrecognizedExports
 } = require('../');
 
@@ -40,8 +38,6 @@ const exportsToCheck = {
   lowLevelReset,
   lowLevelSet,
   lowLevelSetOptions,
-  useLimitedCache,
-  useLimitedCacheObject,
 };
 Object.keys(exportsToCheck).forEach((exportName) => {
   if (!exportsToCheck[exportName]) {
@@ -61,8 +57,6 @@ Object.keys(exportsToCheck).forEach((exportName) => {
         lowLevelSet,
         lowLevelSetOptions,
       },
-      useLimitedCache,
-      useLimitedCacheObject,
       ...unrecognizedExports,
     });
     throw new Error(`Missing export: ${exportName}`);

@@ -4,6 +4,7 @@ A minimal JS cache. Like using an object to store keys and values, except it won
 
 [![npm version](https://img.shields.io/npm/v/limited-cache.svg)](https://www.npmjs.com/package/limited-cache)
 [![build status](https://img.shields.io/travis/com/spautz/limited-cache.svg)](https://travis-ci.com/spautz/limited-cache)
+[![dependencies status](https://img.shields.io/badge/dependencies-none-green.svg)](https://david-dm.org/spautz/limited-cache)
 [![gzip size](http://img.badgesize.io/https://unpkg.com/limited-cache@latest/dist/limited-cache.index.umd.production.min.js?compression=gzip)](https://bundlephobia.com/result?p=limited-cache)
 [![test coverage](https://img.shields.io/coveralls/github/spautz/limited-cache.svg)](https://coveralls.io/github/spautz/limited-cache)
 
@@ -36,18 +37,6 @@ const recentResults = LimitedCacheObject();
 recentResults['abc'] = thingToSave;
 ```
 
-React hooks are available for both:
-
-```javascript
-const cache = useLimitedCache();
-const cache2 = useLimitedCache({ maxCacheTime: 60000 }, [depsCanGoHere]);
-```
-
-```javascript
-const cache = useLimitedCacheObject();
-const cache2 = useLimitedCacheObject({ maxCacheTime: 60000 }, [depsCanGoHere]);
-```
-
 Low-level functions using plain objects, if you need to stay serializable or want to store offline:
 
 ```javascript
@@ -70,22 +59,20 @@ Typescript generics, if you want to define types for items in the cache:
 
 ```typescript
 const stringCache = LimitedCache<string>();
-const myClassCache = useLimitedCache<SomeClass>();
+const myClassCache = LimitedCacheObject<SomeClass>();
 const offlineCacheMeta = lowLevelInit<SomeObjectShape>();
 ```
+
+**Note: The React hooks were removed in v0.6.0.**
+[The code for `useLimitedCache` and `useLimitedCacheObject` is here](https://github.com/spautz/limited-cache/blob/v0.5.1/src/hooks.ts)
+if you want to implement them yourself.
 
 ## Install and Import
 
 `npm install limited-cache` or `yarn add limited-cache`
 
 ```javascript
-import {
-  LimitedCache,
-  LimitedCacheObject,
-  limitedCacheUtil,
-  useLimitedCache,
-  useLimitedCacheObject,
-} from 'limited-cache';
+import { LimitedCache, LimitedCacheObject, limitedCacheUtil } from 'limited-cache';
 ```
 
 ## Options

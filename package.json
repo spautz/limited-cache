@@ -46,7 +46,7 @@
     "build": "tsdx build",
     "build:clean": "rimraf dist/",
     "build:checkup": "node ./scripts/verify-build.js",
-    "build:watch": "tsdx build --watch",
+    "build:watch": "tsdx watch",
     "format": "prettier --write \"**/*.*\"",
     "format:checkup": "prettier --list-different \"**/*.*\"",
     "lint": "tsdx lint .",
@@ -60,7 +60,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@testing-library/react-hooks": "^3.4.1",
     "@types/jest": "^26.0.8",
     "@types/node": "^14.0.27",
     "@types/react": "^16.9.44",
