@@ -1,3 +1,4 @@
+import { objectAssign, objectCreate, dateNow, hasOwnProperty } from './builtIns';
 import defaultOptions from './defaultOptions';
 import {
   LimitedCacheOptions,
@@ -6,14 +7,6 @@ import {
   LimitedCacheOptionsFull,
   DefaultItemType,
 } from '../types';
-
-// To help minification
-const {
-  create: objectCreate,
-  assign: objectAssign,
-  prototype: { hasOwnProperty },
-} = Object;
-const dateNow = Date.now;
 
 /* Initialization and options */
 
@@ -294,7 +287,6 @@ const lowLevelSet = <ItemType = DefaultItemType>(
 };
 
 export {
-  hasOwnProperty,
   lowLevelInit,
   lowLevelGetOne,
   lowLevelGetAll,

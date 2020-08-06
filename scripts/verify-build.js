@@ -21,10 +21,10 @@ const {
   lowLevelReset,
   lowLevelSet,
   lowLevelSetOptions,
-  ...unrecognizedIndexExports
+  ...unrecognizedExports
 } = require('../');
 
-const indexExportsToCheck = {
+const exportsToCheck = {
   LimitedCache,
   LimitedCacheObject,
   limitedCacheUtil,
@@ -39,9 +39,9 @@ const indexExportsToCheck = {
   lowLevelSet,
   lowLevelSetOptions,
 };
-Object.keys(indexExportsToCheck).forEach((exportName) => {
-  if (!indexExportsToCheck[exportName]) {
-    console.info('Exports from index: ', {
+Object.keys(exportsToCheck).forEach((exportName) => {
+  if (!exportsToCheck[exportName]) {
+    console.info('Exports: ', {
       LimitedCache,
       LimitedCacheObject,
       limitedCacheUtil,
@@ -57,41 +57,18 @@ Object.keys(indexExportsToCheck).forEach((exportName) => {
         lowLevelSet,
         lowLevelSetOptions,
       },
-      ...unrecognizedIndexExports,
+      ...unrecognizedExports,
     });
-    throw new Error(`Missing export from index: ${exportName}`);
+    throw new Error(`Missing export: ${exportName}`);
   }
 });
 
-const unrecognizedIndexExportNames = Object.keys(unrecognizedIndexExports);
-if (unrecognizedIndexExportNames.length) {
+const unrecognizedExportNames = Object.keys(unrecognizedExports);
+if (unrecognizedExportNames.length) {
   throw new Error(
     `Unrecognized export${
-      unrecognizedIndexExports.length === 1 ? '' : 's'
-    } found: ${unrecognizedIndexExportNames.join(', ')}`,
-  );
-}
-
-const { useLimitedCache, useLimitedCacheObject, ...unrecognizedHookExports } = require('../hooks');
-
-const hookExportsToCheck = { useLimitedCache, useLimitedCacheObject };
-Object.keys(hookExportsToCheck).forEach((exportName) => {
-  if (!hookExportsToCheck[exportName]) {
-    console.info('Exports from hooks: ', {
-      useLimitedCache,
-      useLimitedCacheObject,
-      ...unrecognizedHookExports,
-    });
-    throw new Error(`Missing export from hooks: ${exportName}`);
-  }
-});
-
-const unrecognizedHookExportNames = Object.keys(unrecognizedHookExports);
-if (unrecognizedHookExportNames.length) {
-  throw new Error(
-    `Unrecognized export{unrecognizedHookExports.length===1?'':'s'} found: ${unrecognizedHookExportNames.join(
-      ', ',
-    )}`,
+      unrecognizedExports.length === 1 ? '' : 's'
+    } found: ${unrecognizedExportNames.join(', ')}`,
   );
 }
 

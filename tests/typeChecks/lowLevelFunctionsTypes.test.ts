@@ -1,4 +1,4 @@
-import { lowLevelInit, lowLevelGetOne, lowLevelSet } from '../index';
+import { lowLevelInit, lowLevelGetOne, lowLevelSet } from '../../src';
 
 /**
  * This is not a source file or test file.
@@ -58,6 +58,11 @@ lowLevelSet(arrayCacheMeta, 'string', 'hello');
 value = lowLevelGetOne(arrayCacheMeta, 'number') as number;
 // @ts-expect-error Invalid type
 value = lowLevelGetOne(arrayCacheMeta, 'string') as string;
+
+// Fake test, to make Jest happy
+describe('fake typeCheck test', () => {
+  it.todo('does nothing');
+});
 
 // Fake export, to make the linter happy
 export { value };

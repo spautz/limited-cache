@@ -1,4 +1,4 @@
-import { LimitedCache } from '../index';
+import { LimitedCache } from '../../src';
 
 /**
  * This is not a source file or test file.
@@ -58,6 +58,11 @@ arrayCache.set('string', 'hello');
 value = arrayCache.get('number') as number;
 // @ts-expect-error Invalid type
 value = arrayCache.get('string') as string;
+
+// Fake test, to make Jest happy
+describe('fake typeCheck test', () => {
+  it.todo('does nothing');
+});
 
 // Fake export, to make the linter happy
 export { value };
