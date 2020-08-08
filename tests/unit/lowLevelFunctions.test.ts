@@ -25,7 +25,7 @@ describe('lowLevelFunctions', () => {
         maxCacheSize: 123,
         maxCacheTime: 456,
         warnIfItemPurgedBeforeTime: 789,
-        autoMaintenanceCount: 10,
+        opLimit: 10,
         numItemsToExamineForPurge: 100,
       };
 
@@ -47,7 +47,7 @@ describe('lowLevelFunctions', () => {
         maxCacheSize: 123,
         maxCacheTime: 456,
         warnIfItemPurgedBeforeTime: 5000,
-        autoMaintenanceCount: 500,
+        opLimit: 200,
         numItemsToExamineForPurge: 20,
       });
     });
@@ -208,7 +208,7 @@ describe('lowLevelFunctions', () => {
       myCacheMeta = lowLevelInit({
         maxCacheSize: 5,
         maxCacheTime: 1000,
-        autoMaintenanceCount: Number.MAX_SAFE_INTEGER,
+        opLimit: Number.MAX_SAFE_INTEGER,
         warnIfItemPurgedBeforeTime: 0,
       });
 
@@ -265,7 +265,7 @@ describe('lowLevelFunctions', () => {
       myCacheMeta = lowLevelInit({
         maxCacheSize: 10,
         maxCacheTime: 1000,
-        autoMaintenanceCount: 1,
+        opLimit: 1,
       });
 
       // Automaintenance should be done after 10 "set" actions (i.e., on the 11th)

@@ -16,7 +16,7 @@ describe('LimitedCacheObject', () => {
       maxCacheSize: 123,
       maxCacheTime: 456,
       warnIfItemPurgedBeforeTime: 789,
-      autoMaintenanceCount: 10,
+      opLimit: 10,
       numItemsToExamineForPurge: 100,
     });
 

@@ -12,8 +12,8 @@ export interface LimitedCacheOptionsFull {
   /** (dev only) A warning will be emitted if an item rotates out of the cache before this many milliseconds have passed, to indicate the size is too small */
   warnIfItemPurgedBeforeTime: number;
   /** (private) Internal cleanup of old keys will be performed after this many operations */
-  autoMaintenanceCount: number;
-  /** (private and dev only) Internal optimization to adjust how much searching will be done to find expired items */
+  opLimit: number;
+  /** (private and dev only) Internal optimization to adjust how much searching will be done to find expired items, to avoid being O(n) */
   numItemsToExamineForPurge: number;
 }
 
@@ -21,9 +21,9 @@ export type LimitedCacheOptions = Partial<LimitedCacheOptionsFull> | null;
 export type LimitedCacheOptionsReadonly = Readonly<LimitedCacheOptionsFull>;
 
 export interface LimitedCacheInstance<ItemType = DefaultItemType> {
-  /** Return the requested item, if it has not expired. */
+  /** Return the requested item, if it has not expired */
   get: (cacheKey: string) => ItemType | undefined;
-  /** Return all non-expired items. */
+  /** Return all non-expired items */
   getAll: () => Record<string, ItemType>;
   /** Indicate whether or not the requested item is present and has not expired */
   has: (cacheKey: string) => boolean;
@@ -51,10 +51,16 @@ export interface LimitedCacheObjectInstance<ItemType = DefaultItemType> {
  *  A serializable representation of the cache internals, suitable for long-term storage
  */
 export interface LimitedCacheMeta<ItemType = DefaultItemType> {
+  /** Schema version: old versions will be upgraded if possible, or a warning will be emitted if not */
   limitedCacheMetaVersion: number;
+  /** Options to control cache size, time, and behavior */
   options: LimitedCacheOptionsReadonly;
+  /** The values in the cache, stored by key. Will include old keys not yet garbage collected */
   cache: Record<string, ItemType | undefined>;
+  /** List of keys that have been set, in chronological order. Used to find cache items most likely to be expired */
   recentCacheKeys: Array<string>;
+  /** The timestamps for keys that have been set. Used to identify whether they have actually expired */
   cacheKeyTimestamps: { [propName: string]: number | undefined };
-  autoMaintenanceCount: number;
+  /** Number of operations remaining until internal cleanup of old keys is performed. Based on options.opLimit */
+  opsLeft: number;
 }

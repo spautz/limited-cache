@@ -13,11 +13,12 @@ import {
 const positiveNumberOrZero = (value: number): number => Math.max(value, 0) || 0;
 
 const normalizeOptions = (cacheMetaOptions: LimitedCacheOptionsFull): LimitedCacheOptionsFull => {
-  cacheMetaOptions.autoMaintenanceCount = positiveNumberOrZero(
-    cacheMetaOptions.autoMaintenanceCount,
-  );
-  cacheMetaOptions.maxCacheSize = positiveNumberOrZero(cacheMetaOptions.maxCacheSize);
-  cacheMetaOptions.maxCacheTime = positiveNumberOrZero(cacheMetaOptions.maxCacheTime);
+  objectAssign(cacheMetaOptions, {
+    opLimit: positiveNumberOrZero(cacheMetaOptions.opLimit),
+    maxCacheSize: positiveNumberOrZero(cacheMetaOptions.maxCacheSize),
+    maxCacheTime: positiveNumberOrZero(cacheMetaOptions.maxCacheTime),
+  });
+
   if (process.env.NODE_ENV !== 'production') {
     cacheMetaOptions.warnIfItemPurgedBeforeTime = positiveNumberOrZero(
       cacheMetaOptions.warnIfItemPurgedBeforeTime,
@@ -36,18 +37,17 @@ const lowLevelSetOptions = <ItemType = DefaultItemType>(
 const lowLevelInit = <ItemType = DefaultItemType>(
   options?: LimitedCacheOptions,
 ): LimitedCacheMeta<ItemType> => {
+  const fullOptions = normalizeOptions({ ...defaultOptions, ...options });
+
   // This is the cacheMeta. It is created once, and persists per instance
   const newCacheMeta = {
     limitedCacheMetaVersion: 2,
-    options: normalizeOptions({ ...defaultOptions, ...options }),
+    options: fullOptions,
     cache: {},
     recentCacheKeys: [],
     cacheKeyTimestamps: objectCreate(null),
-    autoMaintenanceCount: 0,
+    opsLeft: positiveNumberOrZero(fullOptions.opLimit),
   };
-  newCacheMeta.autoMaintenanceCount = positiveNumberOrZero(
-    newCacheMeta.options.autoMaintenanceCount,
-  );
   return newCacheMeta;
 };
 
@@ -89,12 +89,12 @@ const lowLevelDoMaintenance = <ItemType = DefaultItemType>(
     ],
   );
 
-  cacheMeta.recentCacheKeys = newRecentKeys;
-  cacheMeta.cache = newCache;
-  cacheMeta.cacheKeyTimestamps = newTimestamps;
-  cacheMeta.autoMaintenanceCount = cacheMeta.options.autoMaintenanceCount;
-
-  return cacheMeta;
+  return objectAssign(cacheMeta, {
+    recentCacheKeys: newRecentKeys,
+    cache: newCache,
+    cacheKeyTimestamps: newTimestamps,
+    opsLeft: cacheMeta.options.opLimit,
+  });
 };
 
 const _dropExpiredItemsAtIndex = (
@@ -204,13 +204,13 @@ const lowLevelRemove = <ItemType = DefaultItemType>(
 
 const lowLevelReset = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
-): LimitedCacheMeta<ItemType> => {
-  cacheMeta.cache = {};
-  cacheMeta.recentCacheKeys = [];
-  cacheMeta.cacheKeyTimestamps = objectCreate(null);
-  cacheMeta.autoMaintenanceCount = cacheMeta.options.autoMaintenanceCount;
-  return cacheMeta;
-};
+): LimitedCacheMeta<ItemType> =>
+  objectAssign(cacheMeta, {
+    cache: {},
+    recentCacheKeys: [],
+    cacheKeyTimestamps: objectCreate(null),
+    opsLeft: cacheMeta.options.opLimit,
+  });
 
 const lowLevelHas = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
@@ -269,8 +269,8 @@ const lowLevelSet = <ItemType = DefaultItemType>(
     recentCacheKeys.push(cacheKey);
     _dropExpiredItemsAtIndex(cacheMeta, 0, now);
 
-    cacheMeta.autoMaintenanceCount--;
-    if (cacheMeta.autoMaintenanceCount <= 0) {
+    cacheMeta.opsLeft--;
+    if (cacheMeta.opsLeft <= 0) {
       // Time for an oil change
       lowLevelDoMaintenance(cacheMeta);
     }

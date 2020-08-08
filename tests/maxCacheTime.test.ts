@@ -13,7 +13,7 @@ describe('maxCacheTime scenarios', () => {
     myCache = LimitedCacheObject({
       maxCacheTime: CACHE_TIMEOUT,
       maxCacheSize: Number.MAX_SAFE_INTEGER,
-      autoMaintenanceCount: Number.MAX_SAFE_INTEGER,
+      opLimit: Number.MAX_SAFE_INTEGER,
     });
   });
 
@@ -60,7 +60,7 @@ describe('maxCacheTime scenarios', () => {
     myCache = LimitedCacheObject({
       maxCacheTime: Number.MAX_SAFE_INTEGER,
       maxCacheSize: 3,
-      autoMaintenanceCount: Number.MAX_SAFE_INTEGER,
+      opLimit: Number.MAX_SAFE_INTEGER,
       warnIfItemPurgedBeforeTime: 0,
     });
 
@@ -89,7 +89,7 @@ describe('maxCacheTime scenarios', () => {
     myCache = LimitedCacheObject({
       maxCacheTime: CACHE_TIMEOUT * 2,
       maxCacheSize: 5,
-      autoMaintenanceCount: Number.MAX_SAFE_INTEGER,
+      opLimit: Number.MAX_SAFE_INTEGER,
     });
 
     // This first set will expire after the second set gets added
