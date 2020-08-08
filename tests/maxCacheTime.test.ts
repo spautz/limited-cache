@@ -10,6 +10,7 @@ const timeoutPromise = (): Promise<null> =>
 describe('maxCacheTime scenarios', () => {
   let myCache: LimitedCacheObjectInstance;
   beforeEach(() => {
+    jest.restoreAllMocks();
     myCache = LimitedCacheObject({
       maxCacheTime: CACHE_TIMEOUT,
       maxCacheSize: Number.MAX_SAFE_INTEGER,

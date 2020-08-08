@@ -10,13 +10,15 @@ import {
 
 /* Initialization and options */
 
+const CURRENT_META_VERSION = 2;
+
 const positiveNumberOrZero = (value: number): number => Math.max(value, 0) || 0;
 
 const normalizeOptions = (cacheMetaOptions: LimitedCacheOptionsFull): LimitedCacheOptionsFull => {
   objectAssign(cacheMetaOptions, {
-    opLimit: positiveNumberOrZero(cacheMetaOptions.opLimit),
     maxCacheSize: positiveNumberOrZero(cacheMetaOptions.maxCacheSize),
     maxCacheTime: positiveNumberOrZero(cacheMetaOptions.maxCacheTime),
+    opLimit: positiveNumberOrZero(cacheMetaOptions.opLimit),
   });
 
   if (process.env.NODE_ENV !== 'production') {
@@ -27,27 +29,47 @@ const normalizeOptions = (cacheMetaOptions: LimitedCacheOptionsFull): LimitedCac
   return cacheMetaOptions;
 };
 
+const isCacheMeta = (cacheMeta: LimitedCacheMeta): boolean => {
+  return !!cacheMeta && !!cacheMeta.limitedCacheMetaVersion;
+};
+
+const upgradeCacheMeta = (cacheMeta: LimitedCacheMeta): void => {
+  if (!isCacheMeta(cacheMeta)) {
+    throw new Error('Limited-cache metadata is missing: please check your usage');
+  }
+  if (cacheMeta.limitedCacheMetaVersion !== CURRENT_META_VERSION) {
+    // Version is out of date! (Today the only prior version is 1)
+    // Version 1: Cache meta cannot be migrated because timestamps and keys are incompatible
+    console.warn('Limited-cache metadata is from an incompatible version (1). It must be reset.');
+    cacheMeta.limitedCacheMetaVersion = CURRENT_META_VERSION;
+    lowLevelReset(cacheMeta);
+  }
+};
+
 const lowLevelSetOptions = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
   options: LimitedCacheOptions,
 ): LimitedCacheOptionsReadonly => {
+  upgradeCacheMeta(cacheMeta);
   return normalizeOptions(objectAssign(cacheMeta.options, options));
 };
 
 const lowLevelInit = <ItemType = DefaultItemType>(
-  options?: LimitedCacheOptions,
+  optionsOrCacheMeta?: LimitedCacheOptions | LimitedCacheMeta<ItemType>,
 ): LimitedCacheMeta<ItemType> => {
-  const fullOptions = normalizeOptions({ ...defaultOptions, ...options });
+  if (isCacheMeta(optionsOrCacheMeta as LimitedCacheMeta<ItemType>)) {
+    const existingCacheMeta = optionsOrCacheMeta as LimitedCacheMeta<ItemType>;
+    upgradeCacheMeta(existingCacheMeta);
+    return existingCacheMeta;
+  }
+  // Else: it's options
+  const fullOptions = normalizeOptions({ ...defaultOptions, ...optionsOrCacheMeta });
 
-  // This is the cacheMeta. It is created once, and persists per instance
-  const newCacheMeta = {
-    limitedCacheMetaVersion: 2,
+  // The cacheMeta is created once, and persists per instance
+  const newCacheMeta = lowLevelReset({
+    limitedCacheMetaVersion: CURRENT_META_VERSION,
     options: fullOptions,
-    cache: {},
-    keyList: [],
-    keyTime: objectCreate(null),
-    opsLeft: positiveNumberOrZero(fullOptions.opLimit),
-  };
+  } as LimitedCacheMeta<ItemType>);
   return newCacheMeta;
 };
 
@@ -68,6 +90,7 @@ const _cacheKeyHasExpired = (
 const lowLevelDoMaintenance = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
 ): LimitedCacheMeta<ItemType> => {
+  upgradeCacheMeta(cacheMeta);
   const { cache, keyList, keyTime } = cacheMeta;
   const now = dateNow();
 
@@ -190,6 +213,7 @@ const lowLevelRemove = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
   cacheKey: string,
 ): LimitedCacheMeta<ItemType> => {
+  upgradeCacheMeta(cacheMeta);
   if (cacheMeta.keyTime[cacheKey]) {
     if (cacheMeta.cache[cacheKey] !== undefined) {
       cacheMeta.cache = {
@@ -204,18 +228,21 @@ const lowLevelRemove = <ItemType = DefaultItemType>(
 
 const lowLevelReset = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
-): LimitedCacheMeta<ItemType> =>
-  objectAssign(cacheMeta, {
+): LimitedCacheMeta<ItemType> => {
+  upgradeCacheMeta(cacheMeta);
+  return objectAssign(cacheMeta, {
     cache: {},
     keyList: [],
     keyTime: objectCreate(null),
     opsLeft: cacheMeta.options.opLimit,
   });
+};
 
 const lowLevelHas = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
   cacheKey: string,
 ): boolean => {
+  upgradeCacheMeta(cacheMeta);
   const { cache } = cacheMeta;
   if (hasOwnProperty.call(cache, cacheKey) && cache[cacheKey] !== undefined) {
     if (!_cacheKeyHasExpired(cacheMeta, cacheKey, dateNow())) {
@@ -231,6 +258,7 @@ const lowLevelGetOne = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
   cacheKey: string,
 ): ItemType | undefined => {
+  upgradeCacheMeta(cacheMeta);
   if (lowLevelHas(cacheMeta, cacheKey)) {
     return cacheMeta.cache[cacheKey];
   }
@@ -240,6 +268,7 @@ const lowLevelGetOne = <ItemType = DefaultItemType>(
 const lowLevelGetAll = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
 ): Record<string, ItemType> => {
+  upgradeCacheMeta(cacheMeta);
   // Remove all expired values, and return whatever's left
   lowLevelDoMaintenance(cacheMeta);
   // Retype because there won't be any `undefined` values after doMaintenance
@@ -251,6 +280,8 @@ const lowLevelSet = <ItemType = DefaultItemType>(
   cacheKey: string,
   item: ItemType,
 ): LimitedCacheMeta<ItemType> => {
+  upgradeCacheMeta(cacheMeta);
+
   const now = dateNow();
   if (cacheMeta.cache[cacheKey] !== item) {
     // The cache itself is immutable (but the rest of cacheMeta is not)
@@ -287,6 +318,8 @@ const lowLevelSet = <ItemType = DefaultItemType>(
 };
 
 export {
+  isCacheMeta,
+  upgradeCacheMeta,
   lowLevelInit,
   lowLevelGetOne,
   lowLevelGetAll,

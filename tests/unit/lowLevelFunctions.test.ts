@@ -1,6 +1,8 @@
 /* eslint-env jest */
 import defaultOptions from '../../src/core/defaultOptions';
 import {
+  isCacheMeta,
+  upgradeCacheMeta,
   lowLevelInit,
   lowLevelGetOne,
   lowLevelGetAll,
@@ -12,7 +14,54 @@ import {
 import { LimitedCacheMeta } from '../../src/types';
 
 describe('lowLevelFunctions', () => {
+  describe('isCacheMeta', () => {
+    it('accepts cacheMeta shapes', () => {
+      expect(
+        // @ts-expect-error
+        isCacheMeta({
+          limitedCacheMetaVersion: 123,
+        }),
+      ).toBe(true);
+    });
+    it('rejects invalid cacheMeta shapes', () => {
+      expect(
+        // @ts-expect-error
+        isCacheMeta({
+          cache: {},
+        }),
+      ).toBe(false);
+    });
+  });
+
+  describe('upgradeCacheMeta', () => {
+    it('warns and upgrades if given an older, incompatible cacheMeta', () => {
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockReturnValueOnce();
+
+      const cacheMeta = lowLevelInit();
+      cacheMeta.limitedCacheMetaVersion = 1;
+      upgradeCacheMeta(cacheMeta);
+
+      expect(cacheMeta.limitedCacheMetaVersion).toEqual(2);
+
+      const consoleErrorCalls = consoleWarnSpy.mock.calls;
+      expect(consoleErrorCalls.length).toBe(1);
+    });
+
+    it('throws if given an invalid cacheMeta', () => {
+      expect(() => {
+        // @ts-expect-error
+        upgradeCacheMeta({
+          cache: {},
+        });
+      }).toThrowError();
+    });
+  });
+
   describe('lowLevelInit', () => {
+    beforeEach(() => {
+      jest.restoreAllMocks();
+    });
+
     it('clones the default options', () => {
       const myCacheMeta = lowLevelInit();
 
@@ -51,11 +100,33 @@ describe('lowLevelFunctions', () => {
         scanLimit: 20,
       });
     });
+
+    it('accepts an existing cacheMeta', () => {
+      const existingCacheMeta = lowLevelInit();
+      const myCacheMeta = lowLevelInit(existingCacheMeta);
+
+      expect(existingCacheMeta).toEqual(myCacheMeta);
+    });
+
+    it('warns and upgrades if given an older, incompatible cacheMeta', () => {
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockReturnValueOnce();
+
+      const existingCacheMeta = lowLevelInit();
+      existingCacheMeta.limitedCacheMetaVersion = 1;
+      const myCacheMeta = lowLevelInit(existingCacheMeta);
+
+      expect(existingCacheMeta).toEqual(myCacheMeta);
+      expect(existingCacheMeta.limitedCacheMetaVersion).toEqual(2);
+
+      const consoleErrorCalls = consoleWarnSpy.mock.calls;
+      expect(consoleErrorCalls.length).toBe(1);
+    });
   });
 
   describe('lowLevelHas', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
+      jest.restoreAllMocks();
       myCacheMeta = lowLevelInit({
         maxCacheTime: 1000,
       });
@@ -87,6 +158,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelGetOne', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
+      jest.restoreAllMocks();
       myCacheMeta = lowLevelInit({
         maxCacheTime: 1000,
       });
@@ -122,6 +194,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelGetAll', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
+      jest.restoreAllMocks();
       myCacheMeta = lowLevelInit({
         maxCacheTime: 1000,
       });
@@ -173,6 +246,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelSet', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
+      jest.restoreAllMocks();
       myCacheMeta = lowLevelInit({
         maxCacheTime: 1000,
       });
@@ -312,6 +386,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelRemove', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
+      jest.restoreAllMocks();
       myCacheMeta = lowLevelInit();
       myCacheMeta = lowLevelSet(myCacheMeta, 'abc', 123);
     });
@@ -340,6 +415,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelReset', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
+      jest.restoreAllMocks();
       myCacheMeta = lowLevelInit();
       myCacheMeta = lowLevelSet(myCacheMeta, 'abc', 123);
     });
