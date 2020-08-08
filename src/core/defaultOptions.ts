@@ -6,7 +6,7 @@ const defaultOptions: LimitedCacheOptionsReadonly = {
   maxCacheTime: 0,
   // Development-only
   warnIfItemPurgedBeforeTime: 5000,
-  // Development-only and private/secret
+  // Private
   autoMaintenanceCount: 500,
   numItemsToExamineForPurge: 20,
 };

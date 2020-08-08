@@ -13,7 +13,7 @@ export interface LimitedCacheOptionsFull {
   warnIfItemPurgedBeforeTime: number;
   /** (private) Internal cleanup of old keys will be performed after this many operations */
   autoMaintenanceCount: number;
-  /** (private) Internal optimization to adjust how much searching will be done to find expired items */
+  /** (private and dev only) Internal optimization to adjust how much searching will be done to find expired items */
   numItemsToExamineForPurge: number;
 }
 

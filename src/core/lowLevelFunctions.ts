@@ -38,7 +38,7 @@ const lowLevelInit = <ItemType = DefaultItemType>(
 ): LimitedCacheMeta<ItemType> => {
   // This is the cacheMeta. It is created once, and persists per instance
   const newCacheMeta = {
-    limitedCacheMetaVersion: 1,
+    limitedCacheMetaVersion: 2,
     options: normalizeOptions({ ...defaultOptions, ...options }),
     cache: {},
     recentCacheKeys: [],
