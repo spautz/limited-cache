@@ -18,7 +18,7 @@ describe('LimitedCache', () => {
       maxCacheTime: 456,
       warnIfItemPurgedBeforeTime: 789,
       opLimit: 10,
-      numItemsToExamineForPurge: 100,
+      scanLimit: 100,
     });
 
     expect(myCache).toBeTruthy();
@@ -119,8 +119,8 @@ describe('LimitedCache', () => {
         limitedCacheMetaVersion: 2,
         options: defaultOptions,
         cache: {},
-        recentCacheKeys: [],
-        cacheKeyTimestamps: {},
+        keyList: [],
+        keyTime: {},
         opsLeft: 200,
       });
     });
@@ -137,7 +137,7 @@ describe('LimitedCache', () => {
         maxCacheTime: 456,
         warnIfItemPurgedBeforeTime: 789,
         opLimit: 10,
-        numItemsToExamineForPurge: 100,
+        scanLimit: 100,
       });
 
       expect(result).toEqual({
@@ -146,7 +146,7 @@ describe('LimitedCache', () => {
         maxCacheTime: 456,
         warnIfItemPurgedBeforeTime: 789,
         opLimit: 10,
-        numItemsToExamineForPurge: 100,
+        scanLimit: 100,
       });
     });
 
@@ -156,7 +156,7 @@ describe('LimitedCache', () => {
         maxCacheTime: 456,
         warnIfItemPurgedBeforeTime: 789,
         opLimit: 10,
-        numItemsToExamineForPurge: 100,
+        scanLimit: 100,
       });
       const result = myCache.getOptions();
 
@@ -166,7 +166,7 @@ describe('LimitedCache', () => {
         maxCacheTime: 456,
         warnIfItemPurgedBeforeTime: 789,
         opLimit: 10,
-        numItemsToExamineForPurge: 100,
+        scanLimit: 100,
       });
     });
 

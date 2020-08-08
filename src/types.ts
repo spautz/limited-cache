@@ -13,8 +13,8 @@ export interface LimitedCacheOptionsFull {
   warnIfItemPurgedBeforeTime: number;
   /** (private) Internal cleanup of old keys will be performed after this many operations */
   opLimit: number;
-  /** (private and dev only) Internal optimization to adjust how much searching will be done to find expired items, to avoid being O(n) */
-  numItemsToExamineForPurge: number;
+  /** (private) Internal optimization to adjust how much searching will be done to find expired items, to avoid being O(n) */
+  scanLimit: number;
 }
 
 export type LimitedCacheOptions = Partial<LimitedCacheOptionsFull> | null;
@@ -58,9 +58,9 @@ export interface LimitedCacheMeta<ItemType = DefaultItemType> {
   /** The values in the cache, stored by key. Will include old keys not yet garbage collected */
   cache: Record<string, ItemType | undefined>;
   /** List of keys that have been set, in chronological order. Used to find cache items most likely to be expired */
-  recentCacheKeys: Array<string>;
+  keyList: Array<string>;
   /** The timestamps for keys that have been set. Used to identify whether they have actually expired */
-  cacheKeyTimestamps: { [propName: string]: number | undefined };
+  keyTime: { [propName: string]: number | undefined };
   /** Number of operations remaining until internal cleanup of old keys is performed. Based on options.opLimit */
   opsLeft: number;
 }

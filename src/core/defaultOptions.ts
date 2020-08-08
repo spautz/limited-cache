@@ -8,7 +8,7 @@ const defaultOptions: LimitedCacheOptionsReadonly = {
   warnIfItemPurgedBeforeTime: 5000,
   // Private
   opLimit: 200,
-  numItemsToExamineForPurge: 20,
+  scanLimit: 20,
 };
 
 export default defaultOptions;

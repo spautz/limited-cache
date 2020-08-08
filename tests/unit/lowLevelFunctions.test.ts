@@ -26,7 +26,7 @@ describe('lowLevelFunctions', () => {
         maxCacheTime: 456,
         warnIfItemPurgedBeforeTime: 789,
         opLimit: 10,
-        numItemsToExamineForPurge: 100,
+        scanLimit: 100,
       };
 
       const myCacheMeta = lowLevelInit(myOptions);
@@ -48,7 +48,7 @@ describe('lowLevelFunctions', () => {
         maxCacheTime: 456,
         warnIfItemPurgedBeforeTime: 5000,
         opLimit: 200,
-        numItemsToExamineForPurge: 20,
+        scanLimit: 20,
       });
     });
   });
@@ -69,7 +69,7 @@ describe('lowLevelFunctions', () => {
 
     it('has a present key', () => {
       myCacheMeta.cache['abc'] = 123;
-      myCacheMeta.cacheKeyTimestamps['abc'] = Date.now();
+      myCacheMeta.keyTime['abc'] = Date.now();
       const result = lowLevelHas(myCacheMeta, 'abc');
 
       expect(result).toBe(true);
@@ -77,7 +77,7 @@ describe('lowLevelFunctions', () => {
 
     it('has an expired key', () => {
       myCacheMeta.cache['abc'] = 123;
-      myCacheMeta.cacheKeyTimestamps['abc'] = 1;
+      myCacheMeta.keyTime['abc'] = 1;
       const result = lowLevelHas(myCacheMeta, 'abc');
 
       expect(result).toBe(false);
@@ -101,8 +101,8 @@ describe('lowLevelFunctions', () => {
     it('get a present key', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
-      myCacheMeta.cacheKeyTimestamps['abc'] = Date.now();
-      myCacheMeta.recentCacheKeys = ['abc'];
+      myCacheMeta.keyList = ['abc'];
+      myCacheMeta.keyTime['abc'] = Date.now();
       const result = lowLevelGetOne(myCacheMeta, 'abc');
 
       expect(result).toEqual(123);
@@ -111,8 +111,8 @@ describe('lowLevelFunctions', () => {
     it('get an expired key', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
-      myCacheMeta.cacheKeyTimestamps['abc'] = 1;
-      myCacheMeta.recentCacheKeys = ['abc'];
+      myCacheMeta.keyList = ['abc'];
+      myCacheMeta.keyTime['abc'] = 1;
       const result = lowLevelGetOne(myCacheMeta, 'abc');
 
       expect(result).toEqual(undefined);
@@ -137,9 +137,9 @@ describe('lowLevelFunctions', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cache['def'] = 456;
-      myCacheMeta.cacheKeyTimestamps['abc'] = Date.now();
-      myCacheMeta.cacheKeyTimestamps['def'] = Date.now();
-      myCacheMeta.recentCacheKeys = ['abc', 'def'];
+      myCacheMeta.keyList = ['abc', 'def'];
+      myCacheMeta.keyTime['abc'] = Date.now();
+      myCacheMeta.keyTime['def'] = Date.now();
       const result = lowLevelGetAll(myCacheMeta);
 
       expect(result).toEqual({ abc: 123, def: 456 });
@@ -149,9 +149,9 @@ describe('lowLevelFunctions', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cache['def'] = 456;
-      myCacheMeta.cacheKeyTimestamps['abc'] = 1;
-      myCacheMeta.cacheKeyTimestamps['def'] = 1;
-      myCacheMeta.recentCacheKeys = ['abc', 'def'];
+      myCacheMeta.keyList = ['abc', 'def'];
+      myCacheMeta.keyTime['abc'] = 1;
+      myCacheMeta.keyTime['def'] = 1;
       const result = lowLevelGetAll(myCacheMeta);
 
       expect(result).toEqual({});
@@ -161,9 +161,9 @@ describe('lowLevelFunctions', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cache['def'] = 456;
-      myCacheMeta.cacheKeyTimestamps['abc'] = 1;
-      myCacheMeta.cacheKeyTimestamps['def'] = Date.now();
-      myCacheMeta.recentCacheKeys = ['abc', 'def'];
+      myCacheMeta.keyList = ['abc', 'def'];
+      myCacheMeta.keyTime['abc'] = 1;
+      myCacheMeta.keyTime['def'] = Date.now();
       const result = lowLevelGetAll(myCacheMeta);
 
       expect(result).toEqual({ def: 456 });
