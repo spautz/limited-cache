@@ -10,10 +10,11 @@ const timeoutPromise = (): Promise<null> =>
 describe('maxCacheSize scenarios', () => {
   let myCache: LimitedCacheInstance;
   beforeEach(() => {
+    jest.restoreAllMocks();
     myCache = LimitedCache({
       maxCacheSize: 20,
       maxCacheTime: Number.MAX_SAFE_INTEGER,
-      autoMaintenanceCount: Number.MAX_SAFE_INTEGER,
+      opLimit: Number.MAX_SAFE_INTEGER,
       warnIfItemPurgedBeforeTime: 0,
     });
   });
@@ -76,7 +77,7 @@ describe('maxCacheSize scenarios', () => {
     myCache = LimitedCache({
       maxCacheSize: 5,
       maxCacheTime: CACHE_TIMEOUT,
-      autoMaintenanceCount: Number.MAX_SAFE_INTEGER,
+      opLimit: Number.MAX_SAFE_INTEGER,
     });
 
     // Fill the cache
@@ -98,7 +99,7 @@ describe('maxCacheSize scenarios', () => {
     myCache = LimitedCache({
       maxCacheSize: 5,
       maxCacheTime: 1000,
-      autoMaintenanceCount: Number.MAX_SAFE_INTEGER,
+      opLimit: Number.MAX_SAFE_INTEGER,
       warnIfItemPurgedBeforeTime: 1000,
     });
 

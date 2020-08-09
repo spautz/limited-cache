@@ -16,8 +16,8 @@ describe('LimitedCacheObject', () => {
       maxCacheSize: 123,
       maxCacheTime: 456,
       warnIfItemPurgedBeforeTime: 789,
-      autoMaintenanceCount: 10,
-      numItemsToExamineForPurge: 100,
+      opLimit: 10,
+      scanLimit: 100,
     });
 
     expect(myCache).toBeTruthy();

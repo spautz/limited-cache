@@ -6,9 +6,9 @@ const defaultOptions: LimitedCacheOptionsReadonly = {
   maxCacheTime: 0,
   // Development-only
   warnIfItemPurgedBeforeTime: 5000,
-  // Development-only and private/secret
-  autoMaintenanceCount: 500,
-  numItemsToExamineForPurge: 20,
+  // Private
+  opLimit: 200,
+  scanLimit: 20,
 };
 
 export default defaultOptions;

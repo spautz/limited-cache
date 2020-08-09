@@ -3,11 +3,13 @@
   "version": "0.5.1",
   "description": "A minimal JS cache: like using an object, except it won't grow forever",
   "keywords": [
-    "cache",
     "limited cache",
+    "cache",
     "circular buffer",
-    "rotating cache",
     "max size",
+    "rotating cache",
+    "offline cache",
+    "local storage",
     "autoexpire"
   ],
   "license": "MIT",

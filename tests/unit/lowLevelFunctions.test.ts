@@ -1,6 +1,8 @@
 /* eslint-env jest */
 import defaultOptions from '../../src/core/defaultOptions';
 import {
+  isCacheMeta,
+  upgradeCacheMeta,
   lowLevelInit,
   lowLevelGetOne,
   lowLevelGetAll,
@@ -12,7 +14,54 @@ import {
 import { LimitedCacheMeta } from '../../src/types';
 
 describe('lowLevelFunctions', () => {
+  describe('isCacheMeta', () => {
+    it('accepts cacheMeta shapes', () => {
+      expect(
+        // @ts-expect-error
+        isCacheMeta({
+          limitedCacheMetaVersion: 123,
+        }),
+      ).toBe(true);
+    });
+    it('rejects invalid cacheMeta shapes', () => {
+      expect(
+        // @ts-expect-error
+        isCacheMeta({
+          cache: {},
+        }),
+      ).toBe(false);
+    });
+  });
+
+  describe('upgradeCacheMeta', () => {
+    it('warns and upgrades if given an older, incompatible cacheMeta', () => {
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockReturnValueOnce();
+
+      const cacheMeta = lowLevelInit();
+      cacheMeta.limitedCacheMetaVersion = 1;
+      upgradeCacheMeta(cacheMeta);
+
+      expect(cacheMeta.limitedCacheMetaVersion).toEqual(2);
+
+      const consoleErrorCalls = consoleWarnSpy.mock.calls;
+      expect(consoleErrorCalls.length).toBe(1);
+    });
+
+    it('throws if given an invalid cacheMeta', () => {
+      expect(() => {
+        // @ts-expect-error
+        upgradeCacheMeta({
+          cache: {},
+        });
+      }).toThrowError();
+    });
+  });
+
   describe('lowLevelInit', () => {
+    beforeEach(() => {
+      jest.restoreAllMocks();
+    });
+
     it('clones the default options', () => {
       const myCacheMeta = lowLevelInit();
 
@@ -25,8 +74,8 @@ describe('lowLevelFunctions', () => {
         maxCacheSize: 123,
         maxCacheTime: 456,
         warnIfItemPurgedBeforeTime: 789,
-        autoMaintenanceCount: 10,
-        numItemsToExamineForPurge: 100,
+        opLimit: 10,
+        scanLimit: 100,
       };
 
       const myCacheMeta = lowLevelInit(myOptions);
@@ -47,15 +96,37 @@ describe('lowLevelFunctions', () => {
         maxCacheSize: 123,
         maxCacheTime: 456,
         warnIfItemPurgedBeforeTime: 5000,
-        autoMaintenanceCount: 500,
-        numItemsToExamineForPurge: 20,
+        opLimit: 200,
+        scanLimit: 20,
       });
+    });
+
+    it('accepts an existing cacheMeta', () => {
+      const existingCacheMeta = lowLevelInit();
+      const myCacheMeta = lowLevelInit(existingCacheMeta);
+
+      expect(existingCacheMeta).toEqual(myCacheMeta);
+    });
+
+    it('warns and upgrades if given an older, incompatible cacheMeta', () => {
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockReturnValueOnce();
+
+      const existingCacheMeta = lowLevelInit();
+      existingCacheMeta.limitedCacheMetaVersion = 1;
+      const myCacheMeta = lowLevelInit(existingCacheMeta);
+
+      expect(existingCacheMeta).toEqual(myCacheMeta);
+      expect(existingCacheMeta.limitedCacheMetaVersion).toEqual(2);
+
+      const consoleErrorCalls = consoleWarnSpy.mock.calls;
+      expect(consoleErrorCalls.length).toBe(1);
     });
   });
 
   describe('lowLevelHas', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
+      jest.restoreAllMocks();
       myCacheMeta = lowLevelInit({
         maxCacheTime: 1000,
       });
@@ -69,7 +140,7 @@ describe('lowLevelFunctions', () => {
 
     it('has a present key', () => {
       myCacheMeta.cache['abc'] = 123;
-      myCacheMeta.cacheKeyTimestamps['abc'] = Date.now();
+      myCacheMeta.keyTime['abc'] = Date.now();
       const result = lowLevelHas(myCacheMeta, 'abc');
 
       expect(result).toBe(true);
@@ -77,7 +148,7 @@ describe('lowLevelFunctions', () => {
 
     it('has an expired key', () => {
       myCacheMeta.cache['abc'] = 123;
-      myCacheMeta.cacheKeyTimestamps['abc'] = 1;
+      myCacheMeta.keyTime['abc'] = 1;
       const result = lowLevelHas(myCacheMeta, 'abc');
 
       expect(result).toBe(false);
@@ -87,6 +158,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelGetOne', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
+      jest.restoreAllMocks();
       myCacheMeta = lowLevelInit({
         maxCacheTime: 1000,
       });
@@ -101,8 +173,8 @@ describe('lowLevelFunctions', () => {
     it('get a present key', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
-      myCacheMeta.cacheKeyTimestamps['abc'] = Date.now();
-      myCacheMeta.recentCacheKeys = ['abc'];
+      myCacheMeta.keyList = ['abc'];
+      myCacheMeta.keyTime['abc'] = Date.now();
       const result = lowLevelGetOne(myCacheMeta, 'abc');
 
       expect(result).toEqual(123);
@@ -111,8 +183,8 @@ describe('lowLevelFunctions', () => {
     it('get an expired key', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
-      myCacheMeta.cacheKeyTimestamps['abc'] = 1;
-      myCacheMeta.recentCacheKeys = ['abc'];
+      myCacheMeta.keyList = ['abc'];
+      myCacheMeta.keyTime['abc'] = 1;
       const result = lowLevelGetOne(myCacheMeta, 'abc');
 
       expect(result).toEqual(undefined);
@@ -122,6 +194,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelGetAll', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
+      jest.restoreAllMocks();
       myCacheMeta = lowLevelInit({
         maxCacheTime: 1000,
       });
@@ -137,9 +210,9 @@ describe('lowLevelFunctions', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cache['def'] = 456;
-      myCacheMeta.cacheKeyTimestamps['abc'] = Date.now();
-      myCacheMeta.cacheKeyTimestamps['def'] = Date.now();
-      myCacheMeta.recentCacheKeys = ['abc', 'def'];
+      myCacheMeta.keyList = ['abc', 'def'];
+      myCacheMeta.keyTime['abc'] = Date.now();
+      myCacheMeta.keyTime['def'] = Date.now();
       const result = lowLevelGetAll(myCacheMeta);
 
       expect(result).toEqual({ abc: 123, def: 456 });
@@ -149,9 +222,9 @@ describe('lowLevelFunctions', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cache['def'] = 456;
-      myCacheMeta.cacheKeyTimestamps['abc'] = 1;
-      myCacheMeta.cacheKeyTimestamps['def'] = 1;
-      myCacheMeta.recentCacheKeys = ['abc', 'def'];
+      myCacheMeta.keyList = ['abc', 'def'];
+      myCacheMeta.keyTime['abc'] = 1;
+      myCacheMeta.keyTime['def'] = 1;
       const result = lowLevelGetAll(myCacheMeta);
 
       expect(result).toEqual({});
@@ -161,9 +234,9 @@ describe('lowLevelFunctions', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cache['def'] = 456;
-      myCacheMeta.cacheKeyTimestamps['abc'] = 1;
-      myCacheMeta.cacheKeyTimestamps['def'] = Date.now();
-      myCacheMeta.recentCacheKeys = ['abc', 'def'];
+      myCacheMeta.keyList = ['abc', 'def'];
+      myCacheMeta.keyTime['abc'] = 1;
+      myCacheMeta.keyTime['def'] = Date.now();
       const result = lowLevelGetAll(myCacheMeta);
 
       expect(result).toEqual({ def: 456 });
@@ -173,6 +246,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelSet', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
+      jest.restoreAllMocks();
       myCacheMeta = lowLevelInit({
         maxCacheTime: 1000,
       });
@@ -208,7 +282,7 @@ describe('lowLevelFunctions', () => {
       myCacheMeta = lowLevelInit({
         maxCacheSize: 5,
         maxCacheTime: 1000,
-        autoMaintenanceCount: Number.MAX_SAFE_INTEGER,
+        opLimit: Number.MAX_SAFE_INTEGER,
         warnIfItemPurgedBeforeTime: 0,
       });
 
@@ -265,7 +339,7 @@ describe('lowLevelFunctions', () => {
       myCacheMeta = lowLevelInit({
         maxCacheSize: 10,
         maxCacheTime: 1000,
-        autoMaintenanceCount: 1,
+        opLimit: 1,
       });
 
       // Automaintenance should be done after 10 "set" actions (i.e., on the 11th)
@@ -312,6 +386,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelRemove', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
+      jest.restoreAllMocks();
       myCacheMeta = lowLevelInit();
       myCacheMeta = lowLevelSet(myCacheMeta, 'abc', 123);
     });
@@ -340,6 +415,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelReset', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
+      jest.restoreAllMocks();
       myCacheMeta = lowLevelInit();
       myCacheMeta = lowLevelSet(myCacheMeta, 'abc', 123);
     });

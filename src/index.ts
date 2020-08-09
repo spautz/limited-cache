@@ -1,5 +1,4 @@
 export { default as defaultOptions } from './core/defaultOptions';
-export * from './core/defaultOptions';
 
 export { default as LimitedCache } from './core/LimitedCache';
 export * from './core/LimitedCache';
