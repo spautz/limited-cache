@@ -3,7 +3,7 @@ import { LimitedCacheObject, LimitedCacheObjectInstance } from '../src';
 
 // To avoid race conditions or timing issues, since some expect() checks can take 10+ ms when busy,
 // we use a long cache timeout even for 'immediate' expiration, and use delays slightly longer than that
-const CACHE_TIMEOUT = 40;
+const CACHE_TIMEOUT = 25;
 const timeoutPromise = (): Promise<null> =>
   new Promise((resolve) => setTimeout(resolve, CACHE_TIMEOUT + 2));
 

@@ -60,10 +60,8 @@ export interface LimitedCacheMeta<ItemType = DefaultItemType> {
   cache: Record<string, ItemType | undefined>;
   /** List of keys that have been set, in chronological order. Used to find cache items most likely to be expired */
   keyList: Array<string>;
-  /** The expiration times for keys that have been set. 0 means it's been removed already. */
-  keyExps: Record<string, number>;
+  /** The [setTime, expirationTime] for each key that has been set. Removed on unset. */
+  keyInfo: Record<string, [number, number] | undefined>;
   /** Number of operations remaining until internal cleanup of old keys is performed. Based on options.opLimit */
   opsLeft: number;
-  /** (dev only) Timestamps for each key's last set. Used for warnIfItemPurgedBeforeTime. */
-  keySets: Record<string, number>;
 }

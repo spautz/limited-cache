@@ -134,23 +134,22 @@ describe('lowLevelFunctions', () => {
 
     it('has a missing key', () => {
       const result = lowLevelHas(myCacheMeta, 'abc');
-
       expect(result).toBe(false);
     });
 
     it('has a present key', () => {
       myCacheMeta.cache['abc'] = 123;
-      myCacheMeta.keyExps['abc'] = Date.now();
-      const result = lowLevelHas(myCacheMeta, 'abc');
+      myCacheMeta.keyInfo['abc'] = [Date.now(), 0];
 
+      const result = lowLevelHas(myCacheMeta, 'abc');
       expect(result).toBe(true);
     });
 
     it('has an expired key', () => {
       myCacheMeta.cache['abc'] = 123;
-      myCacheMeta.keyExps['abc'] = 1;
-      const result = lowLevelHas(myCacheMeta, 'abc');
+      myCacheMeta.keyInfo['abc'] = [1, 0];
 
+      const result = lowLevelHas(myCacheMeta, 'abc');
       expect(result).toBe(false);
     });
   });
@@ -166,7 +165,6 @@ describe('lowLevelFunctions', () => {
 
     it('get a missing key', () => {
       const result = lowLevelGetOne(myCacheMeta, 'abc');
-
       expect(result).toBeUndefined();
     });
 
@@ -174,9 +172,9 @@ describe('lowLevelFunctions', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.keyList = ['abc'];
-      myCacheMeta.keyExps['abc'] = Date.now();
-      const result = lowLevelGetOne(myCacheMeta, 'abc');
+      myCacheMeta.keyInfo['abc'] = [Date.now(), 0];
 
+      const result = lowLevelGetOne(myCacheMeta, 'abc');
       expect(result).toEqual(123);
     });
 
@@ -184,9 +182,9 @@ describe('lowLevelFunctions', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.keyList = ['abc'];
-      myCacheMeta.keyExps['abc'] = 1;
-      const result = lowLevelGetOne(myCacheMeta, 'abc');
+      myCacheMeta.keyInfo['abc'] = [1, 0];
 
+      const result = lowLevelGetOne(myCacheMeta, 'abc');
       expect(result).toEqual(undefined);
     });
   });
@@ -202,7 +200,6 @@ describe('lowLevelFunctions', () => {
 
     it('get all when empty', () => {
       const result = lowLevelGetAll(myCacheMeta);
-
       expect(result).toEqual({});
     });
 
@@ -211,10 +208,10 @@ describe('lowLevelFunctions', () => {
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cache['def'] = 456;
       myCacheMeta.keyList = ['abc', 'def'];
-      myCacheMeta.keyExps['abc'] = Date.now();
-      myCacheMeta.keyExps['def'] = Date.now();
-      const result = lowLevelGetAll(myCacheMeta);
+      myCacheMeta.keyInfo['abc'] = [Date.now(), 0];
+      myCacheMeta.keyInfo['def'] = [Date.now(), 0];
 
+      const result = lowLevelGetAll(myCacheMeta);
       expect(result).toEqual({ abc: 123, def: 456 });
     });
 
@@ -223,10 +220,10 @@ describe('lowLevelFunctions', () => {
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cache['def'] = 456;
       myCacheMeta.keyList = ['abc', 'def'];
-      myCacheMeta.keyExps['abc'] = 1;
-      myCacheMeta.keyExps['def'] = 1;
-      const result = lowLevelGetAll(myCacheMeta);
+      myCacheMeta.keyInfo['abc'] = [1, 0];
+      myCacheMeta.keyInfo['def'] = [1, 0];
 
+      const result = lowLevelGetAll(myCacheMeta);
       expect(result).toEqual({});
     });
 
@@ -235,10 +232,10 @@ describe('lowLevelFunctions', () => {
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cache['def'] = 456;
       myCacheMeta.keyList = ['abc', 'def'];
-      myCacheMeta.keyExps['abc'] = 1;
-      myCacheMeta.keyExps['def'] = Date.now();
-      const result = lowLevelGetAll(myCacheMeta);
+      myCacheMeta.keyInfo['abc'] = [1, 0];
+      myCacheMeta.keyInfo['def'] = [Date.now(), 0];
 
+      const result = lowLevelGetAll(myCacheMeta);
       expect(result).toEqual({ def: 456 });
     });
   });

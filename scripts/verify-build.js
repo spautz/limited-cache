@@ -24,6 +24,7 @@ const {
   lowLevelSet,
   lowLevelSetOptions,
   CURRENT_META_VERSION,
+  MAXIMUM_CACHE_TIME,
   ...unrecognizedExports
 } = require('../');
 
@@ -44,6 +45,7 @@ const exportsToCheck = {
   lowLevelSet,
   lowLevelSetOptions,
   CURRENT_META_VERSION,
+  MAXIMUM_CACHE_TIME,
 };
 Object.keys(exportsToCheck).forEach((exportName) => {
   if (!exportsToCheck[exportName]) {
@@ -53,6 +55,7 @@ Object.keys(exportsToCheck).forEach((exportName) => {
       limitedCacheUtil,
       defaultOptions,
       CURRENT_META_VERSION,
+      MAXIMUM_CACHE_TIME,
       lowLevelFunctions: {
         lowLevelDoMaintenance,
         lowLevelGetOne,

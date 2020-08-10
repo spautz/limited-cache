@@ -1,6 +1,7 @@
 import { LimitedCacheOptionsReadonly } from '../types';
 
 const CURRENT_META_VERSION = 2;
+const MAXIMUM_CACHE_TIME = 365 * 86400 * 1000;
 
 const defaultOptions: LimitedCacheOptionsReadonly = {
   // Public
@@ -14,4 +15,4 @@ const defaultOptions: LimitedCacheOptionsReadonly = {
 };
 
 export default defaultOptions;
-export { CURRENT_META_VERSION };
+export { CURRENT_META_VERSION, MAXIMUM_CACHE_TIME };
