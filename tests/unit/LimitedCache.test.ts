@@ -130,8 +130,7 @@ describe('LimitedCache', () => {
         options: defaultOptions,
         cache: {},
         keyList: [],
-        keyExps: {},
-        keySets: {},
+        keyInfo: {},
         opsLeft: 200,
       });
     });
