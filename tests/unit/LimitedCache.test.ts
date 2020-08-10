@@ -32,77 +32,87 @@ describe('LimitedCache', () => {
 
     it('has: when missing', () => {
       const result = myCache.has('asdf');
-
       expect(result).toEqual(false);
     });
 
     it('has: when present', () => {
       myCache.set('abc', 123);
-      const result = myCache.has('abc');
 
+      const result = myCache.has('abc');
       expect(result).toEqual(true);
     });
 
     it('get: when missing', () => {
       const result = myCache.get('asdf');
-
       expect(result).toBeUndefined();
     });
 
     it('get: when present', () => {
       myCache.set('abc', 123);
-      const result = myCache.get('abc');
 
+      const result = myCache.get('abc');
       expect(result).toEqual(123);
     });
 
     it('getAll: when empty', () => {
       const result = myCache.getAll();
-
       expect(result).toEqual({});
     });
 
     it('getAll: when present', () => {
       myCache.set('abc', 123);
-      const result = myCache.getAll();
 
+      const result = myCache.getAll();
       expect(result).toEqual({ abc: 123 });
     });
 
     it('set: when new', () => {
       const result = myCache.set('abc', 123);
-
       expect(result).toEqual(123);
     });
 
     it('set: when already present', () => {
       myCache.set('abc', 123);
-      const result = myCache.set('abc', 456);
 
+      const result = myCache.set('abc', 456);
       expect(result).toEqual(456);
     });
 
     it('remove and return value', () => {
       myCache.set('abc', 123);
-      const result = myCache.remove('abc');
 
+      const result = myCache.remove('abc');
       expect(result).toEqual(true);
     });
 
     it('remove, then check', () => {
       myCache.set('abc', 123);
       myCache.remove('abc');
-      const result = myCache.has('abc');
 
+      const result = myCache.has('abc');
       expect(result).toEqual(false);
     });
 
     it('remove, then get', () => {
       myCache.set('abc', 123);
       myCache.remove('abc');
-      const result = myCache.get('abc');
 
+      const result = myCache.get('abc');
       expect(result).toEqual(undefined);
+    });
+
+    it('remove undefined values', () => {
+      myCache.set('abc', 123);
+      myCache.remove('abc');
+
+      const result = myCache.get('abc');
+      expect(result).toEqual(undefined);
+
+      myCache.set('abc', undefined);
+      myCache.remove('abc');
+
+      const result2 = myCache.get('abc');
+      expect(result2).toEqual(undefined);
     });
   });
 
@@ -159,8 +169,8 @@ describe('LimitedCache', () => {
         opLimit: 10,
         scanLimit: 100,
       });
-      const result = myCache.getOptions();
 
+      const result = myCache.getOptions();
       expect(result).toEqual({
         ...defaultOptions,
         maxCacheSize: 123,
