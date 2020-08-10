@@ -62,7 +62,7 @@ describe('maxCacheTime scenarios', () => {
       maxCacheTime: Number.MAX_SAFE_INTEGER,
       maxCacheSize: 3,
       opLimit: Number.MAX_SAFE_INTEGER,
-      warnIfItemPurgedBeforeTime: 0,
+      // warnIfItemPurgedBeforeTime: 0,
     });
 
     myCache.abc = 123;
@@ -101,6 +101,12 @@ describe('maxCacheTime scenarios', () => {
     myCache.jkl = 321;
     myCache.mno = 654;
     myCache.abc = 1000;
+
+    // At this point nothing has been removed, since reusing 'abc' keeps us within maxCacheSize
+    expect(myCache.abc).toEqual(1000);
+    expect(myCache.def).toEqual(456);
+    expect(myCache.ghi).toEqual(789);
+
     await timeoutPromise();
 
     // Now, adding a new value (over maxCacheSize) should remove both of the remaining expired values

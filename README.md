@@ -81,14 +81,9 @@ import { LimitedCache, LimitedCacheObject, limitedCacheUtil } from 'limited-cach
 
 Number of key/value pairs to keep in the cache. Items will be removed to stay within the limit.
 
-#### `maxCacheTime` (milliseconds, default: 0)
+#### `maxCacheTime` (milliseconds, default: 1 day)
 
 Time after which an item is removed. Use a falsy value to disable.
-
-#### `warnIfItemPurgedBeforeTime` (milliseconds, default: 5000, development only)
-
-If an item rotates out of the cache before this time passes, emits a warning telling you increase the cache size.
-Use a falsy value to disable.
 
 ## Low-level functions
 

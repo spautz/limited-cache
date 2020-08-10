@@ -15,7 +15,7 @@ describe('LimitedCacheObject', () => {
     const myCache: LimitedCacheObjectInstance = LimitedCacheObject({
       maxCacheSize: 123,
       maxCacheTime: 456,
-      warnIfItemPurgedBeforeTime: 789,
+      // warnIfItemPurgedBeforeTime: 999,
       opLimit: 10,
       scanLimit: 100,
     });

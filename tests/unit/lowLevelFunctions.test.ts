@@ -73,7 +73,7 @@ describe('lowLevelFunctions', () => {
       const myOptions = {
         maxCacheSize: 123,
         maxCacheTime: 456,
-        warnIfItemPurgedBeforeTime: 789,
+        // warnIfItemPurgedBeforeTime: 999,
         opLimit: 10,
         scanLimit: 100,
       };
@@ -95,9 +95,9 @@ describe('lowLevelFunctions', () => {
       expect(myCacheMeta.options).toEqual({
         maxCacheSize: 123,
         maxCacheTime: 456,
-        warnIfItemPurgedBeforeTime: 5000,
+        // warnIfItemPurgedBeforeTime: 5000,
         opLimit: 200,
-        scanLimit: 20,
+        scanLimit: 50,
       });
     });
 
@@ -140,7 +140,7 @@ describe('lowLevelFunctions', () => {
 
     it('has a present key', () => {
       myCacheMeta.cache['abc'] = 123;
-      myCacheMeta.keyTime['abc'] = Date.now();
+      myCacheMeta.keyExps['abc'] = Date.now();
       const result = lowLevelHas(myCacheMeta, 'abc');
 
       expect(result).toBe(true);
@@ -148,7 +148,7 @@ describe('lowLevelFunctions', () => {
 
     it('has an expired key', () => {
       myCacheMeta.cache['abc'] = 123;
-      myCacheMeta.keyTime['abc'] = 1;
+      myCacheMeta.keyExps['abc'] = 1;
       const result = lowLevelHas(myCacheMeta, 'abc');
 
       expect(result).toBe(false);
@@ -174,7 +174,7 @@ describe('lowLevelFunctions', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.keyList = ['abc'];
-      myCacheMeta.keyTime['abc'] = Date.now();
+      myCacheMeta.keyExps['abc'] = Date.now();
       const result = lowLevelGetOne(myCacheMeta, 'abc');
 
       expect(result).toEqual(123);
@@ -184,7 +184,7 @@ describe('lowLevelFunctions', () => {
       // Danger: Manually manipulating internals, because otherwise we can't test 'get' separately from 'set'
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.keyList = ['abc'];
-      myCacheMeta.keyTime['abc'] = 1;
+      myCacheMeta.keyExps['abc'] = 1;
       const result = lowLevelGetOne(myCacheMeta, 'abc');
 
       expect(result).toEqual(undefined);
@@ -211,8 +211,8 @@ describe('lowLevelFunctions', () => {
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cache['def'] = 456;
       myCacheMeta.keyList = ['abc', 'def'];
-      myCacheMeta.keyTime['abc'] = Date.now();
-      myCacheMeta.keyTime['def'] = Date.now();
+      myCacheMeta.keyExps['abc'] = Date.now();
+      myCacheMeta.keyExps['def'] = Date.now();
       const result = lowLevelGetAll(myCacheMeta);
 
       expect(result).toEqual({ abc: 123, def: 456 });
@@ -223,8 +223,8 @@ describe('lowLevelFunctions', () => {
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cache['def'] = 456;
       myCacheMeta.keyList = ['abc', 'def'];
-      myCacheMeta.keyTime['abc'] = 1;
-      myCacheMeta.keyTime['def'] = 1;
+      myCacheMeta.keyExps['abc'] = 1;
+      myCacheMeta.keyExps['def'] = 1;
       const result = lowLevelGetAll(myCacheMeta);
 
       expect(result).toEqual({});
@@ -235,8 +235,8 @@ describe('lowLevelFunctions', () => {
       myCacheMeta.cache['abc'] = 123;
       myCacheMeta.cache['def'] = 456;
       myCacheMeta.keyList = ['abc', 'def'];
-      myCacheMeta.keyTime['abc'] = 1;
-      myCacheMeta.keyTime['def'] = Date.now();
+      myCacheMeta.keyExps['abc'] = 1;
+      myCacheMeta.keyExps['def'] = Date.now();
       const result = lowLevelGetAll(myCacheMeta);
 
       expect(result).toEqual({ def: 456 });
@@ -283,7 +283,7 @@ describe('lowLevelFunctions', () => {
         maxCacheSize: 5,
         maxCacheTime: 1000,
         opLimit: Number.MAX_SAFE_INTEGER,
-        warnIfItemPurgedBeforeTime: 0,
+        // warnIfItemPurgedBeforeTime: 0,
       });
 
       // Set 5 items, then 5 more

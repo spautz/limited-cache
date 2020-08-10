@@ -16,7 +16,7 @@ describe('LimitedCache', () => {
     const myCache: LimitedCacheInstance = LimitedCache({
       maxCacheSize: 123,
       maxCacheTime: 456,
-      warnIfItemPurgedBeforeTime: 789,
+      // warnIfItemPurgedBeforeTime: 999,
       opLimit: 10,
       scanLimit: 100,
     });
@@ -120,7 +120,7 @@ describe('LimitedCache', () => {
         options: defaultOptions,
         cache: {},
         keyList: [],
-        keyTime: {},
+        keyExps: {},
         opsLeft: 200,
       });
     });
@@ -135,7 +135,7 @@ describe('LimitedCache', () => {
       const result = myCache.setOptions({
         maxCacheSize: 123,
         maxCacheTime: 456,
-        warnIfItemPurgedBeforeTime: 789,
+        // warnIfItemPurgedBeforeTime: 999,
         opLimit: 10,
         scanLimit: 100,
       });
@@ -144,7 +144,7 @@ describe('LimitedCache', () => {
         ...defaultOptions,
         maxCacheSize: 123,
         maxCacheTime: 456,
-        warnIfItemPurgedBeforeTime: 789,
+        // warnIfItemPurgedBeforeTime: 999,
         opLimit: 10,
         scanLimit: 100,
       });
@@ -154,7 +154,7 @@ describe('LimitedCache', () => {
       myCache.setOptions({
         maxCacheSize: 123,
         maxCacheTime: 456,
-        warnIfItemPurgedBeforeTime: 789,
+        // warnIfItemPurgedBeforeTime: 999,
         opLimit: 10,
         scanLimit: 100,
       });
@@ -164,7 +164,7 @@ describe('LimitedCache', () => {
         ...defaultOptions,
         maxCacheSize: 123,
         maxCacheTime: 456,
-        warnIfItemPurgedBeforeTime: 789,
+        // warnIfItemPurgedBeforeTime: 999,
         opLimit: 10,
         scanLimit: 100,
       });

@@ -9,8 +9,9 @@ export interface LimitedCacheOptionsFull {
   maxCacheSize: number;
   /** Items will be removed and never returned if they were set more than maxCacheTime milliseconds ago */
   maxCacheTime: number;
-  /** (dev only) A warning will be emitted if an item rotates out of the cache before this many milliseconds have passed, to indicate the size is too small */
-  warnIfItemPurgedBeforeTime: number;
+  // @TODO: Restore warnIfItemPurgedBeforeTime:
+  // /** (dev only) A warning will be emitted if an item rotates out of the cache before this many milliseconds have passed, to indicate the size is too small */
+  // warnIfItemPurgedBeforeTime: number;
   /** (private) Internal cleanup of old keys will be performed after this many operations */
   opLimit: number;
   /** (private) Internal optimization to adjust how much searching will be done to find expired items, to avoid being O(n) */
@@ -59,8 +60,8 @@ export interface LimitedCacheMeta<ItemType = DefaultItemType> {
   cache: Record<string, ItemType | undefined>;
   /** List of keys that have been set, in chronological order. Used to find cache items most likely to be expired */
   keyList: Array<string>;
-  /** The timestamps for keys that have been set. Used to identify whether they have actually expired */
-  keyTime: { [propName: string]: number | undefined };
+  /** The expiration times for keys that have been set. 0 means it's been removed already. */
+  keyExps: Record<string, number>;
   /** Number of operations remaining until internal cleanup of old keys is performed. Based on options.opLimit */
   opsLeft: number;
 }
