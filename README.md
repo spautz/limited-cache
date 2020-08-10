@@ -12,10 +12,10 @@ A minimal JS cache. Like using an object to store keys and values, except it won
 
 A plain Javascript object is often good enough for simple key-value caching.
 
-The problem is that a plain object cache can grow forever. This library adds a size limit, plus `maxCacheTime` and
-smarter removal of old items.
+The problem is that a plain object cache can grow forever -- especially if you persist it in local storage. This library
+adds a size limit, plus `maxCacheTime` and smarter removal of old items.
 
-## Example
+## Usage
 
 The plain API provides a standard cache interface:
 
@@ -55,7 +55,7 @@ return {
 };
 ```
 
-Typescript generics, if you want to define types for items in the cache:
+Typescript generics, if you want to define a type for items in the cache:
 
 ```typescript
 const stringCache = LimitedCache<string>();
@@ -84,6 +84,11 @@ Number of key/value pairs to keep in the cache. A falsy value will make it limit
 #### `maxCacheTime` (milliseconds, default: 1 day, max: 1 year)
 
 Time after which an item is removed. A falsy value will make it the 1-year maximum.
+
+#### `warnIfItemPurgedBeforeTime` (milliseconds, default: 5000, development only)
+
+If an item rotates out of the cache before this time passes, emits a warning to suggest you increase the cache size.
+Use a falsy value to disable.
 
 ## Low-level functions
 
