@@ -3,7 +3,7 @@ import { LimitedCacheObject, LimitedCacheObjectInstance } from '../src';
 
 // To avoid race conditions or timing issues, since some expect() checks can take 10+ ms when busy,
 // we use a long cache timeout even for 'immediate' expiration, and use delays slightly longer than that
-const CACHE_TIMEOUT = 20;
+const CACHE_TIMEOUT = 40;
 const timeoutPromise = (): Promise<null> =>
   new Promise((resolve) => setTimeout(resolve, CACHE_TIMEOUT + 2));
 
@@ -101,6 +101,12 @@ describe('maxCacheTime scenarios', () => {
     myCache.jkl = 321;
     myCache.mno = 654;
     myCache.abc = 1000;
+
+    // At this point nothing has been removed, since reusing 'abc' keeps us within maxCacheSize
+    expect(myCache.abc).toEqual(1000);
+    expect(myCache.def).toEqual(456);
+    expect(myCache.ghi).toEqual(789);
+
     await timeoutPromise();
 
     // Now, adding a new value (over maxCacheSize) should remove both of the remaining expired values
@@ -115,5 +121,30 @@ describe('maxCacheTime scenarios', () => {
     expect(myCache.mno).toEqual(654);
     expect(myCache.abc).toEqual(1000);
     expect(Object.keys(myCache)).toEqual(['abc', 'jkl', 'mno', 'newOne', 'newTwo']);
+  });
+
+  it('removes keys for already-removed items first', async () => {
+    myCache = LimitedCacheObject({
+      maxCacheTime: 0,
+      maxCacheSize: 5,
+      opLimit: Number.MAX_SAFE_INTEGER,
+      warnIfItemPurgedBeforeTime: 0,
+    });
+
+    // This first set will expire after the second set gets added
+    myCache.abc = 123;
+    myCache.def = 456;
+    myCache.ghi = 789;
+    myCache.jkl = 321;
+    myCache.mno = 654;
+    myCache.abc = 1000;
+
+    delete myCache.ghi;
+    delete myCache.jkl;
+
+    // Now, adding a new value (over maxCacheSize) should not remove anything else
+    myCache.newOne = 100;
+
+    expect(Object.keys(myCache)).toEqual(['abc', 'def', 'mno', 'newOne']);
   });
 });
