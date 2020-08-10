@@ -166,19 +166,17 @@ const _removeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void 
 
     // We only consider it if it's eligible for expiration: otherwise it can't be a better option
     // than the default head-of-queue
-    if (expireTimeForIndex) {
-      if (_cacheKeyHasExpired(cacheMeta, cacheKeyForIndex, now)) {
-        // We found an expired item! This wins automatically
-        oldestItemIndex = indexToCheck;
-        oldestItemKey = cacheKeyForIndex;
-        break;
-      }
-      if (!oldestItemExpireTime || expireTimeForIndex < oldestItemExpireTime) {
-        // We have a new leader
-        oldestItemIndex = indexToCheck;
-        oldestItemKey = cacheKeyForIndex;
-        oldestItemExpireTime = expireTimeForIndex;
-      }
+    if (_cacheKeyHasExpired(cacheMeta, cacheKeyForIndex, now)) {
+      // We found an expired item! This wins automatically
+      oldestItemIndex = indexToCheck;
+      oldestItemKey = cacheKeyForIndex;
+      break;
+    }
+    if (!oldestItemExpireTime || expireTimeForIndex < oldestItemExpireTime) {
+      // We have a new leader
+      oldestItemIndex = indexToCheck;
+      oldestItemKey = cacheKeyForIndex;
+      oldestItemExpireTime = expireTimeForIndex;
     }
     indexToCheck += 1;
   }

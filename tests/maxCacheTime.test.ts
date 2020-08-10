@@ -91,7 +91,6 @@ describe('maxCacheTime scenarios', () => {
       maxCacheTime: CACHE_TIMEOUT * 2,
       maxCacheSize: 5,
       opLimit: Number.MAX_SAFE_INTEGER,
-      // warnIfItemPurgedBeforeTime: 0,
     });
 
     // This first set will expire after the second set gets added
@@ -122,5 +121,30 @@ describe('maxCacheTime scenarios', () => {
     expect(myCache.mno).toEqual(654);
     expect(myCache.abc).toEqual(1000);
     expect(Object.keys(myCache)).toEqual(['abc', 'jkl', 'mno', 'newOne', 'newTwo']);
+  });
+
+  it('removes keys for already-removed items first', async () => {
+    myCache = LimitedCacheObject({
+      maxCacheTime: 0,
+      maxCacheSize: 5,
+      opLimit: Number.MAX_SAFE_INTEGER,
+      warnIfItemPurgedBeforeTime: 0,
+    });
+
+    // This first set will expire after the second set gets added
+    myCache.abc = 123;
+    myCache.def = 456;
+    myCache.ghi = 789;
+    myCache.jkl = 321;
+    myCache.mno = 654;
+    myCache.abc = 1000;
+
+    delete myCache.ghi;
+    delete myCache.jkl;
+
+    // Now, adding a new value (over maxCacheSize) should not remove anything else
+    myCache.newOne = 100;
+
+    expect(Object.keys(myCache)).toEqual(['abc', 'def', 'mno', 'newOne']);
   });
 });
