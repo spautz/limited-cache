@@ -3,7 +3,7 @@ import { LimitedCacheObject, LimitedCacheObjectInstance } from '../src';
 
 // To avoid race conditions or timing issues, since some expect() checks can take 10+ ms when busy,
 // we use a long cache timeout even for 'immediate' expiration, and use delays slightly longer than that
-const CACHE_TIMEOUT = 20;
+const CACHE_TIMEOUT = 40;
 const timeoutPromise = (): Promise<null> =>
   new Promise((resolve) => setTimeout(resolve, CACHE_TIMEOUT + 2));
 
@@ -62,7 +62,7 @@ describe('maxCacheTime scenarios', () => {
       maxCacheTime: Number.MAX_SAFE_INTEGER,
       maxCacheSize: 3,
       opLimit: Number.MAX_SAFE_INTEGER,
-      // warnIfItemPurgedBeforeTime: 0,
+      warnIfItemPurgedBeforeTime: 0,
     });
 
     myCache.abc = 123;
@@ -91,6 +91,7 @@ describe('maxCacheTime scenarios', () => {
       maxCacheTime: CACHE_TIMEOUT * 2,
       maxCacheSize: 5,
       opLimit: Number.MAX_SAFE_INTEGER,
+      // warnIfItemPurgedBeforeTime: 0,
     });
 
     // This first set will expire after the second set gets added

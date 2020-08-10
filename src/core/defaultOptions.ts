@@ -7,8 +7,7 @@ const defaultOptions: LimitedCacheOptionsReadonly = {
   maxCacheSize: 100,
   maxCacheTime: 86400 * 1000,
   // Development-only
-  // @TODO: Restore warnIfItemPurgedBeforeTime:
-  // warnIfItemPurgedBeforeTime: 5000,
+  warnIfItemPurgedBeforeTime: 5000,
   // Private
   opLimit: 200,
   scanLimit: 50,

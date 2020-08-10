@@ -73,7 +73,7 @@ describe('lowLevelFunctions', () => {
       const myOptions = {
         maxCacheSize: 123,
         maxCacheTime: 456,
-        // warnIfItemPurgedBeforeTime: 999,
+        warnIfItemPurgedBeforeTime: 999,
         opLimit: 10,
         scanLimit: 100,
       };
@@ -95,7 +95,7 @@ describe('lowLevelFunctions', () => {
       expect(myCacheMeta.options).toEqual({
         maxCacheSize: 123,
         maxCacheTime: 456,
-        // warnIfItemPurgedBeforeTime: 5000,
+        warnIfItemPurgedBeforeTime: 5000,
         opLimit: 200,
         scanLimit: 50,
       });
@@ -283,7 +283,7 @@ describe('lowLevelFunctions', () => {
         maxCacheSize: 5,
         maxCacheTime: 1000,
         opLimit: Number.MAX_SAFE_INTEGER,
-        // warnIfItemPurgedBeforeTime: 0,
+        warnIfItemPurgedBeforeTime: 0,
       });
 
       // Set 5 items, then 5 more

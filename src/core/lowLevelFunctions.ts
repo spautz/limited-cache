@@ -19,12 +19,11 @@ const normalizeOptions = (cacheMetaOptions: LimitedCacheOptionsFull): LimitedCac
     opLimit: positiveNumberOrZero(cacheMetaOptions.opLimit),
   });
 
-  // @TODO: Restore warnIfItemPurgedBeforeTime:
-  // if (process.env.NODE_ENV !== 'production') {
-  //   cacheMetaOptions.warnIfItemPurgedBeforeTime = positiveNumberOrZero(
-  //     cacheMetaOptions.warnIfItemPurgedBeforeTime,
-  //   );
-  // }
+  if (process.env.NODE_ENV !== 'production') {
+    cacheMetaOptions.warnIfItemPurgedBeforeTime = positiveNumberOrZero(
+      cacheMetaOptions.warnIfItemPurgedBeforeTime,
+    );
+  }
   return cacheMetaOptions;
 };
 
@@ -69,6 +68,10 @@ const lowLevelInit = <ItemType = DefaultItemType>(
     limitedCacheMetaVersion: CURRENT_META_VERSION,
     options: fullOptions,
   } as LimitedCacheMeta<ItemType>);
+
+  if (process.env.NODE_ENV !== 'production') {
+    newCacheMeta.keySets = objectCreate(null);
+  }
   return newCacheMeta;
 };
 
@@ -141,13 +144,15 @@ const _removeFromIndex = (cacheMeta: LimitedCacheMeta, startIndex: number, now: 
 
 const _removeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void => {
   const {
-    options: { scanLimit },
+    options: { scanLimit, warnIfItemPurgedBeforeTime },
+    cache,
     keyList,
     keyExps,
+    keySets,
   } = cacheMeta;
 
-  // These track the oldest thing we've found
-  // By default we'll remove the item at the head of the queue, unless we find something better
+  // These track the soonest-to-expire thing we've found. It may not actually be "oldest".
+  // By default we'll remove the item at the head of the queue, unless we find something better.
   let oldestItemIndex = 0;
   let oldestItemKey = keyList[0];
   let oldestItemExpireTime = keyExps[oldestItemKey];
@@ -165,6 +170,7 @@ const _removeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void 
       if (_cacheKeyHasExpired(cacheMeta, cacheKeyForIndex, now)) {
         // We found an expired item! This wins automatically
         oldestItemIndex = indexToCheck;
+        oldestItemKey = cacheKeyForIndex;
         break;
       }
       if (!oldestItemExpireTime || expireTimeForIndex < oldestItemExpireTime) {
@@ -177,30 +183,29 @@ const _removeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void 
     indexToCheck += 1;
   }
 
+  // Warn if the 'oldest' item is more recent than we'd like: this means it cycled into and out of
+  // cache too quickly for the cache to be useful.
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    warnIfItemPurgedBeforeTime &&
+    now - keySets[oldestItemKey] < warnIfItemPurgedBeforeTime &&
+    !_cacheKeyHasExpired(cacheMeta, oldestItemKey, now)
+  ) {
+    console.warn(
+      'Purged an item from cache while it was still fresh: you may want to increase maxCacheSize',
+      {
+        currentTime: now,
+        key: oldestItemKey,
+        item: cache[oldestItemKey],
+        expireTime: oldestItemExpireTime,
+        setTime: keySets[oldestItemKey],
+        timeInCache: now - keySets[oldestItemKey],
+      },
+    );
+  }
+
   // Remove the oldest item we found, plus any expired neighbors
   _removeFromIndex(cacheMeta, oldestItemIndex, now);
-
-  // @TODO: Restore warnIfItemPurgedBeforeTime:
-  // // Remove the oldest item -- but warn if it's more recent than we'd like
-  // if (
-  //   process.env.NODE_ENV !== 'production' &&
-  //   warnIfItemPurgedBeforeTime &&
-  //   oldestItemExpireTime &&
-  //   now - oldestItemExpireTime < warnIfItemPurgedBeforeTime
-  // ) {
-  //   console.warn(
-  //     'Purged an item from cache while it was still fresh: you may want to increase maxCacheSize',
-  //     {
-  //       currentTime: now,
-  //       key: oldestItemKey,
-  //       item: cache[oldestItemKey],
-  //       itemTime: oldestItemExpireTime,
-  //     },
-  //   );
-  // }
-  // cache[oldestItemKey] = undefined;
-  // keyList.splice(oldestItemIndex, 1);
-  // keyExps[oldestItemKey] = undefined;
 };
 
 /* Accessors */
@@ -253,6 +258,7 @@ const lowLevelSet = <ItemType = DefaultItemType>(
     options: { maxCacheSize, maxCacheTime },
     keyList,
     keyExps,
+    keySets,
   } = cacheMeta;
 
   const now = dateNow();
@@ -267,6 +273,11 @@ const lowLevelSet = <ItemType = DefaultItemType>(
   }
   // We've now set or updated it. Regardless of whether it's new, bump its expiration time
   keyExps[cacheKey] = maxCacheTime ? now + maxCacheTime : Number.MAX_SAFE_INTEGER;
+
+  // This is used for `warnIfItemPurgedBeforeTime`
+  if (process.env.NODE_ENV !== 'production') {
+    keySets[cacheKey] = now;
+  }
 
   if (isNew) {
     // It's a new key: grow the cache, then shrink it if we can
@@ -306,6 +317,7 @@ const lowLevelRemove = <ItemType = DefaultItemType>(
     }
     cacheMeta.keyExps[cacheKey] = 0;
   }
+
   return cacheMeta;
 };
 

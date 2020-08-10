@@ -10,8 +10,8 @@ export interface LimitedCacheOptionsFull {
   /** Items will be removed and never returned if they were set more than maxCacheTime milliseconds ago */
   maxCacheTime: number;
   // @TODO: Restore warnIfItemPurgedBeforeTime:
-  // /** (dev only) A warning will be emitted if an item rotates out of the cache before this many milliseconds have passed, to indicate the size is too small */
-  // warnIfItemPurgedBeforeTime: number;
+  /** (dev only) A warning will be emitted if an item rotates out of the cache before this many milliseconds have passed, to indicate the size is too small */
+  warnIfItemPurgedBeforeTime: number;
   /** (private) Internal cleanup of old keys will be performed after this many operations */
   opLimit: number;
   /** (private) Internal optimization to adjust how much searching will be done to find expired items, to avoid being O(n) */
@@ -64,4 +64,6 @@ export interface LimitedCacheMeta<ItemType = DefaultItemType> {
   keyExps: Record<string, number>;
   /** Number of operations remaining until internal cleanup of old keys is performed. Based on options.opLimit */
   opsLeft: number;
+  /** (dev only) Timestamps for each key's last set. Used for warnIfItemPurgedBeforeTime. */
+  keySets: Record<string, number>;
 }
