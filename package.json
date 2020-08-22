@@ -14,9 +14,15 @@
   ],
   "license": "MIT",
   "homepage": "https://github.com/spautz/limited-cache#readme",
-  "repository": "https://github.com/spautz/limited-cache",
   "bugs": "https://github.com/spautz/limited-cache/issues",
-  "author": "Steven Pautz <spautz@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spautz/limited-cache.git"
+  },
+  "author": {
+    "name": "Steven Pautz",
+    "url": "https://stevenpautz.com/"
+  },
   "files": [
     "dist/",
     "src/",

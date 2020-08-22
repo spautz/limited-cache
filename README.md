@@ -65,7 +65,7 @@ const offlineCacheMeta = lowLevelInit<SomeObjectShape>();
 
 **Note: The React hooks were removed in v1.0**
 [The code for `useLimitedCache` and `useLimitedCacheObject` is here](https://github.com/spautz/limited-cache/blob/v0.5.1/src/hooks.ts)
-if you want to implement them yourself.
+if you want to implement them yourself. For most cases, a `useMemo(() => LimitedCache(), []))` should be enough.
 
 ## Install and Import
 

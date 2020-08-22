@@ -9,7 +9,7 @@ features and additional options.
 
 There is now a new build system. As part of this, the React hooks and the `react` entry point have been removed.
 [The code for `useLimitedCache` and `useLimitedCacheObject` is here](https://github.com/spautz/limited-cache/blob/v0.5.1/src/hooks.ts)
-if you want to reimplement them yourself.
+if you want to reimplement them yourself. For most cases, a `useMemo(() => LimitedCache(), []))` should be enough.
 
 Other than the React hooks, there are no breaking changes to the public API or options. If you've used any undocumented
 internal features, however, then they may not work the same in v1.0.
