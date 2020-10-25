@@ -1,12 +1,13 @@
 {
   "name": "limited-cache",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A minimal JS cache: like using an object, except it won't grow forever",
   "keywords": [
     "limited cache",
     "cache",
     "circular buffer",
     "max size",
+    "max time",
     "rotating cache",
     "offline cache",
     "local storage",
