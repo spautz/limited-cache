@@ -21,14 +21,13 @@
   },
   "author": {
     "name": "Steven Pautz",
-    "url": "https://stevenpautz.com/"
+    "url": "http://stevenpautz.com/"
   },
   "files": [
     "dist/",
     "src/",
-    "CHANGELOG.md",
     "LICENSE",
-    "README.md"
+    "*.md"
   ],
   "source": "src/index.ts",
   "main": "dist/index.js",
@@ -54,7 +53,7 @@
     "ci": "yon run clean && yon run dev:readonly && yon run test:report",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
     "build": "tsdx build",
-    "build:clean": "rimraf dist/",
+    "build:clean": "rimraf ./dist",
     "build:verify": "node ./scripts/verify-build.js",
     "build:watch": "tsdx watch",
     "format": "prettier --write \"**/*.*\"",
@@ -62,23 +61,23 @@
     "lint": "tsdx lint . --max-warnings 0",
     "release:changelog": "standard-version --skip.commit --skip.tag --release-as ",
     "release:tag": "standard-version --commit-all --sign --skip.changelog --release-as ",
-    "test:clean": "rimraf coverage/",
+    "test:clean": "rimraf ./coverage",
     "test:nowatch": "tsdx test --coverage",
-    "test:report": "tsdx test --coverage && coveralls < coverage/lcov.info",
+    "test:report": "tsdx test --coverage && coveralls < ./coverage/lcov.info",
     "test:watch": "tsdx test --coverage --watch",
     "types": "tsc --noEmit --p tsconfig.json"
   },
   "dependencies": {},
   "devDependencies": {
-    "@types/jest": "26.0.14",
-    "@types/node": "14.11.2",
+    "@types/jest": "26.0.15",
+    "@types/node": "14.14.2",
     "coveralls": "3.1.0",
     "husky": "4.3.0",
-    "lint-staged": "10.4.0",
+    "lint-staged": "10.4.2",
     "rimraf": "3.0.2",
     "standard-version": "9.0.0",
-    "tsdx": "0.14.0",
-    "tslib": "2.0.1",
+    "tsdx": "0.14.1",
+    "tslib": "2.0.3",
     "typescript": "3.9.7",
     "yarn-or-npm": "3.0.1"
   },
