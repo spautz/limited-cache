@@ -21,14 +21,13 @@
   },
   "author": {
     "name": "Steven Pautz",
-    "url": "https://stevenpautz.com/"
+    "url": "http://stevenpautz.com/"
   },
   "files": [
     "dist/",
     "src/",
-    "CHANGELOG.md",
     "LICENSE",
-    "README.md"
+    "*.md"
   ],
   "source": "src/index.ts",
   "main": "dist/index.js",
@@ -54,17 +53,17 @@
     "ci": "yon run clean && yon run dev:readonly && yon run test:report",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
     "build": "tsdx build",
-    "build:clean": "rimraf dist/",
+    "build:clean": "rimraf ./dist",
     "build:verify": "node ./scripts/verify-build.js",
     "build:watch": "tsdx watch",
-    "format": "prettier --write \"**/*.*\"",
-    "format:verify": "prettier --list-different \"**/*.*\"",
+    "format": "prettier --write .",
+    "format:verify": "prettier --list-different .",
     "lint": "tsdx lint . --max-warnings 0",
     "release:changelog": "standard-version --skip.commit --skip.tag --release-as ",
     "release:tag": "standard-version --commit-all --sign --skip.changelog --release-as ",
-    "test:clean": "rimraf coverage/",
+    "test:clean": "rimraf ./coverage",
     "test:nowatch": "tsdx test --coverage",
-    "test:report": "tsdx test --coverage && coveralls < coverage/lcov.info",
+    "test:report": "tsdx test --coverage && coveralls < ./coverage/lcov.info",
     "test:watch": "tsdx test --coverage --watch",
     "types": "tsc --noEmit --p tsconfig.json"
   },
