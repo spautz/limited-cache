@@ -12,11 +12,11 @@ source scripts/helpers.sh
 # Halt running processes and local servers
 
 if command_exists killall; then
-  run_command killall node
+  run_command killall -v node || true
 fi
 
 if command_exists xcrun; then
-  run_command xcrun simctl shutdown all
+  run_command xcrun simctl shutdown all || true
 fi
 
 ##################################################################################################
