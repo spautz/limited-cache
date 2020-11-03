@@ -36,6 +36,10 @@
   "jsnext:main": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
+  "engines": {
+    "node": ">=10",
+    "yarn": "1.*"
+  },
   "scripts": {
     "____ LIFECYCLE HOOKS _______________________________________________": "",
     "prepare": "yon run build",
