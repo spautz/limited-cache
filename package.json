@@ -45,12 +45,13 @@
     "prepare": "yon run build",
     "prebuild": "yon run build:clean",
     "prerelease": "yon run build:clean",
-    "prepublishOnly": "yarn run dev:readonly && yarn run build",
+    "prepublishOnly": "yarn run dev:readonly && yarn run build && pinst --disable",
     "pretest": "yon run test:clean",
     "postbuild": "yon run build:verify",
+    "postinstall": "husky install",
+    "postpublish": "pinst --enable",
     "____ INTEGRATION ___________________________________________________": "",
     "clean": "yon run build:clean && yon run test:clean && rimraf node_modules/.cache/",
-    "test": "yon run test:nowatch",
     "dev": "yon run format && yon run types && yon run lint",
     "dev:readonly": "yon run format:verify && yon run types && yon run lint",
     "all": "yon run clean && yon run dev && yon run test:nowatch && yon run build",
@@ -64,23 +65,28 @@
     "format": "prettier --write \"**/*.*\"",
     "format:verify": "prettier --list-different \"**/*.*\"",
     "lint": "tsdx lint . --max-warnings 0",
+    "lint-staged": "lint-staged",
     "release:changelog": "standard-version --skip.commit --skip.tag --release-as ",
     "release:tag": "standard-version --commit-all --sign --skip.changelog --release-as ",
+    "test": "yon run test:coverage",
     "test:clean": "rimraf ./coverage",
-    "test:nowatch": "tsdx test --coverage",
+    "test:coverage": "tsdx test --coverage",
+    "test:nowatch": "tsdx test",
+    "test:watch": "tsdx test --watch",
+    "test:watchcoverage": "tsdx test --watchAll --coverage",
     "test:report": "tsdx test --coverage && coveralls < ./coverage/lcov.info",
-    "test:watch": "tsdx test --coverage --watch",
     "types": "tsc --noEmit --p tsconfig.json"
   },
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "26.0.20",
-    "@types/node": "14.14.20",
+    "@types/node": "14.14.31",
     "coveralls": "3.1.0",
-    "husky": "4.3.7",
-    "lint-staged": "10.5.3",
+    "husky": "5.1.0",
+    "lint-staged": "10.5.4",
+    "pinst": "2.1.4",
     "rimraf": "3.0.2",
-    "standard-version": "9.1.0",
+    "standard-version": "9.1.1",
     "tsdx": "0.14.1",
     "tslib": "2.1.0",
     "typescript": "3.9.7",
@@ -90,12 +96,6 @@
     "**/*.{css,html,js,jsx,json,less,md,scss,ts,tsx}": [
       "prettier --write"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "yon run dev:readonly"
-    }
   },
   "standard-version": {
     "scripts": {
