@@ -74,14 +74,12 @@
     "test:nowatch": "tsdx test",
     "test:watch": "tsdx test --watch",
     "test:watchcoverage": "tsdx test --watchAll --coverage",
-    "test:report": "tsdx test --coverage && coveralls < ./coverage/lcov.info",
     "types": "tsc --noEmit --p tsconfig.json"
   },
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "26.0.20",
     "@types/node": "14.14.31",
-    "coveralls": "3.1.0",
     "husky": "5.1.0",
     "lint-staged": "10.5.4",
     "pinst": "2.1.4",
