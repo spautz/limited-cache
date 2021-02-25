@@ -80,22 +80,22 @@
   "devDependencies": {
     "@types/jest": "26.0.20",
     "@types/node": "14.14.31",
-    "@typescript-eslint/eslint-plugin": "4.15.1",
-    "@typescript-eslint/parser": "4.15.1",
-    "husky": "5.1.0",
+    "@typescript-eslint/eslint-plugin": "4.15.2",
+    "@typescript-eslint/parser": "4.15.2",
+    "husky": "5.1.1",
     "lint-staged": "10.5.4",
-    "pinst": "2.1.4",
+    "pinst": "2.1.6",
     "rimraf": "3.0.2",
     "standard-version": "9.1.1",
     "tsdx": "0.14.1",
     "tslib": "2.1.0",
-    "typescript": "4.1.5",
+    "typescript": "4.2.2",
     "yarn-or-npm": "3.0.1"
   },
   "resolutions": {
-    "**/typescript": "^4.1.5",
-    "**/@typescript-eslint/eslint-plugin": "^4.15.1",
-    "**/@typescript-eslint/parser": "^4.15.1"
+    "**/typescript": "^4.2.2",
+    "**/@typescript-eslint/eslint-plugin": "^4.15.2",
+    "**/@typescript-eslint/parser": "^4.15.2"
   },
   "lint-staged": {
     "**/*.{css,html,js,jsx,json,less,md,scss,ts,tsx}": [
