@@ -34,7 +34,7 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "jsnext:main": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/types-latest/index.d.ts",
   "sideEffects": false,
   "engines": {
     "node": ">=10",
@@ -47,7 +47,7 @@
     "prerelease": "yon run build:clean",
     "prepublishOnly": "yarn run dev:readonly && yarn run build && pinst --disable",
     "pretest": "yon run test:clean",
-    "postbuild": "yon run build:verify",
+    "postbuild": "yon run build:types && yon run build:verify",
     "postinstall": "husky install",
     "postpublish": "pinst --enable",
     "____ INTEGRATION ___________________________________________________": "",
@@ -60,6 +60,10 @@
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
     "build": "tsdx build",
     "build:clean": "rimraf ./dist",
+    "build:types": "yon run build:types:3.1 && yon run build:types:3.8 && yon run build:types:4.0",
+    "build:types:3.1": "downlevel-dts dist/types-latest dist/types-3.1/ --to=3.1",
+    "build:types:3.8": "downlevel-dts dist/types-latest dist/types-3.8/ --to=3.8",
+    "build:types:4.0": "downlevel-dts dist/types-latest dist/types-4.0/ --to=4.0",
     "build:verify": "node ./scripts/verify-build.js",
     "build:watch": "tsdx watch",
     "format": "prettier --write \"**/*.*\"",
@@ -82,6 +86,7 @@
     "@types/node": "14.14.31",
     "@typescript-eslint/eslint-plugin": "4.15.2",
     "@typescript-eslint/parser": "4.15.2",
+    "downlevel-dts": "0.7.0",
     "husky": "5.1.1",
     "lint-staged": "10.5.4",
     "pinst": "2.1.6",
@@ -105,6 +110,28 @@
   "standard-version": {
     "scripts": {
       "postchangelog": "yon run format"
+    }
+  },
+  "typesVersions": {
+    ">=4.2": {
+      "*": [
+        "dist/types-latest/*"
+      ]
+    },
+    ">=4.0": {
+      "*": [
+        "dist/types-4.0/*"
+      ]
+    },
+    ">=3.9": {
+      "*": [
+        "dist/types-3.9/*"
+      ]
+    },
+    ">=3.1": {
+      "*": [
+        "dist/types-3.1/*"
+      ]
     }
   }
 }
