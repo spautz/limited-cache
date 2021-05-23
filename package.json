@@ -56,7 +56,6 @@
     "dev:readonly": "yon run format:verify && yon run types && yon run lint",
     "all": "yon run clean && yon run dev && yon run test:coverage && yon run build",
     "all:readonly": "yon run clean && yon run dev:readonly && yon run test:coverage",
-    "ci": "yon run clean && yon run dev:readonly && yon run test:report",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
     "build": "tsdx build",
     "build:clean": "rimraf ./dist",
