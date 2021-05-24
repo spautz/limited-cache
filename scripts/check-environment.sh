@@ -6,7 +6,7 @@ set -e
 # This script runs from the project root
 cd "$(dirname "$0")/.."
 
-source scripts/helpers.sh
+source ./scripts/helpers/helpers.sh
 
 ###################################################################################################
 # Check versions of Node, Yarn, and any other tools required
@@ -32,4 +32,4 @@ fi
 
 ###################################################################################################
 
-echo "All environment checks passed!"
+echo "Environment checks completed"

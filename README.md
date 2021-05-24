@@ -4,7 +4,7 @@ A minimal JS cache. Like using an object to store keys and values, except it won
 
 [![npm version](https://img.shields.io/npm/v/limited-cache.svg)](https://www.npmjs.com/package/limited-cache)
 [![build status](https://github.com/spautz/limited-cache/workflows/CI/badge.svg)](https://github.com/spautz/limited-cache/actions)
-[![dependencies status](https://img.shields.io/badge/dependencies-none-green.svg)](https://david-dm.org/spautz/limited-cache)
+[![dependencies Status](https://status.david-dm.org/gh/spautz/limited-cache.svg)](https://david-dm.org/spautz/limited-cache)
 [![gzip size](https://img.badgesize.io/https://unpkg.com/limited-cache@latest/dist/limited-cache.cjs.production.min.js?compression=gzip)](https://bundlephobia.com/result?p=limited-cache)
 [![test coverage](https://img.shields.io/coveralls/github/spautz/limited-cache/main.svg)](https://coveralls.io/github/spautz/limited-cache?branch=main)
 

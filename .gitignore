@@ -4,7 +4,8 @@
 .idea/
 .vscode/
 build/
-dist/
 coverage/
+dist/
+legacy-types/
 node_modules/
 storybook-static/
