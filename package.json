@@ -44,13 +44,8 @@
   "scripts": {
     "____ LIFECYCLE HOOKS _______________________________________________": "",
     "prepare": "yon run build && husky install",
-    "prebuild": "yon run build:clean",
     "prerelease": "yon run build:clean",
-    "prepublishOnly": "yarn run dev:readonly && yarn run build && yarn run pinst --disable",
-    "pretest": "yon run test:clean",
-    "postbuild": "yon run build:verify && yon run build:types",
-    "postinstall": "husky install",
-    "postpublish": "pinst --enable",
+    "prepublishOnly": "yarn run dev:readonly && yarn run build",
     "____ INTEGRATION ___________________________________________________": "",
     "clean": "yon run build:clean && yon run test:clean && rimraf ./node_modules/.cache/",
     "dev": "yon run format && yon run types && yon run lint",
@@ -58,8 +53,9 @@
     "all": "yon run clean && yon run dev && yon run test:coverage && yon run build",
     "all:readonly": "yon run dev:readonly && yon run test:coverage",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
-    "build": "tsdx build",
+    "build": "yon run build:clean && yon run build:main && yon run build:verify && yon run build:types",
     "build:clean": "rimraf ./dist ./legacy-types",
+    "build:main": "tsdx build",
     "build:types": "yon run build:types:3.x && yon run build:types:4.x",
     "build:types:3.x": "downlevel-dts ./dist ./legacy-types/ts3.x/dist --to=3.0",
     "build:types:4.x": "downlevel-dts ./dist ./dist --to=4.0",
@@ -73,20 +69,19 @@
     "release:tag": "standard-version --commit-all --sign --skip.changelog --release-as ",
     "test": "yon run test:coverage",
     "test:clean": "rimraf ./coverage",
-    "test:coverage": "tsdx test --coverage",
-    "test:nowatch": "tsdx test",
-    "test:watch": "tsdx test --watch",
-    "test:watchcoverage": "tsdx test --watchAll --coverage",
+    "test:coverage": "yon run test:clean && tsdx test --coverage",
+    "test:nowatch": "yon run test:clean && tsdx test",
+    "test:watch": "yon run test:clean && tsdx test --watch",
+    "test:watchcoverage": "yon run test:clean && tsdx test --watchAll --coverage",
     "types": "tsc --noEmit --p tsconfig.json"
   },
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "26.0.23",
-    "@types/node": "15.6.0",
+    "@types/node": "15.12.3",
     "downlevel-dts": "0.7.0",
     "husky": "6.0.0",
     "lint-staged": "10.5.4",
-    "pinst": "2.1.6",
     "rimraf": "3.0.2",
     "standard-version": "9.3.0",
     "tsdx": "0.14.1",
@@ -94,8 +89,8 @@
     "yarn-or-npm": "3.0.1"
   },
   "resolutions": {
-    "**/@typescript-eslint/eslint-plugin": "^4.24.0",
-    "**/@typescript-eslint/parser": "^4.24.0"
+    "**/@typescript-eslint/eslint-plugin": "^4.27.0",
+    "**/@typescript-eslint/parser": "^4.27.0"
   },
   "lint-staged": {
     "**/*.{css,html,js,jsx,json,less,md,scss,ts,tsx}": [
