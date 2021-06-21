@@ -46,21 +46,19 @@ run_command "rm -rf
 ##################################################################################################
 # Remove generated files
 
-DIRECTORY=.
 run_command "rm -rf
-  $DIRECTORY/.yarn
-  $DIRECTORY/build/
-  $DIRECTORY/coverage/
-  $DIRECTORY/coverage-local/
-  $DIRECTORY/dist/
-  $DIRECTORY/legacy-types/
-  $DIRECTORY/lib-dist/
-  $DIRECTORY/node_modules/
-  $DIRECTORY/storybook-static/
-  $DIRECTORY/lerna-debug.log*
-  $DIRECTORY/npm-debug.log*
-  $DIRECTORY/yarn-debug.log*
-  $DIRECTORY/yarn-error.log*
+  .yarn
+  build/
+  coverage/
+  dist/
+  legacy-types/
+  lib-dist/
+  node_modules/
+  storybook-static/
+  lerna-debug.log*
+  npm-debug.log*
+  yarn-debug.log*
+  yarn-error.log*
   "
 
 REMAINING_FILES=$(git clean -xdn)

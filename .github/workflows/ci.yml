@@ -31,7 +31,7 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
-        run: yarn install --prefer-offline
+        run: yarn install --ignore-scripts --prefer-offline
 
       - name: Clear local caches
         run: yarn clean

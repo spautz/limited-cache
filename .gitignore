@@ -1,11 +1,12 @@
 *.log*
 .DS_Store
-
 .idea/
 .vscode/
+
 build/
 coverage/
 dist/
 legacy-types/
+lib-dist/
 node_modules/
 storybook-static/
