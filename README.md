@@ -55,7 +55,7 @@ return {
 };
 ```
 
-Typescript generics, if you want to define a type for items in the cache:
+Typescript generics, to define a type for items in the cache:
 
 ```typescript
 const stringCache = LimitedCache<string>();
@@ -92,22 +92,30 @@ Use a falsy value to disable.
 
 ## Low-level functions
 
-These functions are grouped together as `limitedCacheUtil`. The other interfaces are built on top of these.
+Under the hood, everything is tracked inside a single, serializable object (`cacheMeta`) which can be persisted to
+storage or kept in Redux or any other state.
 
-- `init(options)`
-- `get(cacheMeta, cacheKey)`
-- `getAll(cacheMeta)` - returns the entire cache, excluding expired items
-- `has(cacheMeta, cacheKey)`
-- `set(cacheMeta, cacheKey, value)`
-- `remove(cacheMeta, cacheKey)`
-- `reset(cacheMeta)`
-- `setOptions(cacheMeta, options)` - you can update options anytime
-
-You can also import these functions individually, if you want to optimize tree-shaking and minification:
+You can retrieve this object from a LimitedCache or LimitedCacheObject, or create it directly via `lowLevelInit`:
 
 ```javascript
-import { lowLevelInit, lowLevelGetOne, lowLevelGetAll, lowLevelSet } from 'limited-cache';
+myLimitedCache.getCacheMeta();
+getCacheMetaFromProxy(myLimitedCacheObject);
 ```
+
+Do not manipulate cacheMeta directly: an entire set of low-level functions is available for that. Every function
+available on the higher-level LimitedCache and LimitedCacheObject is available as a low-level function.
+
+- `lowLevelInit(options)`
+- `lowLevelGetOne(cacheMeta, cacheKey)`
+- `lowLevelGetAll(cacheMeta)` - returns the entire cache, excluding expired items
+- `lowLevelHas(cacheMeta, cacheKey)`
+- `lowLevelSet(cacheMeta, cacheKey, value)`
+- `lowLevelRemove(cacheMeta, cacheKey)`
+- `lowLevelReset(cacheMeta)`
+- `lowLevelSetOptions(cacheMeta, options)` - you can update options anytime
+
+These functions are also grouped together as [`limitedCacheUtil`](https://github.com/spautz/limited-cache/blob/main/src/core/limitedCacheUtil.ts#L13-L23), if you would rather not import each individually,
+but minimization and tree-shaking will be slightly better if you use them directly.
 
 ## FAQ
 

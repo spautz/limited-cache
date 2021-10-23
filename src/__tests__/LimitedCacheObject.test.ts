@@ -1,5 +1,6 @@
 /* eslint-env jest */
-import { LimitedCacheObject } from '../core/LimitedCacheObject';
+import { defaultOptions } from '../core/defaultOptions';
+import { LimitedCacheObject, getCacheMetaFromProxy } from '../core/LimitedCacheObject';
 import { LimitedCacheObjectInstance } from '../types';
 
 describe('LimitedCacheObject', () => {
@@ -128,6 +129,20 @@ describe('LimitedCacheObject', () => {
 
       const result = Object.keys(myCache);
       expect(result).toEqual([]);
+    });
+  });
+
+  describe('offers a way to get the cacheMeta', () => {
+    const myCache = LimitedCacheObject<number>();
+    const result = getCacheMetaFromProxy(myCache);
+
+    expect(result).toEqual({
+      limitedCacheMetaVersion: 2,
+      options: defaultOptions,
+      cache: {},
+      keyList: [],
+      keyInfo: {},
+      opsLeft: 200,
     });
   });
 });
