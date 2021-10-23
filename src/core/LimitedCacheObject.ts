@@ -58,4 +58,4 @@ const LimitedCacheObject = <ItemType = DefaultItemType>(
   return new Proxy(cacheMeta, proxyHandler);
 };
 
-export default LimitedCacheObject;
+export { LimitedCacheObject };
