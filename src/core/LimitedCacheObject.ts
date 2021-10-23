@@ -21,7 +21,6 @@ const proxyHandler: ProxyHandler<LimitedCacheObjectInstance<any>> = {
     if (cacheKey === 'hasOwnProperty') {
       return hasOwnProperty;
     }
-
     return lowLevelGetOne(cacheMeta, cacheKey);
   },
   getOwnPropertyDescriptor: (cacheMeta: LimitedCacheMeta, cacheKey: string) => {
@@ -51,11 +50,24 @@ const proxyHandler: ProxyHandler<LimitedCacheObjectInstance<any>> = {
   ownKeys: (cacheMeta: LimitedCacheMeta) => Object.keys(lowLevelGetAll(cacheMeta)),
 };
 
+/**
+ * So that we can retrieve the cacheMeta for a LimitedCacheObject, without polluting its properties, each proxy
+ * is associated back to its internal cacheMeta here.
+ */
+const cacheMetasForProxies = new WeakMap();
+
 const LimitedCacheObject = <ItemType = DefaultItemType>(
   options?: LimitedCacheOptions,
 ): LimitedCacheObjectInstance<ItemType> => {
   const cacheMeta = lowLevelInit(options);
-  return new Proxy(cacheMeta, proxyHandler);
+  const limitedCacheObject = new Proxy(cacheMeta, proxyHandler);
+
+  cacheMetasForProxies.set(limitedCacheObject, cacheMeta);
+  return limitedCacheObject;
 };
 
-export { LimitedCacheObject };
+const getCacheMetaFromObject = (instance: LimitedCacheObjectInstance): LimitedCacheMeta => {
+  return cacheMetasForProxies.get(instance);
+};
+
+export { LimitedCacheObject, getCacheMetaFromObject };

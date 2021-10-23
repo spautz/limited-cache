@@ -4,7 +4,7 @@ A minimal JS cache. Like using an object to store keys and values, except it won
 
 [![npm version](https://img.shields.io/npm/v/limited-cache.svg)](https://www.npmjs.com/package/limited-cache)
 [![build status](https://github.com/spautz/limited-cache/workflows/CI/badge.svg)](https://github.com/spautz/limited-cache/actions)
-[![dependencies Status](https://status.david-dm.org/gh/spautz/limited-cache.svg)](https://david-dm.org/spautz/limited-cache)
+[![dependencies status](https://img.shields.io/badge/dependencies-none-brightgreen.svg)](https://david-dm.org/spautz/limited-cache)
 [![gzip size](https://img.badgesize.io/https://unpkg.com/limited-cache@latest/dist/limited-cache.cjs.production.min.js?compression=gzip)](https://bundlephobia.com/result?p=limited-cache)
 [![test coverage](https://img.shields.io/coveralls/github/spautz/limited-cache/main.svg)](https://coveralls.io/github/spautz/limited-cache?branch=main)
 
@@ -55,7 +55,7 @@ return {
 };
 ```
 
-Typescript generics, if you want to define a type for items in the cache:
+Typescript generics, to define a type for items in the cache:
 
 ```typescript
 const stringCache = LimitedCache<string>();
@@ -92,22 +92,30 @@ Use a falsy value to disable.
 
 ## Low-level functions
 
-These functions are grouped together as `limitedCacheUtil`. The other interfaces are built on top of these.
+Under the hood, everything is tracked inside a single, serializable object (`cacheMeta`) which can be persisted to
+storage or kept in Redux or any other state.
 
-- `init(options)`
-- `get(cacheMeta, cacheKey)`
-- `getAll(cacheMeta)` - returns the entire cache, excluding expired items
-- `has(cacheMeta, cacheKey)`
-- `set(cacheMeta, cacheKey, value)`
-- `remove(cacheMeta, cacheKey)`
-- `reset(cacheMeta)`
-- `setOptions(cacheMeta, options)` - you can update options anytime
-
-You can also import these functions individually, if you want to optimize tree-shaking and minification:
+You can retrieve this object from a LimitedCache or LimitedCacheObject, or create it directly via `lowLevelInit`:
 
 ```javascript
-import { lowLevelInit, lowLevelGetOne, lowLevelGetAll, lowLevelSet } from 'limited-cache';
+myLimitedCache.getCacheMeta();
+getCacheMetaFromObject(myLimitedCacheObject);
 ```
+
+Do not manipulate cacheMeta directly: a set of low-level functions is available for that. Every action available
+on the higher-level LimitedCache and LimitedCacheObject is available as a low-level function.
+
+- `lowLevelInit(options)`
+- `lowLevelGetOne(cacheMeta, cacheKey)`
+- `lowLevelGetAll(cacheMeta)` - returns the entire cache, excluding expired items
+- `lowLevelHas(cacheMeta, cacheKey)`
+- `lowLevelSet(cacheMeta, cacheKey, value)`
+- `lowLevelRemove(cacheMeta, cacheKey)`
+- `lowLevelReset(cacheMeta)`
+- `lowLevelSetOptions(cacheMeta, options)` - you can update options anytime
+
+These functions are also grouped together as [limitedCacheUtil](https://github.com/spautz/limited-cache/blob/main/src/core/limitedCacheUtil.ts#L13-L23) --
+but minimization and tree-shaking will be slightly better if you import each individually.
 
 ## FAQ
 
@@ -125,7 +133,7 @@ When new items are added, or if you try to `get` an item that has expired.
 
 **Is this a least-recently-used cache?**
 
-No: For performance it only tracks by `set` time.
+Not by default: For performance it only tracks by `set` time.
 
-If you want items to expire based on when they were last accessed (instead of when they were set), you can `set`
-the value that already exists: only the timestamp will be updated, so performance won't suffer.
+You can turn it into a least-recently-used cache by calling `set` each time you `get` an item, though: items will then
+expire based on when they were last accessed. This case has been optimized so performance won't suffer.
