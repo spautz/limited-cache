@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import defaultOptions from '../../src/core/defaultOptions';
+import defaultOptions from '../../core/defaultOptions';
 import {
   isCacheMeta,
   upgradeCacheMeta,
@@ -10,8 +10,8 @@ import {
   lowLevelSet,
   lowLevelRemove,
   lowLevelReset,
-} from '../../src/core/lowLevelFunctions';
-import { LimitedCacheMeta } from '../../src/types';
+} from '../../core/lowLevelFunctions';
+import { LimitedCacheMeta } from '../../types';
 
 describe('lowLevelFunctions', () => {
   describe('isCacheMeta', () => {
