@@ -1,5 +1,5 @@
 import { objectAssign, objectCreate, dateNow, hasOwnProperty } from './builtIns';
-import defaultOptions, { CURRENT_META_VERSION, MAXIMUM_CACHE_TIME } from './defaultOptions';
+import { CURRENT_META_VERSION, MAXIMUM_CACHE_TIME, defaultOptions } from './defaultOptions';
 import {
   LimitedCacheOptions,
   LimitedCacheOptionsReadonly,

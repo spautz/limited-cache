@@ -50,4 +50,4 @@ const LimitedCache = <ItemType = DefaultItemType>(
   };
 };
 
-export default LimitedCache;
+export { LimitedCache };

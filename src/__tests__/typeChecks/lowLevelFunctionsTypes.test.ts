@@ -1,4 +1,4 @@
-import { lowLevelInit, lowLevelGetOne, lowLevelSet } from '../../src';
+import { lowLevelInit, lowLevelGetOne, lowLevelSet } from '../../index';
 
 /**
  * This is not a source file or test file.

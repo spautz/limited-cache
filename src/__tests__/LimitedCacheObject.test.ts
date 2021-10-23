@@ -1,8 +1,6 @@
 /* eslint-env jest */
-/* eslint-disable no-prototype-builtins, @typescript-eslint/no-explicit-any */
-
-import LimitedCacheObject from '../../src/core/LimitedCacheObject';
-import { LimitedCacheObjectInstance } from '../../src/types';
+import { LimitedCacheObject } from '../core/LimitedCacheObject';
+import { LimitedCacheObjectInstance } from '../types';
 
 describe('LimitedCacheObject', () => {
   it('initializes without options', () => {

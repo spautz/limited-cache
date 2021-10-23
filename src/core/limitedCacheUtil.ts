@@ -22,4 +22,4 @@ const limitedCacheUtil = {
   setOptions: lowLevelSetOptions,
 };
 
-export default limitedCacheUtil;
+export { limitedCacheUtil };

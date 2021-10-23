@@ -1,4 +1,4 @@
-import { LimitedCache } from '../../src';
+import { LimitedCache } from '../../index';
 
 /**
  * This is not a source file or test file.

@@ -1,4 +1,4 @@
-import { LimitedCacheObject } from '../../src';
+import { LimitedCacheObject } from '../../index';
 
 /**
  * This is not a source file or test file.
