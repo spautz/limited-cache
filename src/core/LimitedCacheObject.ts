@@ -66,8 +66,8 @@ const LimitedCacheObject = <ItemType = DefaultItemType>(
   return limitedCacheObject;
 };
 
-const getCacheMetaFromProxy = (instance: LimitedCacheObjectInstance): LimitedCacheMeta => {
+const getCacheMetaFromObject = (instance: LimitedCacheObjectInstance): LimitedCacheMeta => {
   return cacheMetasForProxies.get(instance);
 };
 
-export { LimitedCacheObject, getCacheMetaFromProxy };
+export { LimitedCacheObject, getCacheMetaFromObject };

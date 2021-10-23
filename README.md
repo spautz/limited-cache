@@ -99,7 +99,7 @@ You can retrieve this object from a LimitedCache or LimitedCacheObject, or creat
 
 ```javascript
 myLimitedCache.getCacheMeta();
-getCacheMetaFromProxy(myLimitedCacheObject);
+getCacheMetaFromObject(myLimitedCacheObject);
 ```
 
 Do not manipulate cacheMeta directly: a set of low-level functions is available for that. Every action available
