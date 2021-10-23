@@ -24,6 +24,10 @@
     "name": "Steven Pautz",
     "url": "http://stevenpautz.com/"
   },
+  "publishConfig": {
+    "access": "public",
+    "tag": "next"
+  },
   "files": [
     "dist/",
     "legacy-types/",
@@ -38,7 +42,7 @@
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "engines": {
-    "node": ">=10",
+    "node": "^12 || ^14 || ^15 || ^16",
     "yarn": "1.*"
   },
   "scripts": {

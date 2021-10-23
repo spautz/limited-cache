@@ -14,7 +14,9 @@
 # Unless they're somewhere we can ignore
 build/
 coverage/
+coverage-package/
 dist/
 legacy-types/
+lib-dist/
 node_modules/
 storybook-static/
