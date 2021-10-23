@@ -44,9 +44,9 @@ export interface LimitedCacheInstance<ItemType = DefaultItemType> {
   doMaintenance: () => LimitedCacheMeta<ItemType>;
 }
 
-export type LimitedCacheObjectInstance<ItemType = DefaultItemType> = {
+export interface LimitedCacheObjectInstance<ItemType = DefaultItemType> {
   [key: string]: ItemType;
-};
+}
 
 /**
  *  A serializable representation of the cache internals, suitable for long-term storage
