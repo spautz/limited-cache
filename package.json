@@ -1,6 +1,6 @@
 {
   "name": "limited-cache",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "A minimal JS cache: like using an object, except it won't grow forever",
   "keywords": [
     "limited cache",
