@@ -25,13 +25,13 @@ fi
 run_command "nvm install $(cat .nvmrc)"
 run_command "nvm use $(cat .nvmrc)"
 
-if ! command_exists yarn; then
-  echo "Could not find yarn!"
+if ! command_exists pnpm; then
+  echo "Could not find pnpm!"
 fi
 
 run_command "./scripts/check-environment.sh"
-run_command "yarn install --frozen-lockfile --prefer-offline --network-timeout=60000"
-run_command "yarn clean"
+run_command "pnpm install --frozen-lockfile --prefer-offline --network-timeout=60000"
+run_command "pnpm clean"
 
 ###################################################################################################
 
