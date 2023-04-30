@@ -1,21 +1,25 @@
 name: CI
 
-on:
-  push
+on: [push]
+
+permissions:
+  contents: read
 
 jobs:
-  build:
-    name: Build & test
+  ci:
+    name: CI
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 16.x, 18.x, 20.x ]
+        node-version: [ 16.x, 18.x, 19.x, 20.x ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - name: Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -25,19 +29,30 @@ jobs:
 
       - run: corepack enable
 
-      - name: Install dependencies
-        run: pnpm install --ignore-scripts --prefer-offline
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
 
-      - name: Clear local caches
-        run: pnpm run clean
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check for a changelog entry
+        if: ${{ github.ref != 'refs/heads/prepare-release' }}
+        run: pnpm run changelog:status:ci
 
       - name: Run CI checks
-        run: pnpm run all:readonly
-
-      - name: Build package
-        run: pnpm run build
+        run: pnpm run all:ci
 
       - name: Report test coverage to coveralls.io
-        uses: coverallsapp/github-action@v1.1.2
+        uses: coverallsapp/github-action@master
         with:
           github-token: ${{ github.token }}

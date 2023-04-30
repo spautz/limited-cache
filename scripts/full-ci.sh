@@ -24,12 +24,13 @@ if [[ $* == *--local* ]]; then
 
 else
   # This is a manually-synced copy of what's in .github/worksflows/ci.yml
-
+  run_command "corepack enable"
   run_command "./scripts/check-environment.sh"
-  run_command "pnpm install --ignore-scripts --prefer-offline"
+  run_command "pnpm install --frozen-lockfile --ignore-scripts"
   run_command "pnpm clean"
-  run_command "pnpm all:readonly"
-  run_command "pnpm build"
+  run_command "pnpm install --frozen-lockfile --offline"
+  run_command "pnpm run all:ci"
+  run_command "pnpm run packages:all:ci"
 
 fi
 

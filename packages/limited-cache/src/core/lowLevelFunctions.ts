@@ -115,9 +115,9 @@ const lowLevelDoMaintenance = <ItemType = DefaultItemType>(
       return acc;
     },
     [
-      {} as typeof cacheMeta['cache'],
-      [] as typeof cacheMeta['keyList'],
-      objectCreate(null) as typeof cacheMeta['keyInfo'],
+      {} as (typeof cacheMeta)['cache'],
+      [] as (typeof cacheMeta)['keyList'],
+      objectCreate(null) as (typeof cacheMeta)['keyInfo'],
     ],
   );
 

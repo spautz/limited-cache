@@ -18,6 +18,7 @@ if ! command_exists nvm; then
     source $NVM_INIT
   else
     echo "Could not find nvm!"
+    exit 1
   fi
 fi
 
@@ -25,13 +26,17 @@ fi
 run_command "nvm install $(cat .nvmrc)"
 run_command "nvm use $(cat .nvmrc)"
 
+run_command "corepack enable"
+
 if ! command_exists pnpm; then
   echo "Could not find pnpm!"
+  exit 1
 fi
 
 run_command "./scripts/check-environment.sh"
-run_command "pnpm install --frozen-lockfile --prefer-offline --network-timeout=60000"
+run_command "pnpm install --frozen-lockfile --ignore-scripts"
 run_command "pnpm clean"
+run_command "pnpm install --frozen-lockfile --offline"
 
 ###################################################################################################
 
