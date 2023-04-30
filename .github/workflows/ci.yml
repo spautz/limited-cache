@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 12.x, 14.x, 15.x, 16.x, 17.x ]
+        node-version: [ 16.x, 18.x, 20.x ]
 
     steps:
       - uses: actions/checkout@v2
@@ -19,28 +19,23 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Get Yarn cache directory
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Use Yarn cache
-        uses: actions/cache@v2
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+      - uses: pnpm/action-setup@v2
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
+          version: 8
+
+      - run: corepack enable
 
       - name: Install dependencies
-        run: yarn install --ignore-scripts --prefer-offline
+        run: pnpm install --ignore-scripts --prefer-offline
 
       - name: Clear local caches
-        run: yarn clean
+        run: pnpm run clean
 
       - name: Run CI checks
-        run: yarn all:readonly
+        run: pnpm run all:readonly
 
       - name: Build package
-        run: yarn build
+        run: pnpm run build
 
       - name: Report test coverage to coveralls.io
         uses: coverallsapp/github-action@v1.1.2

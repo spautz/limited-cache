@@ -9,7 +9,7 @@ cd "$(dirname "$0")/.."
 source ./scripts/helpers/helpers.sh
 
 ###################################################################################################
-# Check versions of Node, Yarn, and any other tools required
+# Check versions of Node, pnpm, and any other tools required
 
 # If "engines" is set in package.json, validate against its values
 HAS_ENGINES=$(get_json_value package.json "engines")

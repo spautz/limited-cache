@@ -26,10 +26,10 @@ else
   # This is a manually-synced copy of what's in .github/worksflows/ci.yml
 
   run_command "./scripts/check-environment.sh"
-  run_command "yarn install --ignore-scripts --prefer-offline"
-  run_command "yarn clean"
-  run_command "yarn all:readonly"
-  run_command "yarn build"
+  run_command "pnpm install --ignore-scripts --prefer-offline"
+  run_command "pnpm clean"
+  run_command "pnpm all:readonly"
+  run_command "pnpm build"
 
 fi
 

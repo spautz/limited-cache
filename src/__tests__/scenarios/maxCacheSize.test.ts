@@ -1,4 +1,4 @@
-/* eslint-env jest */
+import { describe, beforeEach, expect, it, vitest } from 'vitest';
 import { LimitedCache, LimitedCacheInstance } from '../../index';
 
 // To avoid race conditions or timing issues, since some expect() checks can take 10+ ms when busy,
@@ -10,7 +10,7 @@ const timeoutPromise = (): Promise<null> =>
 describe('maxCacheSize scenarios', () => {
   let myCache: LimitedCacheInstance;
   beforeEach(() => {
-    jest.restoreAllMocks();
+    vitest.restoreAllMocks();
     myCache = LimitedCache({
       maxCacheSize: 20,
       maxCacheTime: Number.MAX_SAFE_INTEGER,
@@ -103,7 +103,7 @@ describe('maxCacheSize scenarios', () => {
       warnIfItemPurgedBeforeTime: 1000,
     });
 
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockReturnValueOnce();
+    const consoleWarnSpy = vitest.spyOn(console, 'warn').mockReturnValueOnce();
 
     for (let n = 1; n <= 5; n++) {
       myCache.set(`n=${n}`, n);

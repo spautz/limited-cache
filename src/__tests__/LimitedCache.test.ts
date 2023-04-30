@@ -1,4 +1,4 @@
-/* eslint-env jest */
+import { describe, beforeEach, expect, it } from 'vitest';
 import { defaultOptions } from '../core/defaultOptions';
 import { LimitedCache } from '../core/LimitedCache';
 import { LimitedCacheInstance } from '../types';
@@ -23,9 +23,9 @@ describe('LimitedCache', () => {
   });
 
   describe('works as a standard cache', () => {
-    let myCache: LimitedCacheInstance<any>;
+    let myCache: LimitedCacheInstance<number | undefined>;
     beforeEach(() => {
-      myCache = LimitedCache<any>();
+      myCache = LimitedCache<number | undefined>();
     });
 
     it('has: when missing', () => {
@@ -115,9 +115,9 @@ describe('LimitedCache', () => {
   });
 
   describe('provides functions for managing options and meta', () => {
-    let myCache: LimitedCacheInstance<any>;
+    let myCache: LimitedCacheInstance<unknown>;
     beforeEach(() => {
-      myCache = LimitedCache<any>();
+      myCache = LimitedCache<unknown>();
     });
 
     it('getCacheMeta', () => {
