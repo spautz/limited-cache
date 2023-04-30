@@ -9,12 +9,28 @@ cd "$(dirname "$0")/.."
 source ./scripts/helpers/helpers.sh
 
 ###################################################################################################
+# Clean everything local first -- and again at the end
 
-echo "Going to doing everything: this will take a while..."
 ./scripts/clean-everything.sh
-./scripts/setup-environment.sh
-./scripts/build-everything.sh
+
+
+if command_exists jest; then
+  run_npm_command jest --clearCache
+fi
+
+if command_exists pnpm; then
+  run_command "rm -rf $(pnpm store path)"
+fi
+
+if command_exists yarn; then
+  run_command "yarn cache clean --all"
+fi
+
+run_command npm cache clean --force
+
+
+./scripts/clean-everything.sh
 
 ###################################################################################################
 
-echo "Done doing everything"
+echo "Environment reset completed"

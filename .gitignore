@@ -1,14 +1,46 @@
-*.log*
-.DS_Store
 
+# dependencies
+/.pnp
+/node_modules
+/demos/*/node_modules
+/packages/*/node_modules
+.pnp.js
+
+# outputs
+/build
+/coverage
+/coverage-local
+/dist
+/legacy-types
+/lib-dist
+/storybook-static
+/demos/*/build
+/demos/*/coverage
+/demos/*/coverage-local
+/demos/*/dist
+/demos/*/legacy-types
+/demos/*/lib-dist
+/demos/*/storybook-static
+/packages/*/build
+/packages/*/coverage
+/packages/*/coverage-local
+/packages/*/dist
+/packages/*/legacy-types
+/packages/*/lib-dist
+/packages/*/storybook-static
+
+# misc
 .idea/
 .vscode/
 
-build/
-coverage/
-coverage-package/
-dist/
-legacy-types/
-lib-dist/
-node_modules/
-storybook-static/
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+.pnpm-debug.log*
+lerna-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
