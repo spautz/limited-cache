@@ -17,15 +17,19 @@ describe('lowLevelFunctions', () => {
   describe('isCacheMeta', () => {
     it('accepts cacheMeta shapes', () => {
       expect(
-        // @ts-expect-error
         isCacheMeta({
           limitedCacheMetaVersion: 123,
+          options: defaultOptions,
+          cache: {},
+          keyList: [],
+          keyInfo: {},
+          opsLeft: 100,
         }),
       ).toBe(true);
     });
     it('rejects invalid cacheMeta shapes', () => {
       expect(
-        // @ts-expect-error
+        // @ts-expect-error Invalid cacheMeta shape
         isCacheMeta({
           cache: {},
         }),
@@ -49,7 +53,7 @@ describe('lowLevelFunctions', () => {
 
     it('throws if given an invalid cacheMeta', () => {
       expect(() => {
-        // @ts-expect-error
+        // @ts-expect-error Invalid cacheMeta shape
         upgradeCacheMeta({
           cache: {},
         });

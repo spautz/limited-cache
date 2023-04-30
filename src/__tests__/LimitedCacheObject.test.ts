@@ -23,9 +23,9 @@ describe('LimitedCacheObject', () => {
   });
 
   describe('look like a standard object', () => {
-    let myCache: LimitedCacheObjectInstance<any>;
+    let myCache: LimitedCacheObjectInstance<number>;
     beforeEach(() => {
-      myCache = LimitedCacheObject<any>();
+      myCache = LimitedCacheObject<number>();
     });
 
     it('has: when missing, via prototype hasOwnProperty', () => {
@@ -34,6 +34,7 @@ describe('LimitedCacheObject', () => {
     });
 
     it('has: when missing, via local hasOwnProperty', () => {
+      // eslint-disable-next-line no-prototype-builtins
       const result = myCache.hasOwnProperty('asdf');
       expect(result).toEqual(false);
     });
@@ -53,6 +54,7 @@ describe('LimitedCacheObject', () => {
     it('has: when present, via local hasOwnProperty', () => {
       myCache.abc = 123;
 
+      // eslint-disable-next-line no-prototype-builtins
       const result = myCache.hasOwnProperty('abc');
       expect(result).toEqual(true);
     });

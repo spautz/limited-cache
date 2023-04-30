@@ -169,7 +169,7 @@ const _removeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void 
     const maxIndexToCheck = Math.min(keyList.length, scanLimit);
     while (indexToCheck < maxIndexToCheck) {
       const cacheKeyForIndex = keyList[indexToCheck];
-      let expireTimeForIndex = _getExpireTime(cacheMeta, cacheKeyForIndex);
+      const expireTimeForIndex = _getExpireTime(cacheMeta, cacheKeyForIndex);
 
       // We only consider it if it's eligible for expiration: otherwise it can't be a better option
       // than the default head-of-queue
@@ -196,7 +196,7 @@ const _removeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void 
     oldestExpireTime > now
   ) {
     const oldestItemKey = keyList[oldestItemIndex];
-    const [oldestItemSetTime, oldestItemExpireTime] = keyInfo[oldestItemKey]!;
+    const [oldestItemSetTime, oldestItemExpireTime] = keyInfo[oldestItemKey] as [number, number];
 
     if (now - oldestItemSetTime < warnIfItemPurgedBeforeTime) {
       console.warn(

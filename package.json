@@ -66,11 +66,12 @@
     "build:types": "pnpm run build:types:3.x && pnpm run build:types:4.x",
     "build:types:3.x": "downlevel-dts ./dist ./legacy-types/ts3.x/dist --to=3.0",
     "build:types:4.x": "downlevel-dts ./dist ./dist --to=4.0",
-    "build:verify": "node ./scripts/verify-build.js",
+    "build:verify": "node scripts/verify-build.cjs",
     "build:watch": "tsdx watch",
     "format": "prettier --write \"**/*.*\"",
     "format:verify": "prettier --list-different \"**/*.*\"",
-    "lint": "tsdx lint . --max-warnings 0",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --max-warnings 0 --fix",
     "lint-staged": "lint-staged",
     "release:changelog": "standard-version --skip.commit --skip.tag --release-as ",
     "release:tag": "standard-version --commit-all --sign --skip.changelog --release-as ",
@@ -85,13 +86,17 @@
   "devDependencies": {
     "@types/jest": "26.0.23",
     "@types/node": "18.16.3",
+    "@typescript-eslint/eslint-plugin": "5.59.1",
+    "@typescript-eslint/parser": "5.59.1",
     "downlevel-dts": "0.11.0",
+    "eslint": "8.39.0",
+    "eslint-config-prettier": "8.8.0",
     "husky": "8.0.3",
     "lint-staged": "13.2.2",
     "rimraf": "3.0.2",
     "standard-version": "9.3.2",
     "tsdx": "0.14.1",
-    "typescript": "4.4.4"
+    "typescript": "5.0.4"
   },
   "lint-staged": {
     "**/*.{css,html,js,jsx,json,less,md,scss,ts,tsx}": [
