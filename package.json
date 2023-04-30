@@ -42,27 +42,28 @@
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "engines": {
-    "node": "^12 || ^14 || ^15 || ^16 || ^17",
-    "yarn": "1.*"
+    "node": "^14 || ^16 || ^18 || ^19 || ^20",
+    "pnpm": "^8"
   },
+  "packageManager": "pnpm@8.3.1",
   "scripts": {
     "____ LIFECYCLE HOOKS _______________________________________________": "",
-    "prepare": "yon run build && husky install",
-    "prerelease": "yon run build:clean",
-    "prepublishOnly": "yarn run dev:readonly && yarn run build",
+    "prepare": "pnpm run build && husky install",
+    "prerelease": "pnpm run build:clean",
+    "prepublishOnly": "pnpm run dev:readonly && pnpm run build",
     "____ INTEGRATION ___________________________________________________": "",
-    "clean": "yon run build:clean && yon run test:clean && rimraf ./node_modules/.cache/ *.log",
-    "dev": "yon run format && yon run types && yon run lint",
-    "dev:readonly": "yon run format:verify && yon run types && yon run lint",
-    "all": "yon run clean && yon run dev && yon run test:coverage && yon run build",
-    "all:readonly": "yon run dev:readonly && yon run test:coverage",
+    "clean": "pnpm run build:clean && pnpm run test:clean && rimraf ./node_modules/.cache/ *.log",
+    "dev": "pnpm run format && pnpm run types && pnpm run lint",
+    "dev:readonly": "pnpm run format:verify && pnpm run types && pnpm run lint",
+    "all": "pnpm run clean && pnpm run dev && pnpm run test:coverage && pnpm run build",
+    "all:readonly": "pnpm run dev:readonly && pnpm run test:coverage",
     "____ ALIASES _______________________________________________________": "",
-    "test": "yon run test:coverage",
+    "test": "pnpm run test:coverage",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
-    "build": "yon run build:clean && yon run build:main && yon run build:verify && yon run build:types",
+    "build": "pnpm run build:clean && pnpm run build:main && pnpm run build:verify && pnpm run build:types",
     "build:clean": "rimraf ./dist ./legacy-types",
     "build:main": "tsdx build",
-    "build:types": "yon run build:types:3.x && yon run build:types:4.x",
+    "build:types": "pnpm run build:types:3.x && pnpm run build:types:4.x",
     "build:types:3.x": "downlevel-dts ./dist ./legacy-types/ts3.x/dist --to=3.0",
     "build:types:4.x": "downlevel-dts ./dist ./dist --to=4.0",
     "build:verify": "node ./scripts/verify-build.js",
@@ -74,10 +75,10 @@
     "release:changelog": "standard-version --skip.commit --skip.tag --release-as ",
     "release:tag": "standard-version --commit-all --sign --skip.changelog --release-as ",
     "test:clean": "rimraf ./coverage",
-    "test:coverage": "yon run test:clean && tsdx test --coverage",
-    "test:nowatch": "yon run test:clean && tsdx test",
-    "test:watch": "yon run test:clean && tsdx test --watch",
-    "test:watchcoverage": "yon run test:clean && tsdx test --watchAll --coverage",
+    "test:coverage": "pnpm run test:clean && tsdx test --coverage",
+    "test:nowatch": "pnpm run test:clean && tsdx test",
+    "test:watch": "pnpm run test:clean && tsdx test --watch",
+    "test:watchcoverage": "pnpm run test:clean && tsdx test --watchAll --coverage",
     "types": "tsc --noEmit --p tsconfig.json"
   },
   "dependencies": {},
@@ -90,12 +91,7 @@
     "rimraf": "3.0.2",
     "standard-version": "9.3.2",
     "tsdx": "0.14.1",
-    "typescript": "4.4.4",
-    "yarn-or-npm": "3.0.1"
-  },
-  "resolutions": {
-    "**/@typescript-eslint/eslint-plugin": "^4.33.0",
-    "**/@typescript-eslint/parser": "^4.33.0"
+    "typescript": "4.4.4"
   },
   "lint-staged": {
     "**/*.{css,html,js,jsx,json,less,md,scss,ts,tsx}": [
@@ -104,7 +100,7 @@
   },
   "standard-version": {
     "scripts": {
-      "postchangelog": "yon run format"
+      "postchangelog": "pnpm run format"
     }
   },
   "typesVersions": {
