@@ -1,4 +1,4 @@
-/* eslint-env jest */
+import { describe, beforeEach, expect, it, vitest } from 'vitest';
 import { defaultOptions } from '../core/defaultOptions';
 import {
   isCacheMeta,
@@ -39,7 +39,7 @@ describe('lowLevelFunctions', () => {
 
   describe('upgradeCacheMeta', () => {
     it('warns and upgrades if given an older, incompatible cacheMeta', () => {
-      const consoleWarnSpy = jest.spyOn(console, 'warn').mockReturnValueOnce();
+      const consoleWarnSpy = vitest.spyOn(console, 'warn').mockReturnValueOnce();
 
       const cacheMeta = lowLevelInit();
       cacheMeta.limitedCacheMetaVersion = 1;
@@ -63,7 +63,7 @@ describe('lowLevelFunctions', () => {
 
   describe('lowLevelInit', () => {
     beforeEach(() => {
-      jest.restoreAllMocks();
+      vitest.restoreAllMocks();
     });
 
     it('clones the default options', () => {
@@ -113,7 +113,7 @@ describe('lowLevelFunctions', () => {
     });
 
     it('warns and upgrades if given an older, incompatible cacheMeta', () => {
-      const consoleWarnSpy = jest.spyOn(console, 'warn').mockReturnValueOnce();
+      const consoleWarnSpy = vitest.spyOn(console, 'warn').mockReturnValueOnce();
 
       const existingCacheMeta = lowLevelInit();
       existingCacheMeta.limitedCacheMetaVersion = 1;
@@ -130,7 +130,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelHas', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
-      jest.restoreAllMocks();
+      vitest.restoreAllMocks();
       myCacheMeta = lowLevelInit({
         maxCacheTime: 1000,
       });
@@ -161,7 +161,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelGetOne', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
-      jest.restoreAllMocks();
+      vitest.restoreAllMocks();
       myCacheMeta = lowLevelInit({
         maxCacheTime: 1000,
       });
@@ -196,7 +196,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelGetAll', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
-      jest.restoreAllMocks();
+      vitest.restoreAllMocks();
       myCacheMeta = lowLevelInit({
         maxCacheTime: 1000,
       });
@@ -247,7 +247,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelSet', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
-      jest.restoreAllMocks();
+      vitest.restoreAllMocks();
       myCacheMeta = lowLevelInit({
         maxCacheTime: 1000,
       });
@@ -387,7 +387,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelRemove', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
-      jest.restoreAllMocks();
+      vitest.restoreAllMocks();
       myCacheMeta = lowLevelInit();
       myCacheMeta = lowLevelSet(myCacheMeta, 'abc', 123);
     });
@@ -416,7 +416,7 @@ describe('lowLevelFunctions', () => {
   describe('lowLevelReset', () => {
     let myCacheMeta: LimitedCacheMeta;
     beforeEach(() => {
-      jest.restoreAllMocks();
+      vitest.restoreAllMocks();
       myCacheMeta = lowLevelInit();
       myCacheMeta = lowLevelSet(myCacheMeta, 'abc', 123);
     });

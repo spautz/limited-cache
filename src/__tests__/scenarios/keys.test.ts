@@ -1,4 +1,4 @@
-/* eslint-env jest */
+import { describe, beforeEach, expect, it } from 'vitest';
 import { limitedCacheUtil, LimitedCacheMeta } from '../../index';
 
 describe('key names', () => {

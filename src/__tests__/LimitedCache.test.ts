@@ -1,4 +1,4 @@
-/* eslint-env jest */
+import { describe, beforeEach, expect, it } from 'vitest';
 import { defaultOptions } from '../core/defaultOptions';
 import { LimitedCache } from '../core/LimitedCache';
 import { LimitedCacheInstance } from '../types';

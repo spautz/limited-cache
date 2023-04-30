@@ -1,3 +1,5 @@
+import { describe, it } from 'vitest';
+
 import { LimitedCacheObject } from '../../index';
 
 /**
@@ -59,9 +61,9 @@ value = arrayCache.number as number;
 // @ts-expect-error Invalid type
 value = arrayCache.string as string;
 
-// Fake test, to make Jest happy
+// Fake test, to make Vitest happy
 describe('fake typeCheck test', () => {
-  it.todo('does nothing');
+  it('does nothing', () => null);
 });
 
 // Fake export, to make the linter happy

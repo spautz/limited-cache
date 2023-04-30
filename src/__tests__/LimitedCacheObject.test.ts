@@ -1,4 +1,4 @@
-/* eslint-env jest */
+import { describe, beforeEach, expect, it } from 'vitest';
 import { defaultOptions } from '../core/defaultOptions';
 import { LimitedCacheObject, getCacheMetaFromObject } from '../core/LimitedCacheObject';
 import { LimitedCacheObjectInstance } from '../types';
@@ -134,7 +134,7 @@ describe('LimitedCacheObject', () => {
     });
   });
 
-  describe('offers a way to get the cacheMeta', () => {
+  it('offers a way to get the cacheMeta', () => {
     const myCache = LimitedCacheObject<number>();
     const result = getCacheMetaFromObject(myCache);
 
