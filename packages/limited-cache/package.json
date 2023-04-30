@@ -1,0 +1,120 @@
+{
+  "name": "limited-cache",
+  "version": "2.0.0",
+  "description": "A minimal JS cache: like using an object, except it won't grow forever",
+  "keywords": [
+    "limited cache",
+    "cache",
+    "circular buffer",
+    "max size",
+    "max time",
+    "rotating cache",
+    "offline cache",
+    "local storage",
+    "autoexpire"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/spautz/limited-cache/packages/limited-cache#readme",
+  "bugs": "https://github.com/spautz/limited-cache/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spautz/limited-cache.git",
+    "directory": "packages/limited-cache"
+  },
+  "author": {
+    "name": "Steven Pautz",
+    "url": "https://github.com/spautz/"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "tag": "next"
+  },
+  "files": [
+    "dist/",
+    "docs/",
+    "legacy-types/",
+    "src/",
+    "LICENSE",
+    "*.md"
+  ],
+  "source": "./src/index.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "jsnext:main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "____ HOOKS _________________________________________________________": "",
+    "prepare": "pnpm run build:main",
+    "prepack": "pnpm run clean && pnpm run build",
+    "____ INTEGRATION ___________________________________________________": "",
+    "clean": "pnpm run build:clean && pnpm run test:clean && rimraf --glob ./node_modules/.cache *.log",
+    "all": "pnpm run format                 && pnpm run typecheck && pnpm run lint:fix && pnpm run test:coverage && pnpm run build",
+    "all:readonly": "pnpm run format:verify && pnpm run typecheck && pnpm run lint     && pnpm run test:quick",
+    "all:quick": "pnpm run format           && pnpm run typecheck && pnpm run lint:fix",
+    "all:ci": "pnpm run format:verify       && pnpm run typecheck && pnpm run lint     && pnpm run test:ci && pnpm run build",
+    "____ INDIVIDUAL COMMANDS ___________________________________________": "",
+    "build": "pnpm run build:main && pnpm run sizecheck && pnpm run build:legacytypes",
+    "build:clean": "rimraf ./dist ./legacy-types",
+    "build:main": "pnpm run build:clean && tsup src/index.ts --format cjs && tsc -p ./tsconfig.build.json",
+    "build:legacytypes": "pnpm run build:legacytypes:3.5 && pnpm run build:legacytypes:4.0 && pnpm run build:legacytypes:4.5",
+    "build:legacytypes:3.5": "downlevel-dts ./dist ./legacy-types/ts3.5 --to=3.5",
+    "build:legacytypes:4.0": "downlevel-dts ./dist ./legacy-types/ts4.0 --to=4.0",
+    "build:legacytypes:4.5": "downlevel-dts ./dist ./legacy-types/ts4.5 --to=4.5",
+    "build:watch": "pnpm run build:clean && tsup src/index.ts --format esm,cjs --dts --watch",
+    "format": "prettier --write .",
+    "format:verify": "prettier --list-different .",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --max-warnings 0 --fix",
+    "sizecheck": "size-limit",
+    "test": "pnpm run test:coverage",
+    "test:clean": "rimraf ./coverage",
+    "test:ci": "pnpm run test:clean            && vitest run --coverage",
+    "test:coverage": "pnpm run test:clean      && vitest run --coverage",
+    "test:quick": "pnpm run test:clean         && vitest run --coverage=false",
+    "test:watch": "pnpm run test:clean         && vitest watch --coverage=false",
+    "test:watchcoverage": "pnpm run test:clean && vitest watch --coverage",
+    "typecheck": "tsc -p ./tsconfig.json --noEmit"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {},
+  "size-limit": [
+    {
+      "path": "dist/index.js",
+      "limit": "1 kB"
+    }
+  ],
+  "typesVersions": {
+    "<4.0": {
+      "*": [
+        "legacy-types/ts3.5/index.d.ts"
+      ]
+    },
+    "<4.5": {
+      "*": [
+        "legacy-types/ts4.0/index.d.ts"
+      ]
+    },
+    "<4.7": {
+      "*": [
+        "legacy-types/ts4.5/index.d.ts"
+      ]
+    },
+    "*": {
+      "*": [
+        "dist/index.d.ts"
+      ]
+    }
+  }
+}
