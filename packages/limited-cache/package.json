@@ -87,12 +87,19 @@
     "typecheck": "tsc -p ./tsconfig.json --noEmit"
   },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/node": "18.16.3"
+  },
   "peerDependencies": {},
   "size-limit": [
     {
       "path": "dist/index.js",
-      "limit": "1 kB"
+      "import": "{}",
+      "limit": "20 B"
+    },
+    {
+      "path": "dist/index.js",
+      "limit": "2 kB"
     }
   ],
   "typesVersions": {

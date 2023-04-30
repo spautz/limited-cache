@@ -1,7 +1,5 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
-
 ## [2.0.0](https://github.com/spautz/limited-cache/compare/v1.1.1...v2.0.0) (2021-10-23)
 
 - Add `getCacheMetaFromObject` for accessing the cacheMeta of a `LimitedCacheObject`: see docs
