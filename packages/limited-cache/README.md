@@ -6,7 +6,7 @@ A minimal JS cache. Like using an object to store keys and values, except it won
 [![build status](https://github.com/spautz/limited-cache/workflows/CI/badge.svg)](https://github.com/spautz/limited-cache/actions)
 [![test coverage](https://img.shields.io/coveralls/github/spautz/limited-cache/main.svg)](https://coveralls.io/github/spautz/limited-cache?branch=main)
 [![dependencies status](https://img.shields.io/librariesio/release/npm/limited-cache.svg)](https://libraries.io/github/spautz/limited-cache)
-[![gzip size](https://img.badgesize.io/https://unpkg.com/limited-cache@latest/dist/index.cjs?compression=gzip)](https://bundlephobia.com/result?p=limited-cache)
+[![gzip size](https://img.shields.io/bundlephobia/minzip/limited-cache.svg)](https://bundlephobia.com/package/limited-cache@latest)
 
 ## Motivation
 
