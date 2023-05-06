@@ -14,7 +14,7 @@
     "autoexpire"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/limited-cache/packages/limited-cache#readme",
+  "homepage": "https://github.com/spautz/limited-cache/tree/main/packages/limited-cache#readme",
   "bugs": "https://github.com/spautz/limited-cache/issues",
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
   },
   "author": {
     "name": "Steven Pautz",
-    "url": "https://github.com/spautz/"
+    "url": "https://github.com/spautz"
   },
   "publishConfig": {
     "access": "public",

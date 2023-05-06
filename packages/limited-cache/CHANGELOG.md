@@ -1,12 +1,12 @@
 # Changelog
 
-## 2.1.0 (2023-04-30)
+## [2.1.0](https://github.com/spautz/limited-cache/compare/v2.0.0...v2.1.0) (2023-04-30)
 
 ### Minor Changes
 
-- Update and modernize package build ([#56](https://github.com/spautz/package-template/issues/56)) ([5f210a6](https://github.com/spautz/package-template/commit/5f210a6a5f77cdffe73f004ea4574f4e791e5029))
-- Add NPM provenance via Github actions ([#56](https://github.com/spautz/package-template/issues/56)) ([5f210a6](https://github.com/spautz/package-template/commit/5f210a6a5f77cdffe73f004ea4574f4e791e5029))
-- Confirm support for Node 20 ([#56](https://github.com/spautz/package-template/issues/56)) ([5f210a6](https://github.com/spautz/package-template/commit/5f210a6a5f77cdffe73f004ea4574f4e791e5029))
+- Update and modernize package build ([#56](https://github.com/spautz/limited-cache/issues/56)) ([5f210a6](https://github.com/spautz/limited-cache/commit/5f210a6a5f77cdffe73f004ea4574f4e791e5029))
+- Add NPM provenance via Github actions ([#56](https://github.com/spautz/limited-cache/issues/56)) ([5f210a6](https://github.com/spautz/limited-cache/commit/5f210a6a5f77cdffe73f004ea4574f4e791e5029))
+- Confirm support for Node 20 ([#56](https://github.com/spautz/limited-cache/issues/56)) ([5f210a6](https://github.com/spautz/limited-cache/commit/5f210a6a5f77cdffe73f004ea4574f4e791e5029))
 
 ## [2.0.0](https://github.com/spautz/limited-cache/compare/v1.1.1...v2.0.0) (2021-10-23)
 
