@@ -3,7 +3,7 @@
   "changelog": [
     "changesets-format-with-issue-links",
     {
-      "repoBaseUrl": "https://github.com/spautz/package-template"
+      "repoBaseUrl": "https://github.com/spautz/limited-cache"
     }
   ],
   "commit": false,
