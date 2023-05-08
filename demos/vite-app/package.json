@@ -1,0 +1,50 @@
+{
+  "name": "@spautz/demo-react18-vite",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "____ MAIN __________________________________________________________": "",
+    "build": "pnpm run build:clean && pnpm run build:main",
+    "dev": "pnpm run server:dev",
+    "start": "pnpm run server:prod",
+    "test": "pnpm run test:coverage",
+    "____ INTEGRATION ___________________________________________________": "",
+    "clean": "pnpm run build:clean && pnpm run test:clean && rimraf --glob ./node_modules/.cache *.log",
+    "all": "pnpm run format                 && pnpm run typecheck && pnpm run lint:fix && pnpm run test:coverage && pnpm run build",
+    "all:readonly": "pnpm run format:verify && pnpm run typecheck && pnpm run lint     && pnpm run test:quick",
+    "all:quick": "pnpm run format           && pnpm run typecheck && pnpm run lint:fix",
+    "all:ci": "pnpm run format:verify       && pnpm run typecheck && pnpm run lint     && pnpm run test:ci && pnpm run build",
+    "____ INDIVIDUAL COMMANDS ___________________________________________": "",
+    "build:clean": "rimraf ./dist",
+    "build:main": "vite build",
+    "build:watch": "vite build --watch",
+    "format": "prettier --write .",
+    "format:verify": "prettier --list-different .",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --max-warnings 0 --fix",
+    "server:dev": "vite dev",
+    "server:prod": "vite preview",
+    "test:clean": "rimraf ./coverage",
+    "test:ci": "pnpm run test:clean            && vitest run --coverage",
+    "test:coverage": "pnpm run test:clean      && vitest run --coverage",
+    "test:quick": "pnpm run test:clean         && vitest run --coverage=false",
+    "test:watch": "pnpm run test:clean         && vitest watch --coverage=false",
+    "test:watchcoverage": "pnpm run test:clean && vitest watch --coverage",
+    "typecheck": "tsc -p ./tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@spautz/node-library-template": "workspace:^",
+    "@spautz/react-library-template": "workspace:^",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@types/react": "^18.2.5",
+    "@types/react-dom": "^18.2.3",
+    "@vitejs/plugin-react": "^4.0.0",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.4"
+  }
+}

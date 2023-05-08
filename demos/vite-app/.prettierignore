@@ -1,0 +1,25 @@
+# Unless https://github.com/prettier/prettier/issues/4081 gets resolved,
+# this MUST be copied into each package dir for local runs to work.
+
+# Whitelist supported files only
+**/*.*
+!**/*.css
+!**/*.html
+!**/*.js
+!**/*.jsx
+!**/*.json
+!**/*.less
+!**/*.md
+!**/*.scss
+!**/*.ts
+!**/*.tsx
+
+# Unless they're somewhere we can ignore
+build/
+coverage/
+coverage-local/
+dist/
+legacy-types/
+lib-dist/
+node_modules/
+storybook-static/
