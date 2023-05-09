@@ -17,7 +17,7 @@
     "all": "pnpm run lint          && pnpm run test:coverage && pnpm run build",
     "all:readonly": "pnpm run lint && pnpm run test:quick",
     "all:quick": "pnpm run lint    && pnpm run test:quick",
-    "all:ci": "pnpm run lint       pnpm run test:coverage    && pnpm run build"
+    "all:ci": "pnpm run lint       && pnpm run test:coverage && pnpm run build"
   },
   "dependencies": {
     "limited-cache": "workspace:^",
