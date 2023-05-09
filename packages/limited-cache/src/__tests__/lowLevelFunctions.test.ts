@@ -1,5 +1,5 @@
 import { describe, beforeEach, expect, it, vitest } from 'vitest';
-import { defaultOptions } from '../core/defaultOptions';
+import { defaultOptions } from '../core/defaultOptions.js';
 import {
   isCacheMeta,
   upgradeCacheMeta,
@@ -10,8 +10,8 @@ import {
   lowLevelSet,
   lowLevelRemove,
   lowLevelReset,
-} from '../core/lowLevelFunctions';
-import { LimitedCacheMeta } from '../types';
+} from '../core/lowLevelFunctions.js';
+import { LimitedCacheMeta } from '../types.js';
 
 describe('lowLevelFunctions', () => {
   describe('isCacheMeta', () => {

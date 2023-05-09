@@ -8,14 +8,14 @@ import {
   lowLevelReset,
   lowLevelSetOptions,
   lowLevelDoMaintenance,
-} from './lowLevelFunctions';
+} from './lowLevelFunctions.js';
 import {
   LimitedCacheOptions,
   LimitedCacheOptionsReadonly,
   LimitedCacheInstance,
   LimitedCacheMeta,
   DefaultItemType,
-} from '../types';
+} from '../types.js';
 
 // Most public functions just call a low-level function directly, passing the cacheMeta.
 // Doing this via a helper function makes the typeChecks easier, and minifies better.

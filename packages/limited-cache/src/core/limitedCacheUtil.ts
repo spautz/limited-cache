@@ -8,7 +8,7 @@ import {
   lowLevelReset,
   lowLevelSet,
   lowLevelSetOptions,
-} from './lowLevelFunctions';
+} from './lowLevelFunctions.js';
 
 const limitedCacheUtil = {
   init: lowLevelInit,

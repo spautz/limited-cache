@@ -4,8 +4,7 @@
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
-    "sourceMap": true,
-    "skipLibCheck": true
+    "sourceMap": true
   },
   "exclude": ["node_modules", "**/*.stories.*", "**/__tests__", "**/*.test.*"]
 }

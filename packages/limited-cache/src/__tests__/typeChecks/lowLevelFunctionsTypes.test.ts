@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest';
 
-import { lowLevelInit, lowLevelGetOne, lowLevelSet } from '../../index';
+import { lowLevelInit, lowLevelGetOne, lowLevelSet } from '../../index.js';
 
 /**
  * This is not a source file or test file.

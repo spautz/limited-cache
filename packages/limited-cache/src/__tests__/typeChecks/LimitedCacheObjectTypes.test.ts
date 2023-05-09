@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest';
 
-import { LimitedCacheObject } from '../../index';
+import { LimitedCacheObject } from '../../index.js';
 
 /**
  * This is not a source file or test file.

@@ -1,4 +1,4 @@
-import { LimitedCacheOptionsReadonly } from '../types';
+import { LimitedCacheOptionsReadonly } from '../types.js';
 
 const CURRENT_META_VERSION = 2;
 const MAXIMUM_CACHE_TIME = 365 * 86400 * 1000;

@@ -1,12 +1,12 @@
-import { objectAssign, objectCreate, dateNow, hasOwnProperty } from './builtIns';
-import { CURRENT_META_VERSION, MAXIMUM_CACHE_TIME, defaultOptions } from './defaultOptions';
+import { objectAssign, objectCreate, dateNow, hasOwnProperty } from './builtIns.js';
+import { CURRENT_META_VERSION, MAXIMUM_CACHE_TIME, defaultOptions } from './defaultOptions.js';
 import {
   LimitedCacheOptions,
   LimitedCacheOptionsReadonly,
   LimitedCacheMeta,
   LimitedCacheOptionsFull,
   DefaultItemType,
-} from '../types';
+} from '../types.js';
 
 /* Initialization and options */
 
