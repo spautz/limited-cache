@@ -3,17 +3,30 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "____ FROM VITE _____________________________________________________": "",
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "test": "vitest",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "____ WORKSPACE INTEGRATION _________________________________________": "",
+    "clean": "rimraf ./build",
+    "_build": "(included above)",
+    "test": "vitest run --coverage",
+    "test:coverage": "vitest run --coverage",
+    "test:quick": "vitest run --coverage=false",
+    "all": "pnpm run lint          && pnpm run test:coverage && pnpm run build",
+    "all:readonly": "pnpm run lint && pnpm run test:quick",
+    "all:quick": "pnpm run lint    && pnpm run test:quick",
+    "all:ci": "pnpm run lint       pnpm run test:coverage    && pnpm run build"
   },
   "dependencies": {
+    "limited-cache": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.4",
     "@typescript-eslint/eslint-plugin": "^5.59.5",
