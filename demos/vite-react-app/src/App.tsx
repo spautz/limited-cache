@@ -1,29 +1,76 @@
 import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import { LimitedCache } from 'limited-cache';
+
+const limitedCache = LimitedCache({
+  maxCacheSize: 5,
+  maxCacheTime: 30000,
+});
+limitedCache.set('Key 1', 'Item 1');
+limitedCache.set('Key 2', 'Item 2');
+limitedCache.set('Key 3', 'Item 3');
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [keyInput, setKeyInput] = useState('');
+  const [valueInput, setValueInput] = useState('');
+
+  const allCachedItems = limitedCache.getAll();
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      <form
+        onSubmit={(e) => {
+          if (keyInput && valueInput) {
+            limitedCache.set(keyInput, valueInput);
+            setKeyInput('');
+            setValueInput('');
+          }
+          e.preventDefault();
+        }}
+      >
+        <fieldset>
+          <label>
+            Key
+            <input
+              type="text"
+              name="key"
+              placeholder="Key"
+              value={keyInput}
+              onChange={(e) => {
+                setKeyInput(e.target.value);
+                e.preventDefault();
+              }}
+            />
+          </label>
+          <label>
+            Value
+            <input
+              type="text"
+              name="value"
+              placeholder="Value"
+              value={valueInput}
+              onChange={(e) => {
+                setValueInput(e.target.value);
+                e.preventDefault();
+              }}
+            />
+          </label>
+          <button type="submit">Add</button>
+        </fieldset>
+      </form>
+      <h1>LimitedCache Contents</h1>
+      <p>
+        This limited-cache has very low limits: only the five most recent items are retained, and
+        only for 30 seconds.
+      </p>
+      <ul>
+        {Object.keys(allCachedItems).map((cachedKey) => (
+          <li key={cachedKey}>
+            {cachedKey}: {allCachedItems[cachedKey]}
+          </li>
+        ))}
+      </ul>
+      <h2>Raw CacheMeta Data</h2>
+      <pre>{JSON.stringify(limitedCache.getCacheMeta(), null, 2)}</pre>
     </>
   );
 }

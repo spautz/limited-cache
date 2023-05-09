@@ -1,4 +1,4 @@
-import React from 'react';
+import 'react';
 import { describe, expect, test } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
@@ -8,6 +8,6 @@ describe('App', () => {
   test('Renders without error', () => {
     render(<App />);
 
-    expect(screen.getByText('TodoProvider: Hello World!')).toBeVisible();
+    expect(screen.getByText('LimitedCache Contents')).toBeVisible();
   });
 });
