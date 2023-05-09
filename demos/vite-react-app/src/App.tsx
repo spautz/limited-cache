@@ -4,6 +4,7 @@ import { LimitedCache } from 'limited-cache';
 const limitedCache = LimitedCache({
   maxCacheSize: 5,
   maxCacheTime: 30000,
+  warnIfItemPurgedBeforeTime: 0,
 });
 limitedCache.set('Key 1', 'Item 1');
 limitedCache.set('Key 2', 'Item 2');
