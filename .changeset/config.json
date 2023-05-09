@@ -13,5 +13,6 @@
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": [
+    "@spautz/limited-cache-demo--vite-react-app"
   ]
 }
