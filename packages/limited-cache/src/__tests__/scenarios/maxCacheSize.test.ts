@@ -1,5 +1,5 @@
 import { describe, beforeEach, expect, it, vitest } from 'vitest';
-import { LimitedCache, LimitedCacheInstance } from '../../index';
+import { LimitedCache, LimitedCacheInstance } from '../../index.js';
 
 // To avoid race conditions or timing issues, since some expect() checks can take 10+ ms when busy,
 // we use a long cache timeout even for 'immediate' expiration, and use delays slightly longer than that

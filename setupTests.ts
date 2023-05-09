@@ -1,1 +1,1 @@
-// nothing to do
+import 'demos/vite-react-app/setupTests';

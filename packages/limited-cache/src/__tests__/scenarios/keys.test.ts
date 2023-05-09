@@ -1,5 +1,5 @@
 import { describe, beforeEach, expect, it } from 'vitest';
-import { limitedCacheUtil, LimitedCacheMeta } from '../../index';
+import { limitedCacheUtil, LimitedCacheMeta } from '../../index.js';
 
 describe('key names', () => {
   let myCacheMeta: LimitedCacheMeta;

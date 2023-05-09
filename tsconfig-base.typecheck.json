@@ -1,36 +1,36 @@
 {
-  "extends": "@tsconfig/recommended/tsconfig.json",
-
   "compilerOptions": {
-    /* Basic Options */
-    "target": "ES2020",
-    "module": "ES2020",
-    "lib": ["DOM", "DOM.Iterable", "ES2020"],
-    "allowJs": true,
-    "declaration": true,
-    "jsx": "react",
-    "noEmit": true,
-    "sourceMap": true,
-    "removeComments": false,
-    /* Strict Type-Checking Options */
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
+    // Type Checking
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
     "alwaysStrict": true,
-    /* Additional Checks */
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    /* Module Resolution Options */
-    "moduleResolution": "node",
+    "strict": true,
+    // Modules
+    "module": "ES2020",
+    "moduleResolution": "nodenext",
+    // Emit
+    "declaration": true,
+    "noEmit": true,
+    "removeComments": false,
+    "sourceMap": true,
+    // Javascript Support
+    "allowJs": true,
+    "checkJs": true,
+    // Interop Constraints
     "esModuleInterop": true,
-    /* Advanced Options */
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": false
+    "isolatedModules": true,
+    // Language and Environment
+    "jsx": "react",
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
+    "target": "ES2020",
+    // Completeness
+    "skipLibCheck": true
   }
 }

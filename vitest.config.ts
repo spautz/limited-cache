@@ -2,7 +2,7 @@ import { configDefaults, defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    globals: true,
+    environment: 'jsdom',
 
     // This gets resolved *per project* (each package, plus the root)
     setupFiles: './setupTests.ts',

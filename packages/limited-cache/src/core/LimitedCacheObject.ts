@@ -1,4 +1,4 @@
-import { hasOwnProperty } from './builtIns';
+import { hasOwnProperty } from './builtIns.js';
 import {
   lowLevelInit,
   lowLevelGetOne,
@@ -6,13 +6,13 @@ import {
   lowLevelHas,
   lowLevelSet,
   lowLevelRemove,
-} from './lowLevelFunctions';
+} from './lowLevelFunctions.js';
 import {
   LimitedCacheOptions,
   LimitedCacheObjectInstance,
   LimitedCacheMeta,
   DefaultItemType,
-} from '../types';
+} from '../types.js';
 
 // The `any` here doesn't escape out anywhere: it's overridden by the constructor below
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

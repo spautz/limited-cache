@@ -6,7 +6,6 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
 
-
   rules: {
     '@typescript-eslint/no-unused-vars': [
       'error',
@@ -36,5 +35,7 @@ module.exports = {
     'lib-dist/',
     'node_modules/',
     'storybook-static/',
+    // Each demo app has its own eslint config, follows the conventions of its build system
+    'demos/'
   ],
 };
