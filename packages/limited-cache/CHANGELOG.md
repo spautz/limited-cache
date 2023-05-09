@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.1
+
+### Patch Changes
+
+- Add .js extensions to imports, to satisfy nodenext moduleResolution ([#60](https://github.com/spautz/limited-cache/issues/60)) ([2f2f679](https://github.com/spautz/limited-cache/commit/2f2f67995be0ef737e2ef191dd5180b735054fe0))
+- Fix project links ([#59](https://github.com/spautz/limited-cache/issues/59)) ([fb00b34](https://github.com/spautz/limited-cache/commit/fb00b3450f1cdafb39c497bc407acd62da177871))
+
 ## [2.1.0](https://github.com/spautz/limited-cache/compare/v2.0.0...v2.1.0) (2023-04-30)
 
 ### Minor Changes
