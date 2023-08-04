@@ -2002,7 +2002,7 @@ packages:
     dependencies:
       semver: 7.5.0
       shelljs: 0.8.5
-      typescript: 5.2.0-dev.20230720
+      typescript: 5.2.0-dev.20230802
     dev: true
 
   /eastasianwidth@0.2.0:
@@ -3179,7 +3179,7 @@ packages:
       rrweb-cssom: 0.6.0
       saxes: 6.0.0
       symbol-tree: 3.2.4
-      tough-cookie: 4.1.2
+      tough-cookie: 4.1.3
       w3c-xmlserializer: 4.0.0
       webidl-conversions: 7.0.0
       whatwg-encoding: 2.0.0
@@ -4553,8 +4553,8 @@ packages:
       is-number: 7.0.0
     dev: true
 
-  /tough-cookie@4.1.2:
-    resolution: {integrity: sha512-G9fqXWoYFZgTc2z8Q5zaHy/vJMjm+WV0AkAeHxVCQiEB1b+dGvWzFW6QV07cY5jQ5gRkeid2qIkzkxUnmoQZUQ==}
+  /tough-cookie@4.1.3:
+    resolution: {integrity: sha512-aX/y5pVRkfRnfmuX+OdbSdXvPe6ieKX/G2s7e98f4poJHnqH3281gDPm/metm6E/WRamfx7WC4HUqkWHfQHprw==}
     engines: {node: '>=6'}
     dependencies:
       psl: 1.9.0
@@ -4709,8 +4709,8 @@ packages:
     hasBin: true
     dev: true
 
-  /typescript@5.2.0-dev.20230720:
-    resolution: {integrity: sha512-uZPSzgA2ZfMYqCafPbJ67YLwiVXeo93rT2iackGNerTEFs7wRBr2ENVRBIP33g5xCV0fFqN+e0l4oLvQjCZUKw==}
+  /typescript@5.2.0-dev.20230802:
+    resolution: {integrity: sha512-rBvAnzaaMhwBAS2UaKejYhaED3VM74/xng/+xcVSst0PbkJBqggj19w/gwJ/4q07oOjKMgwunklsSjwe+iw2ZA==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: true
