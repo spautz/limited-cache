@@ -1,28 +1,26 @@
 #!/usr/bin/env bash
 
+THIS_SCRIPT_NAME=$(basename "$0")
+echo "### Begin ${THIS_SCRIPT_NAME}"
+
 # Fail if anything in here fails
 set -e
-
-# This script runs from the project root
-cd "$(dirname "$0")/.."
+# Run from the repo root
+pushd "$(dirname -- "${BASH_SOURCE[0]:-$0}")/.."
 
 source ./scripts/helpers/helpers.sh
 
 ###################################################################################################
-# Setup
+# Quick shorthand for running all packages', demos', *and* framework-tests' checks together.
+# This will take a while to run.
 
-run_command "./scripts/check-environment.sh"
-run_command "pnpm install"
+pnpm_or_bun install --frozen-lockfile --ignore-scripts --prefer-offline
+pnpm_or_bun run clean
 
-###################################################################################################
-# Run all read-write scripts and read-only scripts. This is overkill and duplicates a lot of work,
-# but also helps catch intermittent errors. Suitable for running before lunch or teatime.
-
-run_command "pnpm run all"
-run_command "pnpm run all:readonly"
-run_command "pnpm run packages:all"
-run_command "pnpm run packages:all:readonly"
+./scripts/build-workspace.sh
+./scripts/build-framework-tests.sh
 
 ###################################################################################################
 
-echo "All builds completed"
+popd
+echo "### End ${THIS_SCRIPT_NAME}"

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # These are helpful functions for the other bash scripts in this directory.
 # Note that this is not a runnable script itself.
 
@@ -6,17 +8,14 @@ command_exists() {
   command -v "$1" > /dev/null 2>&1
 }
 
-get_json_value() {
-  local FILE=$1
-  local PROPERTY=$2
+emit_warning() {
+  local MESSAGE=$*
 
-  echo $(cat $FILE \
-    | grep "\"$PROPERTY\":" \
-    | head -1 \
-    | awk -F: '{ print $2 }' \
-    | sed 's/[",]//g' \
-    | tr -d '[[:space:]]'
-  )
+  echo "###"
+  echo "###"
+  echo "WARNING: ${MESSAGE}"
+  echo "###"
+  echo "###"
 }
 
 # This simply echoes and then runs a command. It's just an alternative to turning on echo (set -x)
@@ -38,4 +37,11 @@ run_npm_command() {
   else
     run_command npx $FULL_COMMAND
   fi
+}
+
+pnpm_or_bun() {
+  local SCRIPT_AND_ARGS=$*
+  local EXEC=$(sed -nr 's/"packageManager.*": "(.*)@.*",/\1/p' package.json)
+
+  run_command "${EXEC:-pnpm}" $SCRIPT_AND_ARGS
 }

@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
+THIS_SCRIPT_NAME=$(basename "$0")
+echo "### Begin ${THIS_SCRIPT_NAME}"
+
 # Fail if anything in here fails
 set -e
-
-# This script runs from the project root
-cd "$(dirname "$0")/.."
+# Run from the repo root
+pushd "$(dirname -- "${BASH_SOURCE[0]:-$0}")/.."
 
 source ./scripts/helpers/helpers.sh
 
@@ -20,43 +22,42 @@ if command_exists watchman; then
 fi
 
 ##################################################################################################
-# Clear caches
+# Remove any and all generated files
 
 if [ -d "./node_modules/" ]; then
-  run_command pnpm run clean
+  pnpm_or_bun run clean
 fi
 
-if command_exists pnpm; then
-  run_command "pnpm store prune" || true
-fi
+for DIRECTORY in framework-tests/*/ ; do
+  pushd $DIRECTORY
+  if [ -d "./node_modules/" ]; then
+    pnpm_or_bun run clean
+  fi
+  rm -f bun.lockb package-lock.json pnpm-lock.yaml yarn.lock
+  popd
+done
 
 run_command "rm -rf
   $TMPDIR/react-*
   "
 
-##################################################################################################
-# Remove generated files
-
-for DIRECTORY in '.' 'demos/*' 'packages/*' ; do
+for DIRECTORY in '.' 'demos/*' 'framework-tests/*' 'packages/*' ; do
   run_command "rm -rf
-    $DIRECTORY/.yarn
+    $DIRECTORY/.yalc/
     $DIRECTORY/build/
     $DIRECTORY/coverage/
-    $DIRECTORY/coverage-local/
     $DIRECTORY/dist/
+    $DIRECTORY/e2e-test-output/
     $DIRECTORY/legacy-types/
-    $DIRECTORY/lib-dist/
     $DIRECTORY/node_modules/
+    $DIRECTORY/playwright-report/
+    $DIRECTORY/public/build/
     $DIRECTORY/storybook-static/
-    $directory/.pnpm-debug.log*
-    $DIRECTORY/lerna-debug.log*
-    $DIRECTORY/npm-debug.log*
-    $DIRECTORY/yarn-debug.log*
-    $DIRECTORY/yarn-error.log*
+    $DIRECTORY/*.log*
     "
 done
 
-REMAINING_FILES=$(git clean -xdn)
+REMAINING_FILES=$(git clean -xdn | sed 's/Would remove /    /')
 if [[ $REMAINING_FILES ]]; then
   echo "Ignored files left:"
   echo "$REMAINING_FILES"
@@ -64,4 +65,5 @@ fi;
 
 ###################################################################################################
 
-echo "Environment reset completed"
+popd
+echo "### End ${THIS_SCRIPT_NAME}"

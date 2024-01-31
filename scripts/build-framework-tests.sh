@@ -12,16 +12,16 @@ source ./scripts/helpers/helpers.sh
 
 ###################################################################################################
 
-if command_exists act; then
-  # act =  https://github.com/nektos/act
-  act
-else
-  emit_warning "Could not find 'act': https://github.com/nektos/act"
-  exit 1
-fi
+./scripts/check-environment.sh
+./scripts/setup-framework-tests.sh
 
-# @TODO: Detect actions-runner/Runner.Client
-# https://github.com/ChristopherHX/runner.server
+for DIRECTORY in framework-tests/*/ ; do
+  pushd $DIRECTORY
+  echo "Framework-test checks for $DIRECTORY"
+
+  run_command ./framework-test.sh
+  popd
+done
 
 ###################################################################################################
 
