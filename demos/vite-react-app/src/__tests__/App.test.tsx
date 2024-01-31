@@ -2,7 +2,7 @@ import 'react';
 import { afterEach, describe, expect, test, vitest } from 'vitest';
 import { cleanup, fireEvent, render, screen, Screen } from '@testing-library/react';
 
-import { App } from '../App';
+import { App } from '../App.js';
 
 async function addKeyAndValue(screen: Screen, keyText: string, valueText: string) {
   const keyInput = await screen.findByLabelText('Key');

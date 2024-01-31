@@ -1,8 +1,7 @@
 {
   "extends": "./tsconfig-base.typecheck.json",
 
-  // Check each package, plus all config files
-  // Each demo app has its own tsconfig, follows the conventions of its build system
-  "include": ["*.ts", "packages/*/*.ts", "packages/*/src"],
-  "exclude": ["node_modules"]
+  // Check each package and demo, plus all config files
+  // Each framework-test has its own tsconfig, following the conventions of its framework, so they're not included
+  "include": ["*.ts", "demos/*/*.ts", "demos/*/src", "packages/*/*.ts", "packages/*/src"],
 }
