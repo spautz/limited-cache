@@ -1,25 +1,77 @@
-# Unless https://github.com/prettier/prettier/issues/4081 gets resolved,
-# this MUST be copied into each package dir for local runs to work.
+#
+# When updating this file, sync with .gitignore
+#
 
-# Whitelist supported files only
-**/*.*
-!**/*.css
-!**/*.html
-!**/*.js
-!**/*.jsx
-!**/*.json
-!**/*.less
-!**/*.md
-!**/*.scss
-!**/*.ts
-!**/*.tsx
+# Autoformatting lockfiles is slow and doesn't bring any benefits, so skip them
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
 
-# Unless they're somewhere we can ignore
-build/
-coverage/
-coverage-local/
-dist/
-legacy-types/
-lib-dist/
+###############################################################################
+# Everything below this point is copied from .gitignore
+
+# IDEs, etc
+
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# dependencies
+
+.pnp
+.pnp.js
+.pnpm-store/
 node_modules/
+framework-tests/*/.yalc/
+
+# unit tests
+
+coverage/
+
+# e2e tests
+
+e2e-test-output/
+playwright-report/
+
+# linting
+
+.eslintcache
+
+# build output
+
+*.tsbuildinfo
+
+.cache/
+.next/
+build/
+dist/
+dist-ssr/
+legacy-types/
+out/
+public/build/
+
+# storybook
+
 storybook-static/
+
+# log files
+
+lerna-debug.log*
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# misc
+
+.env.local
+.env*.local
+.vercel
+*.pem
+next-env.d.ts

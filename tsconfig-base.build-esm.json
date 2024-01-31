@@ -1,10 +1,16 @@
 {
   "extends": "./tsconfig-base.typecheck.json",
   "compilerOptions": {
+    // Modules
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    // Emit
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
-    "sourceMap": true
+    "sourceMap": true,
+    // Language and Environment
+    "target": "ES2020"
   },
   "exclude": ["node_modules", "**/*.stories.*", "**/__tests__", "**/*.test.*"]
 }

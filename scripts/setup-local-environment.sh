@@ -1,15 +1,24 @@
 #!/usr/bin/env bash
 
+THIS_SCRIPT_NAME=$(basename "$0")
+echo "### Begin ${THIS_SCRIPT_NAME}"
+
 # Fail if anything in here fails
 set -e
-
-# This script runs from the project root
-cd "$(dirname "$0")/.."
+# Run from the repo root
+pushd "$(dirname -- "${BASH_SOURCE[0]:-$0}")/.."
 
 source ./scripts/helpers/helpers.sh
 
 ###################################################################################################
-# NVM and Node
+# `setup-local-environment.sh` is for developers to use on their local machines.
+# It's a quick way to run through the repo-setup steps in CONTRIBUTING.md
+#
+# NOTE: this script will mutate your environment to match the repo's needs.
+
+if [[ ! "${BASH_SOURCE[0]}" != "${0}" ]]; then
+  emit_warning "${THIS_SCRIPT_NAME} is NOT being sourced: you should run 'source $0' instead."
+fi;
 
 # on Windows `nvm` will be a real command; on other environments -- with "real" nvm -- it's just a function
 if ! command_exists nvm; then
@@ -17,8 +26,7 @@ if ! command_exists nvm; then
   if [ -f $NVM_INIT ]; then
     source $NVM_INIT
   else
-    echo "Could not find nvm!"
-    exit 1
+    emit_warning "Could not find nvm."
   fi
 fi
 
@@ -34,10 +42,13 @@ if ! command_exists pnpm; then
 fi
 
 run_command "./scripts/check-environment.sh"
-run_command "pnpm install --frozen-lockfile --ignore-scripts"
-run_command "pnpm clean"
-run_command "pnpm install --frozen-lockfile --offline"
+
+# Ensure any lingering artifacts from earlier work have been cleaned out
+pnpm_or_bun install --frozen-lockfile --ignore-scripts --prefer-offline
+pnpm_or_bun run clean
+pnpm_or_bun install --frozen-lockfile --offline
 
 ###################################################################################################
 
-echo "Environment setup complete"
+popd
+echo "### End ${THIS_SCRIPT_NAME}"

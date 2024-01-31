@@ -42,45 +42,54 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
     },
+    "./internal-raw-src": "./src/index.ts",
+    "./internal-raw-src/*": "./src/*",
     "./package.json": "./package.json"
   },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "jsnext:main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.js",
+  "jsnext:main": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
   "sideEffects": false,
   "scripts": {
     "____ HOOKS _________________________________________________________": "",
-    "prepare": "pnpm run build:main",
+    "prepare": "pnpm run build:all-outputs",
     "prepack": "pnpm run clean && pnpm run build",
     "____ INTEGRATION ___________________________________________________": "",
     "clean": "pnpm run build:clean && pnpm run test:clean && rimraf --glob ./node_modules/.cache *.log",
-    "all": "pnpm run format                 && pnpm run typecheck && pnpm run lint:fix && pnpm run test:coverage && pnpm run build",
-    "all:readonly": "pnpm run format:verify && pnpm run typecheck && pnpm run lint     && pnpm run test:quick",
-    "all:quick": "pnpm run format           && pnpm run typecheck && pnpm run lint:fix",
-    "all:ci": "pnpm run format:verify       && pnpm run typecheck && pnpm run lint     && pnpm run test:ci && pnpm run build",
+    "all": "pnpm run          typecheck && pnpm run lint:fix && pnpm run test:coverage && pnpm run build",
+    "all:readonly": "pnpm run typecheck && pnpm run lint     && pnpm run test:quick",
+    "all:quick": "pnpm run    typecheck && pnpm run lint:fix",
+    "all:ci": "pnpm run       typecheck && pnpm run lint     && pnpm run test:ci && pnpm run build",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
-    "build": "pnpm run build:main && pnpm run sizecheck && pnpm run build:legacytypes",
+    "build": "pnpm run build:all-outputs && pnpm run build:validate && pnpm run build:legacytypes",
     "build:clean": "rimraf ./dist ./legacy-types",
-    "build:main": "pnpm run build:clean && tsup src/index.ts --format cjs && tsc -p ./tsconfig.build.json",
+    "build:all-outputs": "pnpm run build:clean && pnpm run build:cjs && pnpm run build:esm",
+    "build:cjs": "tsup src/index.ts --format cjs --dts --outDir=./dist/cjs/ --tsconfig=./tsconfig.build-cjs.json",
+    "build:cjs:watch": "pnpm run build:cjs --watch",
+    "build:esm": "tsc -p tsconfig.build-esm.json",
+    "build:esm:watch": "pnpm run build:esm --watch",
     "build:legacytypes": "pnpm run build:legacytypes:3.5 && pnpm run build:legacytypes:4.0 && pnpm run build:legacytypes:4.5",
-    "build:legacytypes:3.5": "downlevel-dts ./dist ./legacy-types/ts3.5 --to=3.5",
-    "build:legacytypes:4.0": "downlevel-dts ./dist ./legacy-types/ts4.0 --to=4.0",
-    "build:legacytypes:4.5": "downlevel-dts ./dist ./legacy-types/ts4.5 --to=4.5",
-    "build:watch": "pnpm run build:clean && tsup src/index.ts --format esm,cjs --dts --watch",
-    "format": "prettier --write .",
-    "format:verify": "prettier --list-different .",
+    "build:legacytypes:3.5": "downlevel-dts ./dist ./legacy-types/ts3.5/dist --to=3.5",
+    "build:legacytypes:4.0": "downlevel-dts ./dist ./legacy-types/ts4.0/dist --to=4.0",
+    "build:legacytypes:4.5": "downlevel-dts ./dist ./legacy-types/ts4.5/dist --to=4.5",
+    "build:validate": "publint --strict && size-limit",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --max-warnings 0 --fix",
-    "sizecheck": "size-limit",
     "test": "pnpm run test:coverage",
     "test:clean": "rimraf ./coverage",
     "test:ci": "pnpm run test:clean            && vitest run --coverage",
     "test:coverage": "pnpm run test:clean      && vitest run --coverage",
+    "test:ui": "pnpm run test:clean            && vitest --ui",
     "test:quick": "pnpm run test:clean         && vitest run --coverage=false",
     "test:watch": "pnpm run test:clean         && vitest watch --coverage=false",
     "test:watchcoverage": "pnpm run test:clean && vitest watch --coverage",
@@ -88,39 +97,39 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "20.1.1"
+    "@types/node": "20.11.13"
   },
   "peerDependencies": {},
   "size-limit": [
     {
-      "path": "dist/index.js",
+      "path": "./dist/esm/index.js",
       "import": "{}",
       "limit": "20 B"
     },
     {
-      "path": "dist/index.js",
-      "limit": "2 kB"
+      "path": "./dist/esm/index.js",
+      "limit": "2 kb"
+    },
+    {
+      "path": "./dist/esm/index.js",
+      "import": "{ LimitedCache }",
+      "limit": "1.2 kb"
     }
   ],
   "typesVersions": {
     "<4.0": {
       "*": [
-        "legacy-types/ts3.5/index.d.ts"
+        "./legacy-types/ts3.5/*"
       ]
     },
     "<4.5": {
       "*": [
-        "legacy-types/ts4.0/index.d.ts"
+        "./legacy-types/ts4.0/*"
       ]
     },
     "<4.7": {
       "*": [
-        "legacy-types/ts4.5/index.d.ts"
-      ]
-    },
-    "*": {
-      "*": [
-        "dist/index.d.ts"
+        "./legacy-types/ts4.5/*"
       ]
     }
   }
