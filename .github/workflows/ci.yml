@@ -11,134 +11,64 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 16.x, 18.x, 19.x, 20.x ]
+        node-version: [16.x, 18.x, 19.x, 20.x, 21.x]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.5.3
         with:
           fetch-depth: 0
 
-      - name: Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: ./.github/reusable-workflows/setup-repo
         with:
           node-version: ${{ matrix.node-version }}
 
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - run: corepack enable
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
       - name: Check for a changelog entry
-        if: ${{ github.ref != 'refs/heads/prepare-release' }}
-        run: pnpm run changelog:status:ci
+        if: ${{ github.ref != 'refs/heads/prepare-release' && github.actor != 'dependabot[bot]' }}
+        run: |
+          pnpm run changelog:status:ci
 
       - name: Run CI checks
-        run: pnpm run all:ci
+        run: |
+          pnpm run all:ci
 
       - name: Report test coverage to coveralls.io
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ github.token }}
 
-
   package-ci:
     name: Package CI
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package-name: [ limited-cache ]
+        package-name: [limited-cache]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.5.3
+
+      - uses: ./.github/reusable-workflows/setup-repo
         with:
-          fetch-depth: 0
-
-      - name: Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - run: corepack enable
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+          node-version: latest
 
       - name: Run CI checks for package
         run: |
           cd packages/${{ matrix.package-name }}
           pnpm run all:ci
 
-
-  demos-ci:
-    name: Demos CI
+  demo-ci:
+    name: Demo CI
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        demo-name: [ vite-react-app ]
+        demo-name: [vite-react-app]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.5.3
 
-      - name: Node.js
-        uses: actions/setup-node@v3
+      - uses: ./.github/reusable-workflows/setup-repo
         with:
-          node-version: 20
-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - run: corepack enable
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+          node-version: latest
+          use-lockfile: false
 
       - name: Run CI checks for demo
         run: |

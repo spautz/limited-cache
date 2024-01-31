@@ -1,46 +1,73 @@
+#
+# When updating this file, sync with .prettierignore
+#
+
+# IDEs, etc
+
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # dependencies
-/.pnp
-/node_modules
-/demos/*/node_modules
-/packages/*/node_modules
+
+.pnp
 .pnp.js
+.pnpm-store/
+node_modules/
 
-# outputs
-/build
-/coverage
-/coverage-local
-/dist
-/legacy-types
-/lib-dist
-/storybook-static
-/demos/*/build
-/demos/*/coverage
-/demos/*/coverage-local
-/demos/*/dist
-/demos/*/legacy-types
-/demos/*/lib-dist
-/demos/*/storybook-static
-/packages/*/build
-/packages/*/coverage
-/packages/*/coverage-local
-/packages/*/dist
-/packages/*/legacy-types
-/packages/*/lib-dist
-/packages/*/storybook-static
+# unit tests
 
-# misc
-.idea/
-.vscode/
+coverage/
 
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# e2e tests
 
-.pnpm-debug.log*
+e2e-test-output/
+playwright-report/
+
+# linting
+
+.eslintcache
+
+# build output
+
+*.tsbuildinfo
+
+.cache/
+.next/
+_fresh/
+build/
+dist/
+dist-ssr/
+legacy-types/
+out/
+public/build/
+
+# storybook
+
+storybook-static/
+
+# framework-tests
+
+framework-tests/*/.yalc/
+
+# log files
+
 lerna-debug.log*
 npm-debug.log*
+pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# misc
+
+.env.local
+.env*.local
+.vercel
+*.pem
+next-env.d.ts

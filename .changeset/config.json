@@ -12,7 +12,5 @@
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": [
-    "@spautz/limited-cache-demo--vite-react-app"
-  ]
+  "ignore": ["@spautz/limited-cache-demo--vite-react-app"]
 }

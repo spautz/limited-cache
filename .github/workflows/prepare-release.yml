@@ -1,7 +1,6 @@
 name: Prepare Release
 
-on:
-  workflow_dispatch
+on: workflow_dispatch
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -25,37 +24,13 @@ jobs:
       pull-requests: write
       id-token: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.5.3
         with:
           fetch-depth: 0
-          ref: main
 
-      - name: Node.js
-        uses: actions/setup-node@v3
+      - uses: ./.github/reusable-workflows/setup-repo
         with:
-          node-version: 20
-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - run: corepack enable
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+          node-version: nvmrc
 
       - name: Prepare release
         run: pnpm run release:prep
