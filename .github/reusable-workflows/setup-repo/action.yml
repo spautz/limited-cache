@@ -43,7 +43,7 @@ runs:
           ${{ runner.os }}-pnpm-store-
 
     - name: Remove lockfile to loosen dependency tree
-      if: ${{ github.event.inputs.use-lockfile == "false" }}
+      if: ${{ github.event.inputs.use-lockfile }} == "false"
       shell: bash
       run: |
         echo "REMOVING LOCKFILES"
