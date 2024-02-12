@@ -13,7 +13,8 @@ source ./scripts/helpers/helpers.sh
 ###################################################################################################
 
 ./scripts/check-environment.sh
-./scripts/setup-framework-tests.sh
+
+pnpm_or_bun install --frozen-lockfile --prefer-offline
 
 for DIRECTORY in framework-tests/*/ ; do
   pushd $DIRECTORY

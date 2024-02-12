@@ -28,15 +28,6 @@ if [ -d "./node_modules/" ]; then
   pnpm_or_bun run clean
 fi
 
-for DIRECTORY in framework-tests/*/ ; do
-  pushd $DIRECTORY
-  if [ -d "./node_modules/" ]; then
-    pnpm_or_bun run clean
-  fi
-  rm -f bun.lockb package-lock.json pnpm-lock.yaml yarn.lock
-  popd
-done
-
 run_command "rm -rf
   $TMPDIR/react-*
   "

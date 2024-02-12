@@ -7,11 +7,11 @@
   "bugs": "https://github.com/spautz/limited-cache/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spautz/limited-cache.git"
+    "url": "https://github.com/spautz/limited-cache.git"
   },
   "author": {
     "name": "Steven Pautz",
-    "url": "http://stevenpautz.com/"
+    "url": "https://github.com/spautz/"
   },
   "engines": {
     "node": "^16 || ^18 || ^19 || ^20 || ^21",
@@ -22,10 +22,11 @@
   "scripts": {
     "____ HOOKS _________________________________________________________": "",
     "preinstall": "npx only-allow pnpm",
-    "prepare": "husky",
+    "prepare": "husky && pnpm run packages:prepare",
     "husky:precommit": "lint-staged",
     "husky:prepush": "pnpm run format:verify && pnpm run typecheck && pnpm run lint",
     "____ BATCH COMMANDS FOR PACKAGES ___________________________________": "",
+    "packages:prepare": "pnpm run clean && pnpm run packages:yalc-publish",
     "packages:clean": "pnpm --parallel -r run clean",
     "packages:build": "pnpm -r run build",
     "packages:lint": "pnpm -r run lint",
