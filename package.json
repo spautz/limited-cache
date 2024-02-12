@@ -67,6 +67,7 @@
     "typecheck": "tsc -p ./tsconfig.json --noEmit"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "0.13.8",
     "@changesets/cli": "2.27.1",
     "@changesets/types": "6.0.0",
     "@size-limit/preset-small-lib": "11.0.2",
