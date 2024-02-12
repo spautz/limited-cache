@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.2.0
+
+### Minor Changes
+
+- Update devDependencies and build system. No functional changes expected from this ([#68](https://github.com/spautz/limited-cache/issues/68)) ([05da16b](https://github.com/spautz/limited-cache/commit/05da16b9b97eb413b186334141b255ee4a03b687))
+- Add support for bundler moduleResolution ([#68](https://github.com/spautz/limited-cache/issues/68)) ([05da16b](https://github.com/spautz/limited-cache/commit/05da16b9b97eb413b186334141b255ee4a03b687))
+
 ## 2.1.1
 
 ### Patch Changes
