@@ -46,16 +46,14 @@ runs:
       if: ${{ inputs.use-lockfile == 'false' }}
       shell: bash
       run: |
-        echo "REMOVING LOCKFILES"
         rm -f bun.lockb package-lock.json pnpm-lock.yaml yarn.lock
     - name: Keep lockfile intact
       if: ${{ inputs.use-lockfile != 'false' }}
       shell: bash
       run: |
-        echo "KEEPING LOCKFILES"
+        echo "(not removing lockfile)"
 
     - name: Install dependencies
       shell: bash
       run: |
         ./scripts/setup-ci-environment.sh
-        git status
