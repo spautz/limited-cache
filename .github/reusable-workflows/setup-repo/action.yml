@@ -54,3 +54,4 @@ runs:
       shell: bash
       run: |
         ./scripts/setup-ci-environment.sh
+        git status
