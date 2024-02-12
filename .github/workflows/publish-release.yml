@@ -34,6 +34,7 @@ jobs:
       - name: Publish to NPM
         run: |
           cd packages/${{ matrix.package-name }}
-          NPM_CONFIG_PROVENANCE=true  pnpm publish --tag next
+          pnpm pack
+          NPM_CONFIG_PROVENANCE=true  pnpm publish --tag next *${{ matrix.package-name }}*.tgz
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}

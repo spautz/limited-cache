@@ -7,11 +7,11 @@
   "bugs": "https://github.com/spautz/limited-cache/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spautz/limited-cache.git"
+    "url": "https://github.com/spautz/limited-cache.git"
   },
   "author": {
     "name": "Steven Pautz",
-    "url": "http://stevenpautz.com/"
+    "url": "https://github.com/spautz/"
   },
   "engines": {
     "node": "^16 || ^18 || ^19 || ^20 || ^21",
@@ -22,13 +22,13 @@
   "scripts": {
     "____ HOOKS _________________________________________________________": "",
     "preinstall": "npx only-allow pnpm",
-    "prepare": "husky",
+    "prepare": "husky && pnpm run packages:prepare",
     "husky:precommit": "lint-staged",
     "husky:prepush": "pnpm run format:verify && pnpm run typecheck && pnpm run lint",
     "____ BATCH COMMANDS FOR PACKAGES ___________________________________": "",
+    "packages:prepare": "pnpm run clean && pnpm run packages:yalc-publish",
     "packages:clean": "pnpm --parallel -r run clean",
     "packages:build": "pnpm -r run build",
-    "packages:build:validate": "pnpm -r run build:validate",
     "packages:lint": "pnpm -r run lint",
     "packages:lint:fix": "pnpm -r run lint:fix",
     "packages:test": "pnpm -r run test:coverage",
@@ -67,27 +67,30 @@
     "typecheck": "tsc -p ./tsconfig.json --noEmit"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "0.13.8",
     "@changesets/cli": "2.27.1",
     "@changesets/types": "6.0.0",
     "@size-limit/preset-small-lib": "11.0.2",
-    "@testing-library/jest-dom": "6.4.0",
-    "@typescript-eslint/eslint-plugin": "6.20.0",
-    "@typescript-eslint/parser": "6.20.0",
+    "@testing-library/jest-dom": "6.4.2",
+    "@types/node": "20.11.17",
+    "@typescript-eslint/eslint-plugin": "6.21.0",
+    "@typescript-eslint/parser": "6.21.0",
     "@vitest/coverage-v8": "1.2.2",
     "changesets-format-with-issue-links": "0.3.0",
     "downlevel-dts": "0.11.0",
     "eslint": "8.56.0",
     "eslint-config-prettier": "9.1.0",
-    "husky": "9.0.7",
+    "husky": "9.0.10",
     "jsdom": "24.0.0",
-    "lint-staged": "15.2.0",
-    "prettier": "3.2.4",
+    "lint-staged": "15.2.2",
+    "prettier": "3.2.5",
     "publint": "0.2.7",
     "rimraf": "5.0.5",
     "size-limit": "11.0.2",
-    "tsup": "8.0.1",
+    "tsup": "8.0.2",
     "typescript": "5.3.3",
-    "vitest": "1.2.2"
+    "vitest": "1.2.2",
+    "yalc": "1.0.0-pre.53"
   },
   "lint-staged": {
     "*.{css,html,js,jsx,json,less,md,scss,ts,tsx,yaml}": [

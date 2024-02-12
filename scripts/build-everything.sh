@@ -14,9 +14,6 @@ source ./scripts/helpers/helpers.sh
 # Quick shorthand for running all packages', demos', *and* framework-tests' checks together.
 # This will take a while to run.
 
-pnpm_or_bun install --frozen-lockfile --ignore-scripts --prefer-offline
-pnpm_or_bun run clean
-
 ./scripts/build-workspace.sh
 ./scripts/build-framework-tests.sh
 
