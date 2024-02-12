@@ -61,7 +61,6 @@
   "sideEffects": false,
   "scripts": {
     "____ HOOKS _________________________________________________________": "",
-    "prepare": "pnpm run build:all-outputs",
     "prepack": "pnpm run clean && pnpm run build",
     "____ INTEGRATION ___________________________________________________": "",
     "clean": "pnpm run build:clean && pnpm run test:clean && rimraf --glob ./node_modules/.cache *.log",
@@ -94,9 +93,7 @@
     "typecheck": "tsc -p ./tsconfig.json --noEmit"
   },
   "dependencies": {},
-  "devDependencies": {
-    "@types/node": "20.11.13"
-  },
+  "devDependencies": {},
   "peerDependencies": {},
   "size-limit": [
     {
