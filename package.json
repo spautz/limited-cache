@@ -28,7 +28,6 @@
     "____ BATCH COMMANDS FOR PACKAGES ___________________________________": "",
     "packages:clean": "pnpm --parallel -r run clean",
     "packages:build": "pnpm -r run build",
-    "packages:build:validate": "pnpm -r run build:validate",
     "packages:lint": "pnpm -r run lint",
     "packages:lint:fix": "pnpm -r run lint:fix",
     "packages:test": "pnpm -r run test:coverage",

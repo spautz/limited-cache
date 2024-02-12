@@ -52,7 +52,6 @@
       }
     },
     "./internal-raw-src": "./src/index.ts",
-    "./internal-raw-src/*": "./src/*",
     "./package.json": "./package.json"
   },
   "main": "./dist/cjs/index.cjs",
@@ -71,9 +70,8 @@
     "all:quick": "pnpm run    typecheck && pnpm run lint:fix",
     "all:ci": "pnpm run       typecheck && pnpm run lint     && pnpm run test:ci && pnpm run build",
     "____ INDIVIDUAL COMMANDS ___________________________________________": "",
-    "build": "pnpm run build:all-outputs && pnpm run build:validate && pnpm run build:legacytypes",
+    "build": "pnpm run build:clean && pnpm run build:cjs && pnpm run build:esm && pnpm run build:verify && pnpm run build:legacytypes",
     "build:clean": "rimraf ./dist ./legacy-types",
-    "build:all-outputs": "pnpm run build:clean && pnpm run build:cjs && pnpm run build:esm",
     "build:cjs": "tsup src/index.ts --format cjs --dts --outDir=./dist/cjs/ --tsconfig=./tsconfig.build-cjs.json",
     "build:cjs:watch": "pnpm run build:cjs --watch",
     "build:esm": "tsc -p tsconfig.build-esm.json",
@@ -82,15 +80,15 @@
     "build:legacytypes:3.5": "downlevel-dts ./dist ./legacy-types/ts3.5/dist --to=3.5",
     "build:legacytypes:4.0": "downlevel-dts ./dist ./legacy-types/ts4.0/dist --to=4.0",
     "build:legacytypes:4.5": "downlevel-dts ./dist ./legacy-types/ts4.5/dist --to=4.5",
-    "build:validate": "publint --strict && size-limit",
+    "build:verify": "publint --strict && size-limit",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --max-warnings 0 --fix",
     "test": "pnpm run test:coverage",
     "test:clean": "rimraf ./coverage",
     "test:ci": "pnpm run test:clean            && vitest run --coverage",
     "test:coverage": "pnpm run test:clean      && vitest run --coverage",
-    "test:ui": "pnpm run test:clean            && vitest --ui",
     "test:quick": "pnpm run test:clean         && vitest run --coverage=false",
+    "test:ui": "pnpm run test:clean            && vitest --ui",
     "test:watch": "pnpm run test:clean         && vitest watch --coverage=false",
     "test:watchcoverage": "pnpm run test:clean && vitest watch --coverage",
     "typecheck": "tsc -p ./tsconfig.json --noEmit"
@@ -105,10 +103,6 @@
       "path": "./dist/esm/index.js",
       "import": "{}",
       "limit": "20 B"
-    },
-    {
-      "path": "./dist/esm/index.js",
-      "limit": "2 kb"
     },
     {
       "path": "./dist/esm/index.js",
