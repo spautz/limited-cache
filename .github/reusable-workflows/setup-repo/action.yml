@@ -13,12 +13,12 @@ runs:
   using: composite
   steps:
     - uses: actions/setup-node@v3.7.0
-      if: (github.event.inputs.node-version == "nvmrc")
+      if: github.event.inputs.node-version == "nvmrc"
       with:
         node-version-file: .nvmrc
         registry-url: 'https://registry.npmjs.org'
     - uses: actions/setup-node@v3.7.0
-      if: (github.event.inputs.node-version != "nvmrc")
+      if: github.event.inputs.node-version != "nvmrc"
       with:
         node-version: ${{ github.event.inputs.node-version }}
         registry-url: 'https://registry.npmjs.org'
@@ -43,13 +43,13 @@ runs:
           ${{ runner.os }}-pnpm-store-
 
     - name: Remove lockfile to loosen dependency tree
-      if: (github.event.inputs.use-lockfile == "false")
+      if: github.event.inputs.use-lockfile == "false"
       shell: bash
       run: |
         echo "REMOVING LOCKFILES"
         rm -f bun.lockb package-lock.json pnpm-lock.yaml yarn.lock
     - name: Keep lockfile intact
-      if: (github.event.inputs.use-lockfile != "false")
+      if: github.event.inputs.use-lockfile != "false"
       shell: bash
       run: |
         echo "KEEPING LOCKFILES"
