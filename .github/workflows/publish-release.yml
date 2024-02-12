@@ -17,7 +17,6 @@ jobs:
     # Only run for the original repo, and only the default branch, and only if it's properly protected
     if: |
       (! github.event.push.head.repo.fork)
-        && github.ref_protected == true
     strategy:
       matrix:
         package-name: [limited-cache]
