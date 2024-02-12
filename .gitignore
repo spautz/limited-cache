@@ -47,6 +47,7 @@ dist-ssr/
 legacy-types/
 out/
 public/build/
+packages/*/*.tgz
 
 # storybook
 

@@ -28,7 +28,6 @@ yarn.lock
 .pnp.js
 .pnpm-store/
 node_modules/
-framework-tests/*/.yalc/
 
 # unit tests
 
@@ -49,16 +48,22 @@ playwright-report/
 
 .cache/
 .next/
+_fresh/
 build/
 dist/
 dist-ssr/
 legacy-types/
 out/
 public/build/
+packages/*/*.tgz
 
 # storybook
 
 storybook-static/
+
+# framework-tests
+
+framework-tests/*/.yalc/
 
 # log files
 
