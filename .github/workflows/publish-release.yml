@@ -32,7 +32,9 @@ jobs:
       - name: Publish to NPM
         run: |
           cd packages/${{ matrix.package-name }}
+          git status
           pnpm pack
+          git status
           NPM_CONFIG_PROVENANCE=true  pnpm publish --dry-run --tag next *${{ matrix.package-name }}*.tgz
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
