@@ -14,7 +14,7 @@
     "url": "https://github.com/spautz/"
   },
   "engines": {
-    "node": "^16 || ^18 || ^19 || ^20 || ^21",
+    "node": "^18 || ^20 || ^21",
     "pnpm": "^8"
   },
   "packageManager": "pnpm@8.15.1",
