@@ -88,7 +88,8 @@
     "size-limit": "11.0.2",
     "tsup": "8.0.2",
     "typescript": "5.3.3",
-    "vitest": "1.2.2"
+    "vitest": "1.2.2",
+    "yalc": "1.0.0-pre.53"
   },
   "lint-staged": {
     "*.{css,html,js,jsx,json,less,md,scss,ts,tsx,yaml}": [
