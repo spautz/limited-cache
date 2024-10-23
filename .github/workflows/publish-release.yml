@@ -23,7 +23,7 @@ jobs:
       matrix:
         package-name: [limited-cache]
     steps:
-      - uses: actions/checkout@v3.5.3
+      - uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
 
