@@ -1,4 +1,9 @@
 {
   "extends": "../../tsconfig-base.typecheck.json",
+
+  "compilerOptions": {
+    "types": ["@testing-library/jest-dom"]
+  },
+
   "include": ["*.ts", "src"]
 }
