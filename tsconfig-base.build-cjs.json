@@ -4,13 +4,16 @@
     // Modules
     "module": "CommonJS",
     "moduleResolution": "Node",
+    "resolvePackageJsonExports": false,
+    "resolvePackageJsonImports": false,
     // Emit
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
     "sourceMap": true,
     // Language and Environment
-    "target": "ES6"
+    "target": "ES6",
+    "verbatimModuleSyntax": false
   },
   "exclude": ["node_modules", "**/*.stories.*", "**/__tests__", "**/*.test.*"]
 }

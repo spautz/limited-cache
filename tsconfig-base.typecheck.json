@@ -3,17 +3,20 @@
     // Type Checking
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
-    "alwaysStrict": true,
     "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
     // Modules
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "resolvePackageJsonExports": true,
+    "resolvePackageJsonImports": true,
     // Emit
     "declaration": true,
     "noEmit": true,
@@ -23,12 +26,15 @@
     "allowJs": true,
     "checkJs": true,
     // Interop Constraints
+    "erasableSyntaxOnly": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
+    "verbatimModuleSyntax": true,
     // Language and Environment
     "jsx": "react-jsx",
     "lib": ["DOM", "DOM.Iterable", "ES2020"],
+    "moduleDetection": "force",
     "target": "ES2020",
     // Completeness
     "skipLibCheck": true
