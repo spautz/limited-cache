@@ -1,6 +1,6 @@
 import { objectAssign, objectCreate, dateNow, hasOwnProperty } from './builtIns.js';
 import { CURRENT_META_VERSION, MAXIMUM_CACHE_TIME, defaultOptions } from './defaultOptions.js';
-import {
+import type {
   LimitedCacheOptions,
   LimitedCacheOptionsReadonly,
   LimitedCacheMeta,
@@ -28,7 +28,7 @@ const normalizeOptions = (cacheMetaOptions: LimitedCacheOptionsFull): LimitedCac
 };
 
 const isCacheMeta = (cacheMeta: LimitedCacheMeta): boolean => {
-  return !!cacheMeta && !!cacheMeta.limitedCacheMetaVersion;
+  return !!(cacheMeta?.limitedCacheMetaVersion);
 };
 
 const upgradeCacheMeta = (cacheMeta: LimitedCacheMeta): void => {
@@ -161,14 +161,14 @@ const _removeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void 
   // These track the soonest-to-expire thing we've found. It may not actually be "oldest".
   // By default we'll remove the item at the head of the queue, unless we find something better.
   let oldestItemIndex = 0;
-  let oldestExpireTime = _getExpireTime(cacheMeta, keyList[0]);
+  let oldestExpireTime = _getExpireTime(cacheMeta, keyList[0] as string);
 
   if (oldestExpireTime > now) {
     // The head of the list hasn't yet expired: scan for a better candidate to remove
     let indexToCheck = 0;
     const maxIndexToCheck = Math.min(keyList.length, scanLimit);
     while (indexToCheck < maxIndexToCheck) {
-      const cacheKeyForIndex = keyList[indexToCheck];
+      const cacheKeyForIndex = keyList[indexToCheck] as string;
       const expireTimeForIndex = _getExpireTime(cacheMeta, cacheKeyForIndex);
 
       // We only consider it if it's eligible for expiration: otherwise it can't be a better option
@@ -195,7 +195,7 @@ const _removeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void 
     warnIfItemPurgedBeforeTime &&
     oldestExpireTime > now
   ) {
-    const oldestItemKey = keyList[oldestItemIndex];
+    const oldestItemKey = keyList[oldestItemIndex] as string;
     const [oldestItemSetTime, oldestItemExpireTime] = keyInfo[oldestItemKey] as [number, number];
 
     if (now - oldestItemSetTime < warnIfItemPurgedBeforeTime) {
@@ -299,7 +299,7 @@ const lowLevelSet = <ItemType = DefaultItemType>(
     }
   }
 
-  if (_cacheKeyHasExpired(cacheMeta, keyList[0], now)) {
+  if (_cacheKeyHasExpired(cacheMeta, keyList[0] as string, now)) {
     // While we're here, if we need to expire the head of the queue then drop it
     _removeFromIndex(cacheMeta, 0, now);
   }
@@ -334,7 +334,7 @@ const lowLevelReset = <ItemType = DefaultItemType>(
   return objectAssign(cacheMeta, {
     cache: {},
     keyList: [],
-    keyInfo: objectCreate(null),
+    keyInfo: objectCreate(null) as Record<string, ItemType>,
     opsLeft: cacheMeta.options.opLimit,
   });
 };
