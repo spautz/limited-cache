@@ -9,7 +9,7 @@ import {
   lowLevelSetOptions,
   lowLevelDoMaintenance,
 } from './lowLevelFunctions.js';
-import {
+import type {
   LimitedCacheOptions,
   LimitedCacheOptionsReadonly,
   LimitedCacheInstance,

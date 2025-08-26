@@ -1,3 +1,14 @@
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      GITHUB_AUTH_TOKEN: string;
+      NODE_ENV: 'development' | 'production';
+      PORT?: string;
+      PWD: string;
+    }
+  }
+}
+
 // This makes it easy to ensure that ItemType gets passed to any nested generics:
 // Using `unknown` helps catch errors during development but is a pain for consumers.
 // Using `any` is nicer for consumers, but errors could slip through during development.

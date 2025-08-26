@@ -2,6 +2,7 @@ import eslintJs from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
+// @ts-ignore
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import importPlugin from 'eslint-plugin-import';
 import globals from 'globals';
@@ -17,6 +18,7 @@ const buildOutputs = [
 ];
 const projectDirectoriesToIgnore = `{${buildOutputs.join(',')}}/**`;
 
+// @ts-ignore
 export default typescriptEslint.config(
   {
     ignores: [

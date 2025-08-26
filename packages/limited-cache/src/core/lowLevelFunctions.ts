@@ -1,11 +1,11 @@
-import { objectAssign, objectCreate, dateNow, hasOwnProperty } from './builtIns.js';
-import { CURRENT_META_VERSION, MAXIMUM_CACHE_TIME, defaultOptions } from './defaultOptions.js';
+import { dateNow, hasOwnProperty, objectAssign, objectCreate } from './builtIns.js';
+import { CURRENT_META_VERSION, defaultOptions, MAXIMUM_CACHE_TIME } from './defaultOptions.js';
 import type {
-  LimitedCacheOptions,
-  LimitedCacheOptionsReadonly,
-  LimitedCacheMeta,
-  LimitedCacheOptionsFull,
   DefaultItemType,
+  LimitedCacheMeta,
+  LimitedCacheOptions,
+  LimitedCacheOptionsFull,
+  LimitedCacheOptionsReadonly,
 } from '../types.js';
 
 /* Initialization and options */
@@ -28,7 +28,7 @@ const normalizeOptions = (cacheMetaOptions: LimitedCacheOptionsFull): LimitedCac
 };
 
 const isCacheMeta = (cacheMeta: LimitedCacheMeta): boolean => {
-  return !!(cacheMeta?.limitedCacheMetaVersion);
+  return !!cacheMeta?.limitedCacheMetaVersion;
 };
 
 const upgradeCacheMeta = (cacheMeta: LimitedCacheMeta): void => {
@@ -134,7 +134,7 @@ const _removeFromIndex = (cacheMeta: LimitedCacheMeta, startIndex: number, now: 
 
   // Always remove the item requested, and also remove any neighbors who have expired
   let nextIndex = startIndex;
-  let nextCacheKey = keyList[startIndex];
+  let nextCacheKey = keyList[startIndex]!;
   const keyListLength = keyList.length;
   do {
     // Remove the 'next' item
@@ -143,7 +143,7 @@ const _removeFromIndex = (cacheMeta: LimitedCacheMeta, startIndex: number, now: 
 
     // Now advance and decide whether to keep going
     nextIndex++;
-    nextCacheKey = keyList[nextIndex];
+    nextCacheKey = keyList[nextIndex]!;
   } while (nextIndex < keyListLength && _cacheKeyHasExpired(cacheMeta, nextCacheKey, now));
 
   // Remove the index for everything from the startIndex until we stopped

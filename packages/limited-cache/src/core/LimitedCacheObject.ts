@@ -7,7 +7,7 @@ import {
   lowLevelSet,
   lowLevelRemove,
 } from './lowLevelFunctions.js';
-import {
+import type {
   LimitedCacheOptions,
   LimitedCacheObjectInstance,
   LimitedCacheMeta,
