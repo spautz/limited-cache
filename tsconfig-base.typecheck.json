@@ -22,8 +22,8 @@
     "removeComments": false,
     "sourceMap": true,
     // Javascript Support
-    "allowJs": true,
-    "checkJs": true,
+    "allowJs": false,
+    "checkJs": false,
     // Interop Constraints
     "erasableSyntaxOnly": true,
     "esModuleInterop": true,

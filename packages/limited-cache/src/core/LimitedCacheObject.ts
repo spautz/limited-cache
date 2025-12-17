@@ -15,22 +15,25 @@ import type {
 } from '../types.js';
 
 // The `any` here doesn't escape out anywhere: it's overridden by the constructor below
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const proxyHandler: ProxyHandler<LimitedCacheObjectInstance<any>> = {
+
+const proxyHandler: ProxyHandler<LimitedCacheObjectInstance> = {
   get: (cacheMeta: LimitedCacheMeta, cacheKey: string) => {
     if (cacheKey === 'hasOwnProperty') {
       return hasOwnProperty;
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return lowLevelGetOne(cacheMeta, cacheKey);
   },
   getOwnPropertyDescriptor: (cacheMeta: LimitedCacheMeta, cacheKey: string) => {
     const hasResult = lowLevelHas(cacheMeta, cacheKey);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const getResult = lowLevelGetOne(cacheMeta, cacheKey);
 
     if (hasResult) {
       return {
         configurable: true,
         enumerable: hasResult,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         value: getResult,
         writable: true,
       };
@@ -63,10 +66,12 @@ const LimitedCacheObject = <ItemType = DefaultItemType>(
   const limitedCacheObject = new Proxy(cacheMeta, proxyHandler);
 
   cacheMetasForProxies.set(limitedCacheObject, cacheMeta);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return limitedCacheObject;
 };
 
 const getCacheMetaFromObject = (instance: LimitedCacheObjectInstance): LimitedCacheMeta => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return cacheMetasForProxies.get(instance);
 };
 

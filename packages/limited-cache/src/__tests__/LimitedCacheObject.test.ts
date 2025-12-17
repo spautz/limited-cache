@@ -1,7 +1,7 @@
 import { describe, beforeEach, expect, it } from 'vitest';
 import { defaultOptions } from '../core/defaultOptions.js';
 import { LimitedCacheObject, getCacheMetaFromObject } from '../core/LimitedCacheObject.js';
-import { LimitedCacheObjectInstance } from '../types.js';
+import { type LimitedCacheObjectInstance } from '../types.js';
 
 describe('LimitedCacheObject', () => {
   it('initializes without options', () => {
@@ -45,14 +45,14 @@ describe('LimitedCacheObject', () => {
     });
 
     it('has: when present, via prototype hasOwnProperty', () => {
-      myCache.abc = 123;
+      myCache['abc'] = 123;
 
       const result = Object.prototype.hasOwnProperty.call(myCache, 'abc');
       expect(result).toEqual(true);
     });
 
     it('has: when present, via local hasOwnProperty', () => {
-      myCache.abc = 123;
+      myCache['abc'] = 123;
 
       // eslint-disable-next-line no-prototype-builtins
       const result = myCache.hasOwnProperty('abc');
@@ -60,56 +60,56 @@ describe('LimitedCacheObject', () => {
     });
 
     it('has: when present, via "in"', () => {
-      myCache.abc = 123;
+      myCache['abc'] = 123;
 
       const result = 'abc' in myCache;
       expect(result).toEqual(true);
     });
 
     it('get: when missing', () => {
-      const result = myCache.asdf;
+      const result = myCache['asdf'];
       expect(result).toBeUndefined();
     });
 
     it('get: when present', () => {
-      myCache.abc = 123;
+      myCache['abc'] = 123;
 
-      const result = myCache.abc;
+      const result = myCache['abc'];
       expect(result).toEqual(123);
     });
 
     it('set: when new', () => {
-      const result = (myCache.abc = 123);
+      const result = (myCache['abc'] = 123);
       expect(result).toEqual(123);
     });
 
     it('set: when already present', () => {
-      myCache.abc = 123;
+      myCache['abc'] = 123;
 
-      const result = (myCache.abc = 456);
+      const result = (myCache['abc'] = 456);
       expect(result).toEqual(456);
     });
 
     it('delete and return value', () => {
-      myCache.abc = 123;
+      myCache['abc'] = 123;
 
-      const result = delete myCache.abc;
+      const result = delete myCache['abc'];
       expect(result).toEqual(true);
     });
 
     it('delete, then check', () => {
-      myCache.abc = 123;
-      delete myCache.abc;
+      myCache['abc'] = 123;
+      delete myCache['abc'];
 
       const result = Object.prototype.hasOwnProperty.call(myCache, 'abc');
       expect(result).toEqual(false);
     });
 
     it('delete, then get', () => {
-      myCache.abc = 123;
-      delete myCache.abc;
+      myCache['abc'] = 123;
+      delete myCache['abc'];
 
-      const result = myCache.abc;
+      const result = myCache['abc'];
       expect(result).toEqual(undefined);
     });
 
@@ -119,15 +119,15 @@ describe('LimitedCacheObject', () => {
     });
 
     it('keys: when populated', () => {
-      myCache.abc = 123;
+      myCache['abc'] = 123;
 
       const result = Object.keys(myCache);
       expect(result).toEqual(['abc']);
     });
 
     it('keys: when all are removed', () => {
-      myCache.abc = 123;
-      delete myCache.abc;
+      myCache['abc'] = 123;
+      delete myCache['abc'];
 
       const result = Object.keys(myCache);
       expect(result).toEqual([]);

@@ -1,10 +1,11 @@
 declare global {
+  // We only want the exact `process.env.NODE_ENV` (and not all Node typings) since that's handled by bundlers
+  // even in ESM.
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace NodeJS {
     interface ProcessEnv {
-      GITHUB_AUTH_TOKEN: string;
-      NODE_ENV: 'development' | 'production';
-      PORT?: string;
-      PWD: string;
+      // Usually optional because env vars may be missing at runtime
+      NODE_ENV?: 'development' | 'production' | 'test';
     }
   }
 }

@@ -1,7 +1,7 @@
 import { describe, beforeEach, expect, it } from 'vitest';
 import { defaultOptions } from '../core/defaultOptions.js';
 import { LimitedCache } from '../core/LimitedCache.js';
-import { LimitedCacheInstance } from '../types.js';
+import { type LimitedCacheInstance } from '../types.js';
 
 describe('LimitedCache', () => {
   it('initializes without options', () => {

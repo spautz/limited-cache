@@ -27,7 +27,8 @@ const normalizeOptions = (cacheMetaOptions: LimitedCacheOptionsFull): LimitedCac
   return cacheMetaOptions;
 };
 
-const isCacheMeta = (cacheMeta: LimitedCacheMeta): boolean => {
+const isCacheMeta = (cacheMeta: unknown): cacheMeta is LimitedCacheMeta => {
+  // @ts-expect-error Duck-typing the unknown value
   return !!cacheMeta?.limitedCacheMetaVersion;
 };
 
@@ -134,7 +135,7 @@ const _removeFromIndex = (cacheMeta: LimitedCacheMeta, startIndex: number, now: 
 
   // Always remove the item requested, and also remove any neighbors who have expired
   let nextIndex = startIndex;
-  let nextCacheKey = keyList[startIndex]!;
+  let nextCacheKey = keyList[startIndex] as string;
   const keyListLength = keyList.length;
   do {
     // Remove the 'next' item
@@ -143,7 +144,7 @@ const _removeFromIndex = (cacheMeta: LimitedCacheMeta, startIndex: number, now: 
 
     // Now advance and decide whether to keep going
     nextIndex++;
-    nextCacheKey = keyList[nextIndex]!;
+    nextCacheKey = keyList[nextIndex] as string;
   } while (nextIndex < keyListLength && _cacheKeyHasExpired(cacheMeta, nextCacheKey, now));
 
   // Remove the index for everything from the startIndex until we stopped
@@ -204,6 +205,7 @@ const _removeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void 
         {
           currentTime: now,
           key: oldestItemKey,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           item: cache[oldestItemKey],
           setTime: oldestItemSetTime,
           expireTime: oldestItemExpireTime,

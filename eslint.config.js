@@ -2,7 +2,6 @@ import eslintJs from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
-// @ts-ignore
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import importPlugin from 'eslint-plugin-import';
 import globals from 'globals';
@@ -13,12 +12,12 @@ const buildOutputs = [
   'build',
   'coverage',
   'dist',
+  'legacy-types',
   'node_modules',
   'storybook-static',
 ];
 const projectDirectoriesToIgnore = `{${buildOutputs.join(',')}}/**`;
 
-// @ts-ignore
 export default typescriptEslint.config(
   {
     ignores: [
@@ -94,11 +93,22 @@ export default typescriptEslint.config(
       },
     },
     extends: [
-      eslintJs.configs.recommended,
-      // importPlugin.flatConfigs.typescript,
+      importPlugin.flatConfigs.typescript,
       typescriptEslint.configs.strict,
       typescriptEslint.configs.strictTypeChecked,
     ],
+    rules: {
+      '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        {
+          allowNumber: true,
+          allowBoolean: false,
+          allowNullish: false,
+          allowAny: false,
+          allowRegExp: false,
+        },
+      ],
+    },
   },
 
   // Prettier always comes last
