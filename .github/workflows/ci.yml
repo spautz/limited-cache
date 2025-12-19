@@ -14,7 +14,7 @@ jobs:
         node-version: [20.x, 22.x, 24.x, latest]
 
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 0
 
@@ -32,7 +32,7 @@ jobs:
           pnpm run all:ci
 
       - name: Report test coverage to coveralls.io
-        uses: coverallsapp/github-action@v2.3.0
+        uses: coverallsapp/github-action@v2.3.6
         with:
           github-token: ${{ github.token }}
 
@@ -44,11 +44,11 @@ jobs:
         package-name: [limited-cache]
 
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.2
 
       - uses: ./.github/reusable-workflows/setup-repo
         with:
-          node-version: latest
+          node-version: nvmrc
 
       - name: Run CI checks for package
         run: |
@@ -63,11 +63,11 @@ jobs:
         demo-name: [vite-react-app]
 
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.2
 
       - uses: ./.github/reusable-workflows/setup-repo
         with:
-          node-version: latest
+          node-version: lts/*
           use-lockfile: false
 
       - name: Run CI checks for demo

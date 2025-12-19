@@ -1,4 +1,5 @@
 import { configDefaults, defineConfig } from 'vitest/config';
+import type { UserConfig } from 'vite';
 
 // Check each package and demo
 const testPathsToExclude = [
@@ -6,11 +7,12 @@ const testPathsToExclude = [
   '**/coverage/**',
   '**/legacy-types/**',
   '**/setupTests.ts',
-  // Each framework-test has its own test config, following the conventions of its framework, so they're not included
-  'framework-tests/**',
+  'docs-website/**',
+  // Each external-test has its own test config, following the conventions of its framework, so they're not included
+  'external-tests/**',
 ];
 
-export default defineConfig({
+const vitestConfig: UserConfig = defineConfig({
   test: {
     environment: 'jsdom',
 
@@ -26,3 +28,5 @@ export default defineConfig({
     },
   },
 });
+
+export default vitestConfig;
