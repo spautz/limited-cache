@@ -1,17 +1,15 @@
 #
-# When updating this file, sync with .aiignore
+# When updating this file, sync with .gitignore
 #
 
+# Lockfiles take up a lot of space with (usually) no value
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
 # IDE settings
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-.idea/*
-!.idea/codeStyles/
-!.idea/inspectionProfiles/
-!.idea/misc.xml
-!.idea/modules.xml
-!.idea/vcs.xml
+.vscode
+.idea
 
 
 ###############################################################################
