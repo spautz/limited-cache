@@ -10,6 +10,7 @@
     "noEmit": false,
     "sourceMap": true,
     // Language and Environment
+    "verbatimModuleSyntax": false,
     "target": "ES6"
   },
   "exclude": ["node_modules", "**/*.stories.*", "**/__tests__", "**/*.test.*"]

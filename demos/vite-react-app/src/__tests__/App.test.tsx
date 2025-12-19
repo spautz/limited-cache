@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test, vitest } from 'vitest';
-import { cleanup, fireEvent, render, screen, Screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, type Screen } from '@testing-library/react';
 
 import { App } from '../App.js';
 

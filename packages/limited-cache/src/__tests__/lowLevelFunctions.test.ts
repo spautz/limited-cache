@@ -11,7 +11,7 @@ import {
   lowLevelRemove,
   lowLevelReset,
 } from '../core/lowLevelFunctions.js';
-import { LimitedCacheMeta } from '../types.js';
+import type { LimitedCacheMeta } from '../types.js';
 
 describe('lowLevelFunctions', () => {
   describe('isCacheMeta', () => {
@@ -29,7 +29,6 @@ describe('lowLevelFunctions', () => {
     });
     it('rejects invalid cacheMeta shapes', () => {
       expect(
-        // @ts-expect-error Invalid cacheMeta shape
         isCacheMeta({
           cache: {},
         }),
@@ -168,6 +167,7 @@ describe('lowLevelFunctions', () => {
     });
 
     it('get a missing key', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const result = lowLevelGetOne(myCacheMeta, 'abc');
       expect(result).toBeUndefined();
     });
@@ -178,6 +178,7 @@ describe('lowLevelFunctions', () => {
       myCacheMeta.keyList = ['abc'];
       myCacheMeta.keyInfo['abc'] = [Date.now(), 0];
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const result = lowLevelGetOne(myCacheMeta, 'abc');
       expect(result).toEqual(123);
     });
@@ -188,6 +189,7 @@ describe('lowLevelFunctions', () => {
       myCacheMeta.keyList = ['abc'];
       myCacheMeta.keyInfo['abc'] = [1, 0];
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const result = lowLevelGetOne(myCacheMeta, 'abc');
       expect(result).toEqual(undefined);
     });

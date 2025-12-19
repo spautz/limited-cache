@@ -11,17 +11,17 @@ let value;
 
 const defaultCache = LimitedCacheObject();
 
-defaultCache.number = 1;
-defaultCache.string = 'hello';
-defaultCache.array = [];
-value = defaultCache.number as number;
-value = defaultCache.string as string;
-value = defaultCache.array as Array<undefined>;
+defaultCache['number'] = 1;
+defaultCache['string'] = 'hello';
+defaultCache['array'] = [];
+value = defaultCache['number'] as number;
+value = defaultCache['string'] as string;
+value = defaultCache['array'] as Array<undefined>;
 
 const numberCache = LimitedCacheObject<number>();
 
-numberCache.number = 1;
-value = numberCache.number as number;
+numberCache['number'] = 1;
+value = numberCache['number'];
 
 // @ts-expect-error Invalid type
 numberCache.string = 'hello';
@@ -35,10 +35,10 @@ value = numberCache.array as Array<undefined>;
 
 const primitiveCache = LimitedCacheObject<boolean | number | string>();
 
-primitiveCache.number = 1;
-primitiveCache.string = 'hello';
-value = primitiveCache.number as number;
-value = primitiveCache.string as string;
+primitiveCache['number'] = 1;
+primitiveCache['string'] = 'hello';
+value = primitiveCache['number'];
+value = primitiveCache['string'];
 
 // @ts-expect-error Invalid type
 primitiveCache.array = [];
@@ -48,8 +48,8 @@ value = primitiveCache.array as Array<undefined>;
 
 const arrayCache = LimitedCacheObject<Array<undefined>>();
 
-arrayCache.array = [];
-value = arrayCache.array as Array<undefined>;
+arrayCache['array'] = [];
+value = arrayCache['array'];
 
 // @ts-expect-error Invalid type
 arrayCache.number = 1;

@@ -1,5 +1,5 @@
 import { describe, beforeEach, expect, it, vitest } from 'vitest';
-import { LimitedCache, LimitedCacheInstance } from '../../index.js';
+import { LimitedCache, type LimitedCacheInstance } from '../../index.js';
 
 // To avoid race conditions or timing issues, since some expect() checks can take 10+ ms when busy,
 // we use a long cache timeout even for 'immediate' expiration, and use delays slightly longer than that
@@ -95,7 +95,7 @@ describe('maxCacheSize scenarios', () => {
     expect(Object.keys(myCache.getAll())).toEqual(['n=6', 'n=7', 'n=8', 'n=9', 'n=10']);
   });
 
-  it('warns if a freshly-added item is pushed out too quickly', async () => {
+  it('warns if a freshly-added item is pushed out too quickly', () => {
     myCache = LimitedCache({
       maxCacheSize: 5,
       maxCacheTime: 1000,
@@ -116,7 +116,10 @@ describe('maxCacheSize scenarios', () => {
     // And we should have seen a warning about the force-removed key
     const consoleWarnCalls = consoleWarnSpy.mock.calls;
     expect(consoleWarnCalls.length).toBe(1);
-    const [warningString, warningObject] = consoleWarnCalls[0];
+    const [warningString, warningObject] = consoleWarnCalls[0] as [
+      string,
+      { key: string; value: string },
+    ];
     expect(warningString).toBe(
       'Purged an item from cache while it was still fresh: you may want to increase maxCacheSize',
     );

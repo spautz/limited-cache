@@ -10,6 +10,8 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
     "strict": true,
     // Modules
     "module": "NodeNext",
@@ -20,15 +22,18 @@
     "removeComments": false,
     "sourceMap": true,
     // Javascript Support
-    "allowJs": true,
-    "checkJs": true,
+    "allowJs": false,
+    "checkJs": false,
     // Interop Constraints
+    "erasableSyntaxOnly": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
+    "verbatimModuleSyntax": true,
     // Language and Environment
     "jsx": "react-jsx",
     "lib": ["DOM", "DOM.Iterable", "ES2020"],
+    "moduleDetection": "force",
     "target": "ES2020",
     // Completeness
     "skipLibCheck": true

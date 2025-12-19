@@ -95,7 +95,9 @@
     "typecheck": "tsc -p ./tsconfig.json --noEmit"
   },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/node": "24.3.0"
+  },
   "peerDependencies": {},
   "size-limit": [
     {

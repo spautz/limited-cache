@@ -1,12 +1,10 @@
-import { fixupPluginRules } from '@eslint/compat';
 import eslintJs from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import eslintConfigReactApp from 'eslint-config-react-app';
-import eslintPluginFlowtype from 'eslint-plugin-flowtype';
-import eslintPluginImport from 'eslint-plugin-import';
-import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
-import reactRecommended from 'eslint-plugin-react/configs/recommended.js';
-import eslintPluginReactHooks from 'eslint-plugin-react-hooks';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+import importPlugin from 'eslint-plugin-import';
+import globals from 'globals';
 import typescriptEslint from 'typescript-eslint';
 
 const buildOutputs = [
@@ -20,7 +18,7 @@ const buildOutputs = [
 ];
 const projectDirectoriesToIgnore = `{${buildOutputs.join(',')}}/**`;
 
-const eslintConfig = [
+export default typescriptEslint.config(
   {
     ignores: [
       projectDirectoriesToIgnore,
@@ -31,38 +29,88 @@ const eslintConfig = [
       'external-tests/*/**',
     ],
   },
+
+  // Global settings
   {
-    plugins: {
-      // These plugins are all needed for eslint-config-react-app
-      flowtype: fixupPluginRules(eslintPluginFlowtype),
-      'jsx-a11y': eslintPluginJsxA11y,
-      import: fixupPluginRules(eslintPluginImport),
-      'react-hooks': eslintPluginReactHooks,
+    languageOptions: {
+      parser: typescriptEslint.parser,
     },
     linterOptions: {
       reportUnusedDisableDirectives: true,
     },
     settings: {
-      react: {
-        version: 'detect',
+      react: { version: 'detect' },
+      'import/resolver': {
+        typescript: true,
+        node: true,
       },
     },
   },
 
+  // Base configs for all files
   eslintJs.configs.recommended,
-  eslintConfigPrettier,
-  reactRecommended,
-  ...typescriptEslint.configs.recommended,
+  importPlugin.flatConfigs.recommended,
 
-  // Overrides:
+  //CJS
   {
-    files: ['**/*.{js,ts,jsx,tsx,cjs,mjs}'],
-    rules: {
-      ...eslintConfigReactApp.rules,
-      ...eslintConfigReactApp.overrides[0].rules,
-      'react/react-in-jsx-scope': 'off',
+    files: ['**/*.{cjs,cts}'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
     },
   },
-];
 
-export default eslintConfig;
+  // React
+  {
+    files: ['**/*.{jsx,tsx}'],
+    extends: [jsxA11yPlugin.flatConfigs.recommended],
+    languageOptions: {
+      globals: {
+        react: 'readonly',
+      },
+    },
+    // We have to set things up manually for the react and react-hooks plugins to work in flat config
+    plugins: {
+      react: reactPlugin,
+      'react-hooks': reactHooksPlugin,
+    },
+    rules: {
+      ...reactPlugin.configs.recommended.rules,
+      ...reactPlugin.configs['jsx-runtime'].rules,
+      ...reactHooksPlugin.configs.recommended.rules,
+    },
+  },
+
+  // Typescript
+  {
+    files: ['**/*.{ts,tsx,cts,mts}'],
+    languageOptions: {
+      parser: typescriptEslint.parser,
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    extends: [
+      importPlugin.flatConfigs.typescript,
+      typescriptEslint.configs.strict,
+      typescriptEslint.configs.strictTypeChecked,
+    ],
+    rules: {
+      '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        {
+          allowNumber: true,
+          allowBoolean: false,
+          allowNullish: false,
+          allowAny: false,
+          allowRegExp: false,
+        },
+      ],
+    },
+  },
+
+  // Prettier always comes last
+  eslintConfigPrettier,
+);
