@@ -3,31 +3,32 @@
     // Type Checking
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
-    "alwaysStrict": true,
     "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "strict": true,
     // Modules
+    "allowImportingTsExtensions": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "resolvePackageJsonExports": true,
+    "resolvePackageJsonImports": true,
     // Emit
     "declaration": true,
     "noEmit": true,
     "removeComments": false,
     "sourceMap": true,
-    // Javascript Support
-    "allowJs": false,
-    "checkJs": false,
     // Interop Constraints
     "erasableSyntaxOnly": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    // @TODO @FIXME
+    "isolatedDeclarations": false,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     // Language and Environment

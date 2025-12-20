@@ -2,13 +2,18 @@
 # When updating this file, sync with .gitignore
 #
 
-# Autoformatting lockfiles is slow and doesn't bring any benefits, so skip them
+# Lockfiles take up a lot of space with (usually) no value
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
 
+# IDE settings
+.vscode
+.idea
+
+
 ###############################################################################
-# Everything below this point is copied from .gitignore
+# Everything below this point is identical between .aiignore and .gitignore
 
 # project files
 

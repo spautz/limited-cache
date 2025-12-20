@@ -1,3 +1,78 @@
+# General settings
+engineStrict: true
+linkWorkspacePackages: true
+minimumReleaseAge: 7200 # 5 days
+packageManagerStrictVersion: true
+strictDepBuilds: true
+trustPolicy: no-downgrade
+verifyDepsBeforeRun: error
+
+onlyBuiltDependencies:
+  - '@biomejs/biome'
+  - 'esbuild'
+
+ignoredBuiltDependencies:
+  - 'core-js'
+  - 'core-js-pure'
+  - 'unrs-resolver'
+
+trustPolicyExclude:
+  - 'detect-port@1.6.1'
+  - 'semver@6.3.1'
+
+# Workspace
+
 packages:
-  - 'demos/*'
-  - 'packages/*'
+  - packages/*
+  - demos/*
+  - docs-website
+
+catalog:
+  # Shared between packages and demos:
+  '@types/react': 19.2.7
+  '@types/react-dom': 19.2.3
+  '@testing-library/jest-dom': 6.9.1
+  '@testing-library/react': 16.3.0
+  '@vitest/coverage-v8': 4.0.14
+  '@vitest/ui': 4.0.14
+  react: 19.2.0
+  react-dom: 19.2.0
+  source-map-explorer: 2.5.3
+  typescript: 5.9.3
+  vitest: 4.0.14
+  # For packages only:
+  '@arethetypeswrong/cli': 0.18.2
+  '@size-limit/esbuild': 12.0.0
+  '@size-limit/esbuild-why': 12.0.0
+  '@size-limit/file': 12.0.0
+  publint: 0.3.15
+  size-limit: 12.0.0
+  tsdown: 0.16.8
+  # For demos only:
+  vite: 7.2.6
+
+# Named catalogs are looser
+catalogs:
+  react16:
+    '@types/react': ^16.9.0
+    '@types/react-dom': ^16.9.0
+    react: ^16.9.0
+    react-dom: ^16.9.0
+  react17:
+    '@types/react': ^17.0.0
+    '@types/react-dom': ^17.0.0
+    react: ^17.0.2
+    react-dom: ^17.0.2
+  react18:
+    '@types/react': ^18.0.0
+    '@types/react-dom': ^18.0.0
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  react19:
+    '@types/react': ^19.2.0
+    '@types/react-dom': ^19.2.0
+    react: ^19.2.1
+    react-dom: ^19.2.1
+  typescriptLTS:
+    # https://github.com/DefinitelyTyped/DefinitelyTyped#support-window
+    typescript: 5.4.x
