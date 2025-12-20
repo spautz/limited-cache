@@ -18,12 +18,12 @@
   "bugs": "https://github.com/spautz/limited-cache/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/spautz/limited-cache.git",
+    "url": "git+https://github.com/spautz/limited-cache.git",
     "directory": "packages/limited-cache"
   },
   "author": {
     "name": "Steven Pautz",
-    "url": "https://github.com/spautz/"
+    "url": "https://stevenpautz.com"
   },
   "publishConfig": {
     "access": "public",
@@ -33,7 +33,6 @@
   "files": [
     "dist/",
     "docs/",
-    "legacy-types/",
     "src/",
     "LICENSE",
     "*.md"
@@ -51,52 +50,49 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
-    "./internal-raw-src": "./src/index.ts",
     "./package.json": "./package.json"
   },
   "main": "./dist/cjs/index.cjs",
   "module": "./dist/esm/index.js",
-  "jsnext:main": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
   "sideEffects": false,
   "scripts": {
     "____ HOOKS _________________________________________________________": "",
-    "prepack": "pnpm run clean && pnpm run build",
+    "prepack": "pnpm run clean && turbo run build",
     "postpack": "pnpm run build:verifypack",
-    "____ INTEGRATION ___________________________________________________": "",
-    "clean": "pnpm run build:clean && pnpm run test:clean && rimraf --glob ./node_modules/.cache *.log",
-    "all": "pnpm run          typecheck && pnpm run lint:fix && pnpm run test:coverage && pnpm run build",
-    "all:readonly": "pnpm run typecheck && pnpm run lint     && pnpm run test:quick",
-    "all:quick": "pnpm run    typecheck && pnpm run lint:fix",
-    "all:ci": "pnpm run       typecheck && pnpm run lint     && pnpm run test:ci && pnpm pack",
-    "____ INDIVIDUAL COMMANDS ___________________________________________": "",
-    "build": "pnpm run build:clean && pnpm run build:cjs && pnpm run build:esm && pnpm run build:verify && pnpm run build:legacytypes",
-    "build:clean": "rimraf --glob ./dist ./legacy-types ./*.tgz",
-    "build:cjs": "tsup src/index.ts --format cjs --dts --outDir=./dist/cjs/ --tsconfig=./tsconfig.build-cjs.json",
-    "build:cjs:watch": "pnpm run build:cjs --watch",
-    "build:esm": "tsc -p tsconfig.build-esm.json",
-    "build:esm:watch": "pnpm run build:esm --watch",
-    "build:legacytypes": "pnpm run build:legacytypes:3.5 && pnpm run build:legacytypes:4.0 && pnpm run build:legacytypes:4.5",
-    "build:legacytypes:3.5": "downlevel-dts ./dist ./legacy-types/ts3.5/dist --to=3.5",
-    "build:legacytypes:4.0": "downlevel-dts ./dist ./legacy-types/ts4.0/dist --to=4.0",
-    "build:legacytypes:4.5": "downlevel-dts ./dist ./legacy-types/ts4.5/dist --to=4.5",
+    "____ STANDARD PACKAGE TASKS ________________________________________": "",
+    "all": "turbo run pipeline-all",
+    "all:ci": "turbo run pipeline-ci --ui=stream",
+    "build": "pnpm run build:clean && pnpm run build:lib && pnpm run build:verify",
+    "clean": "pnpm run build:clean && pnpm run test:clean && rimraf --glob ./node_modules/.cache ./.turbo ./*.log",
+    "dev": "pnpm run build:lib:watch",
+    "lint": "eslint . --max-warnings 0 --fix",
+    "lint:verify": "eslint . --max-warnings 0",
+    "publish:yalc": "yalc publish --sig --push --replace",
+    "test:clean": "rimraf ./coverage",
+    "test": "pnpm run test:clean       && vitest run --coverage",
+    "test:ci": "pnpm run test:clean    && vitest run --coverage --bail 1",
+    "test:ui": "pnpm run test:clean    && vitest --ui",
+    "test:watch": "pnpm run test:clean && vitest watch --coverage",
+    "typecheck": "tsc -p ./tsconfig.json --noEmit",
+    "____ BUILD & VALIDATION TASKS ______________________________________": "",
+    "build:clean": "rimraf --glob ./dist ./*.tgz",
+    "build:lib": "tsdown --config ./tsdown.config.ts",
+    "build:lib:watch": "tsdown --config ./tsdown.config.ts --watch",
     "build:verify": "publint --strict && size-limit",
     "build:verifypack": "ls *.tgz | xargs -I {} attw {} --exclude-entrypoints internal-raw-src",
-    "lint": "eslint . --max-warnings 0",
-    "lint:fix": "eslint . --max-warnings 0 --fix",
-    "test": "pnpm run test:coverage",
-    "test:clean": "rimraf ./coverage",
-    "test:ci": "pnpm run test:clean            && vitest run --coverage",
-    "test:coverage": "pnpm run test:clean      && vitest run --coverage",
-    "test:quick": "pnpm run test:clean         && vitest run --coverage=false",
-    "test:ui": "pnpm run test:clean            && vitest --ui",
-    "test:watch": "pnpm run test:clean         && vitest watch --coverage=false",
-    "test:watchcoverage": "pnpm run test:clean && vitest watch --coverage",
-    "typecheck": "tsc -p ./tsconfig.json --noEmit"
+    "size-check": "size-limit --why"
   },
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "24.3.0"
+    "@arethetypeswrong/cli": "catalog:",
+    "@size-limit/esbuild": "catalog:",
+    "@size-limit/esbuild-why": "catalog:",
+    "@size-limit/file": "catalog:",
+    "publint": "catalog:",
+    "size-limit": "catalog:",
+    "source-map-explorer": "catalog:",
+    "tsdown": "catalog:"
   },
   "peerDependencies": {},
   "size-limit": [
@@ -110,22 +106,5 @@
       "import": "{ LimitedCache }",
       "limit": "1.2 kb"
     }
-  ],
-  "typesVersions": {
-    "<4.0": {
-      "*": [
-        "./legacy-types/ts3.5/*"
-      ]
-    },
-    "<4.5": {
-      "*": [
-        "./legacy-types/ts4.0/*"
-      ]
-    },
-    "<4.7": {
-      "*": [
-        "./legacy-types/ts4.5/*"
-      ]
-    }
-  }
+  ]
 }

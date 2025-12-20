@@ -1,37 +1,50 @@
 {
   "name": "@spautz/limited-cache-demo--vite-react-app",
   "private": true,
+  "description": "Basic UI demo app for the limited-cache package",
+  "license": "MIT",
+  "homepage": "https://github.com/spautz/limited-cache/blob/main/demos/vite-react-app#readme",
+  "bugs": "https://github.com/spautz/limited-cache/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spautz/limited-cache.git",
+    "directory": "demos/vite-react-app"
+  },
+  "author": {
+    "name": "Steven Pautz",
+    "url": "https://stevenpautz.com"
+  },
+  "source": "./src/main.tsx",
   "type": "module",
   "scripts": {
-    "____ FROM VITE _____________________________________________________": "",
+    "____ STANDARD PACKAGE TASKS ________________________________________": "",
+    "all": "turbo run pipeline-all",
+    "all:ci": "turbo run pipeline-ci --ui=stream",
+    "build": "pnpm run build:clean && pnpm run build:main",
+    "clean": "pnpm run build:clean && pnpm run test:clean && rimraf --glob ./node_modules/.cache ./.turbo ./*.log",
     "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint . --max-warnings 0 --report-unused-disable-directives",
-    "lint:fix": "eslint . --max-warnings 0 --report-unused-disable-directives --fix",
-    "preview": "vite preview",
-    "____ WORKSPACE INTEGRATION _________________________________________": "",
-    "clean": "rimraf ./build",
-    "_build": "(included above)",
-    "test": "vitest run --coverage",
-    "test:coverage": "vitest run --coverage",
-    "test:quick": "vitest run --coverage=false",
-    "all": "pnpm run lint          && pnpm run test:coverage && pnpm run build",
-    "all:readonly": "pnpm run lint && pnpm run test:quick",
-    "all:quick": "pnpm run lint    && pnpm run test:quick",
-    "all:ci": "pnpm run lint       && pnpm run test:coverage && pnpm run build"
+    "lint": "eslint . --max-warnings 0 --report-unused-disable-directives --fix",
+    "lint:verify": "eslint . --max-warnings 0 --report-unused-disable-directives",
+    "start": "vite preview",
+    "test:clean": "rimraf ./coverage",
+    "test": "pnpm run test:clean       && vitest run --coverage",
+    "test:ci": "pnpm run test:clean    && vitest run --coverage --bail 1",
+    "test:ui": "pnpm run test:clean    && vitest --ui",
+    "test:watch": "pnpm run test:clean && vitest watch --coverage",
+    "typecheck": "tsc -p ./tsconfig.json --noEmit",
+    "____ BUILD & DEPLOY TASKS __________________________________________": "",
+    "build:clean": "rimraf ./dist",
+    "build:main": "vite build",
+    "build:watch": "pnpm run build:clean && vite build --watch",
+    "size-check": "source-map-explorer dist/**/*.js"
   },
   "dependencies": {
     "limited-cache": "workspace:^",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.1",
-    "@types/react": "^18.3.27",
-    "@types/react-dom": "^18.3.7",
-    "@vitejs/plugin-react": "^5.1.2",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.0"
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:"
   }
 }

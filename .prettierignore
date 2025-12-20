@@ -10,17 +10,13 @@ yarn.lock
 ###############################################################################
 # Everything below this point is copied from .gitignore
 
-# IDEs, etc
+# project files
 
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
+*.swp
 
 # dependencies
 
@@ -44,10 +40,16 @@ playwright-report/
 
 # build output
 
+*.log
 *.tsbuildinfo
 
+.astro/
 .cache/
+.cache-loader/
+.docusaurus/
 .next/
+.react-router/
+.turbo/
 _fresh/
 build/
 dist/
@@ -61,22 +63,18 @@ packages/*/*.tgz
 
 storybook-static/
 
-# framework-tests
+# external-tests
 
-framework-tests/*/.yalc/
-
-# log files
-
-lerna-debug.log*
-npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+external-tests/*/.yalc/
 
 # misc
 
+.DS_Store
+.env
 .env.local
 .env*.local
+.env.production
 .vercel
 *.pem
 next-env.d.ts
+Thumbs.db

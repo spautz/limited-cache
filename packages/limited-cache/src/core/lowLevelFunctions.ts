@@ -62,7 +62,10 @@ const lowLevelInit = <ItemType = DefaultItemType>(
     return existingCacheMeta;
   }
   // Else: it's options
-  const fullOptions = normalizeOptions({ ...defaultOptions, ...optionsOrCacheMeta });
+  const fullOptions = normalizeOptions({
+    ...defaultOptions,
+    ...optionsOrCacheMeta,
+  });
 
   // The cacheMeta is created once, and persists per instance
   const newCacheMeta = lowLevelReset({
