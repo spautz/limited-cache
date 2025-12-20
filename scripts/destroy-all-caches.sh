@@ -1,26 +1,34 @@
 #!/usr/bin/env bash
 
+# This wipes all caches and resets everything that it can
+
+###################################################################################################
+# Standard setup for all scripts
+
 THIS_SCRIPT_NAME=$(basename "$0")
 echo "### Begin ${THIS_SCRIPT_NAME}"
 
 # Fail if anything in here fails
-set -e
-# Run from the repo root
-pushd "$(dirname -- "${BASH_SOURCE[0]:-$0}")/.."
+set -euo pipefail
 
+# Always run from the repo root
+REPO_ROOT=$(git -C "$(dirname "${BASH_SOURCE[0]:-$0}")" rev-parse --show-toplevel)
+pushd "$REPO_ROOT"
+
+# shellcheck source=scripts/helpers/helpers.sh
 source ./scripts/helpers/helpers.sh
 
 ###################################################################################################
-# Clean everything local first -- and again at the end
+# Main body
 
 if [ -d "./node_modules/" ]; then
-  for DIRECTORY in framework-tests/*/ ; do
+  for DIRECTORY in external-tests/*/ ; do
     pushd $DIRECTORY
 
     if [[ `git status --porcelain package.json yalc.lock` ]]; then
       emit_warning "Not detaching $DIRECTORY because it has local changes."
     else
-      # Detach the framework-test completely -- but leave the lockfile and package.json changes intact
+      # Detach the external-test completely -- but leave the lockfile and package.json changes intact
       # so that we can restore it later
       ../../node_modules/.bin/yalc remove --all
       git checkout package.json yalc.lock
@@ -49,10 +57,12 @@ fi
 
 run_command "npm cache clean --force"
 
-
+# We repeat the standard clean again at the end, because it's quick and to ensure nothing new was
+# added while running the other commands.
 ./scripts/clean-everything.sh
 
 ###################################################################################################
+# Standard teardown for all scripts
 
 popd
 echo "### End ${THIS_SCRIPT_NAME}"
