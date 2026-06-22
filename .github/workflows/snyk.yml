@@ -2,10 +2,11 @@ name: Snyk Workspace Scan
 
 on:
   workflow_dispatch:
-  push:
-    branches: ['main']
-  pull_request:
-    branches: ['**']
+# Disabled until Snyk supports pnpm 11's multi-document lockfile
+#  push:
+#    branches: ['main']
+#  pull_request:
+#    branches: ['**']
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
