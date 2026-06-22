@@ -1,0 +1,8 @@
+{
+  // These settings are not supported by the `typescriptLTS` version that demo apps use.
+  "compilerOptions": {
+    // Interop Constraints
+    "erasableSyntaxOnly": true,
+    "isolatedDeclarations": true
+  }
+}

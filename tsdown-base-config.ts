@@ -1,5 +1,4 @@
-import { defineConfig } from 'tsdown';
-import type { UserConfig } from 'tsdown';
+import { defineConfig, type UserConfig } from 'tsdown';
 
 const entryDefaults: Partial<UserConfig> = {
   entry: ['src/index.ts'],

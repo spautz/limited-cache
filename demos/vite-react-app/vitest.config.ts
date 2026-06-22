@@ -1,3 +1,11 @@
-import baseConfig from '../../vitest.config.js';
+import { withSkipTheBuild } from '@skip-the-build/vite';
+import { defineConfig, type UserConfigFn } from 'vite';
 
-export default baseConfig;
+import skipTheBuildSettings from '../../skip-the-build.ts';
+import baseVitestConfig from '../../vitest.config.ts';
+
+const vitestConfig: UserConfigFn = defineConfig(
+  withSkipTheBuild(skipTheBuildSettings, baseVitestConfig),
+);
+
+export default vitestConfig;

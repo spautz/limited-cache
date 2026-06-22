@@ -1,5 +1,9 @@
 {
-  "extends": "../../tsconfig-base.build-cjs.json",
+  "extends": [
+    "../../tsconfig-base.typecheck-node.json",
+    "../../tsconfig-base.typecheck-modernonly.json",
+    "../../tsconfig-base.build-cjs.json"
+  ],
   "compilerOptions": {
     "outDir": "dist/cjs/",
     "declarationDir": "dist/cjs/"

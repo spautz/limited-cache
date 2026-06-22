@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig-base.typecheck.json",
+  "extends": "./tsconfig-base.typecheck-node.json",
   "compilerOptions": {
     // Modules
     "module": "NodeNext",
@@ -10,7 +10,7 @@
     "noEmit": false,
     "sourceMap": true,
     // Language and Environment
-    "target": "ES2020"
+    "target": "ES2022"
   },
   "exclude": ["node_modules", "**/*.stories.*", "**/__tests__", "**/*.test.*"]
 }
