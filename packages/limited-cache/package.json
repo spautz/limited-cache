@@ -85,14 +85,13 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@arethetypeswrong/cli": "catalog:",
-    "@size-limit/esbuild": "catalog:",
-    "@size-limit/esbuild-why": "catalog:",
-    "@size-limit/file": "catalog:",
-    "publint": "catalog:",
-    "size-limit": "catalog:",
-    "source-map-explorer": "catalog:",
-    "tsdown": "catalog:"
+    "@arethetypeswrong/cli": "catalog:packages",
+    "@size-limit/esbuild": "catalog:packages",
+    "@size-limit/esbuild-why": "catalog:packages",
+    "@size-limit/file": "catalog:packages",
+    "publint": "catalog:packages",
+    "size-limit": "catalog:packages",
+    "tsdown": "catalog:packages"
   },
   "peerDependencies": {},
   "size-limit": [

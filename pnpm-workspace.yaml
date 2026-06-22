@@ -1,24 +1,18 @@
 # General settings
+blockExoticSubdeps: true
+confirmModulesPurge: false
 engineStrict: true
-linkWorkspacePackages: true
 minimumReleaseAge: 7200 # 5 days
-packageManagerStrictVersion: true
 strictDepBuilds: true
 trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 129600 # 90 days
 verifyDepsBeforeRun: error
 
-onlyBuiltDependencies:
-  - '@biomejs/biome'
-  - 'esbuild'
-
-ignoredBuiltDependencies:
-  - 'core-js'
-  - 'core-js-pure'
-  - 'unrs-resolver'
-
-trustPolicyExclude:
-  - 'detect-port@1.6.1'
-  - 'semver@6.3.1'
+allowBuilds:
+  'core-js': false
+  esbuild: true
+  'esbuild@0.28.0': true
+  unrs-resolver: true
 
 # Workspace
 
@@ -27,32 +21,40 @@ packages:
   - demos/*
   - docs-website
 
-catalog:
-  # Shared between packages and demos:
-  '@types/react': 19.2.7
-  '@types/react-dom': 19.2.3
-  '@testing-library/jest-dom': 6.9.1
-  '@testing-library/react': 16.3.0
-  '@vitest/coverage-v8': 4.0.14
-  '@vitest/ui': 4.0.14
-  react: 19.2.0
-  react-dom: 19.2.0
-  source-map-explorer: 2.5.3
-  typescript: 5.9.3
-  vitest: 4.1.0
-  # For packages only:
-  '@arethetypeswrong/cli': 0.18.2
-  '@size-limit/esbuild': 12.0.0
-  '@size-limit/esbuild-why': 12.0.0
-  '@size-limit/file': 12.0.0
-  publint: 0.3.15
-  size-limit: 12.0.0
-  tsdown: 0.16.8
-  # For demos only:
-  vite: 7.2.6
-
-# Named catalogs are looser
 catalogs:
+  # Shared = aligned between packages and demos
+  # (There are some dependencies in common between packages/demos which are not aligned)
+  shared:
+    '@testing-library/jest-dom': 6.9.1
+    '@testing-library/react': 16.3.2
+    '@vitest/coverage-v8': 4.1.9
+    '@vitest/ui': 4.1.9
+    vite: 8.0.16
+    vitest: 4.1.9
+  # Packages use (mostly) up-to-date dependencies and devDependencies
+  packages:
+    '@arethetypeswrong/cli': 0.18.3
+    '@size-limit/esbuild': 12.1.0
+    '@size-limit/esbuild-why': 12.1.0
+    '@size-limit/file': 12.1.0
+    '@types/node': 24.10.9
+    publint: 0.3.21
+    size-limit: 12.1.0
+    tsdown: 0.22.3
+    typescript: 6.0.3
+  # Demo apps sometimes use older dependencies and devDependencies
+  demos:
+    '@types/node': 24.10.9
+    '@types/react': 19.2.17
+    '@types/react-dom': 19.2.3
+    react: 19.2.7
+    react-dom: 19.2.7
+    source-map-explorer: 2.5.3
+    typescript: 5.5.4
+    vite: 8.0.16
+
+  # Library-specific catalogs help with isolated testing:
+  # these are generally not used for normal dev
   react16:
     '@types/react': ^16.9.0
     '@types/react-dom': ^16.9.0
@@ -69,10 +71,10 @@ catalogs:
     react: ^18.2.0
     react-dom: ^18.2.0
   react19:
-    '@types/react': ^19.2.0
-    '@types/react-dom': ^19.2.0
-    react: ^19.2.1
-    react-dom: ^19.2.1
+    '@types/react': ^19.2.16
+    '@types/react-dom': ^19.2.3
+    react: ^19.2.4
+    react-dom: ^19.2.4
   typescriptLTS:
     # https://github.com/DefinitelyTyped/DefinitelyTyped#support-window
-    typescript: 5.4.x
+    typescript: 5.5.x
