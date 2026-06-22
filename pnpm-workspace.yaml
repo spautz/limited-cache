@@ -1,24 +1,18 @@
 # General settings
+blockExoticSubdeps: true
+confirmModulesPurge: false
 engineStrict: true
-linkWorkspacePackages: true
 minimumReleaseAge: 7200 # 5 days
-packageManagerStrictVersion: true
 strictDepBuilds: true
 trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 129600 # 90 days
 verifyDepsBeforeRun: error
 
-onlyBuiltDependencies:
-  - '@biomejs/biome'
-  - 'esbuild'
-
-ignoredBuiltDependencies:
-  - 'core-js'
-  - 'core-js-pure'
-  - 'unrs-resolver'
-
-trustPolicyExclude:
-  - 'detect-port@1.6.1'
-  - 'semver@6.3.1'
+allowBuilds:
+  'core-js': false
+  esbuild: true
+  'esbuild@0.28.0': true
+  unrs-resolver: true
 
 # Workspace
 
