@@ -56,7 +56,7 @@ describe('lowLevelFunctions', () => {
         upgradeCacheMeta({
           cache: {},
         });
-      }).toThrowError();
+      }).toThrow();
     });
   });
 
