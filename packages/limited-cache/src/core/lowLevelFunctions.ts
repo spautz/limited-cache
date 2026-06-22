@@ -56,8 +56,8 @@ const lowLevelSetOptions = <ItemType = DefaultItemType>(
 const lowLevelInit = <ItemType = DefaultItemType>(
   optionsOrCacheMeta?: LimitedCacheOptions | LimitedCacheMeta<ItemType>,
 ): LimitedCacheMeta<ItemType> => {
-  if (isCacheMeta(optionsOrCacheMeta as LimitedCacheMeta<ItemType>)) {
-    const existingCacheMeta = optionsOrCacheMeta as LimitedCacheMeta<ItemType>;
+  if (isCacheMeta(optionsOrCacheMeta)) {
+    const existingCacheMeta = optionsOrCacheMeta;
     upgradeCacheMeta(existingCacheMeta);
     return existingCacheMeta;
   }
@@ -119,6 +119,8 @@ const lowLevelDoMaintenance = <ItemType = DefaultItemType>(
       return acc;
     },
     [
+      // This manual assertion is required because TypeScript doesn't know that the initial value is of the same type as the accumulator.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
       {} as (typeof cacheMeta)['cache'],
       [] as (typeof cacheMeta)['keyList'],
       objectCreate(null) as (typeof cacheMeta)['keyInfo'],

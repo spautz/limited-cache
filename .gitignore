@@ -1,24 +1,12 @@
-#
-# When updating this file, sync with .aiignore
-#
-
 # IDE settings
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
-.idea/*
-!.idea/codeStyles/
-!.idea/inspectionProfiles/
-!.idea/misc.xml
-!.idea/modules.xml
-!.idea/vcs.xml
-
-
-###############################################################################
-# Everything below this point is identical between .aiignore and .gitignore
+.idea/
 
 # project files
 
+*.local.*
 *.suo
 *.ntvs*
 *.njsproj
@@ -55,8 +43,13 @@ playwright-report/
 .cache-loader/
 .docusaurus/
 .next/
+.nitro/
+.nuxt/
+.output/
 .react-router/
+.svelte-kit/
 .turbo/
+.wrangler/
 _fresh/
 build/
 dist/
