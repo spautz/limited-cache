@@ -54,10 +54,12 @@ done
 
 run_command ./scripts/build-workspace.sh
 
-if [ "$PARALLEL" = true ]; then
-  run_command ./scripts/run-all-external-tests.sh default --parallel
-else
-  run_command ./scripts/run-all-external-tests.sh
+if [ -d external-tests ]; then
+  if [ "$PARALLEL" = true ]; then
+    run_command ./scripts/run-all-external-tests.sh default --parallel
+  else
+    run_command ./scripts/run-all-external-tests.sh
+  fi
 fi
 
 ###################################################################################################

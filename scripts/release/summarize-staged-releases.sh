@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This runs the checks for every package and demo app.
+# Write the staged npm release IDs to the GitHub Actions step summary.
 
 ###################################################################################################
 # Standard setup for all scripts
@@ -21,33 +21,27 @@ source ./scripts/helpers/helpers.sh
 ###################################################################################################
 # Main body
 
-./scripts/check-environment.sh
+if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
+  exec 3>> "$GITHUB_STEP_SUMMARY"
+else
+  exec 3>&1
+fi
 
-run_command pnpm install --frozen-lockfile --prefer-offline
+{
+  echo '## Staged releases'
+  echo
+  echo 'Approve these stages manually on npm, then run the Verify and Promote Release workflow.'
+  echo
+} >&3
 
-# Run all normal commands and all CI commands. This is overkill and duplicates a lot of work,
-# but also helps catch any intermittent errors. Suitable for running before lunch or teatime.
-run_command pnpm run clean
-run_command pnpm run packages:all
-run_command pnpm run packages:all:ci
-
-run_command pnpm run clean
-run_command pnpm run all
-run_command pnpm run all:ci
-
-run_command pnpm run clean
-run_command pnpm run all:all
-
-# Also ensure that packing works: AreTheTypesWrong might not run outside of pack
-for DIRECTORY in packages/* ; do
-  pushd $DIRECTORY;
-  run_command pnpm pack || exit 1;
-  popd;
-done
-
+while IFS= read -r STAGE_ID; do
+  [[ -n "$STAGE_ID" ]] || continue
+  echo "- \`$STAGE_ID\`" >&3
+done <<< "${STAGE_IDS:-}"
 
 ###################################################################################################
 # Standard teardown for all scripts
 
+exec 3>&-
 popd
 echo "### End ${THIS_SCRIPT_NAME}"

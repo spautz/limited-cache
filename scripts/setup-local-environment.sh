@@ -39,20 +39,24 @@ if ! command_exists nvm; then
 fi
 
 # Must include .nvmrc content manually to support all platforms
-run_command "nvm install $(cat .nvmrc)"
-run_command "nvm use $(cat .nvmrc)"
+NODE_VERSION="$(cat .nvmrc)"
+run_command nvm install "$NODE_VERSION"
+run_command nvm use "$NODE_VERSION"
 
-run_command "corepack enable"
+# Micro-nap to let Node and Corepack catch up
+sleep 0.1
+
+run_command corepack enable
 
 if ! command_exists pnpm; then
   echo "Could not find pnpm!"
   exit 1
 fi
 
-run_command "./scripts/check-environment.sh"
+run_command ./scripts/check-environment.sh
 
 # Ensure any lingering artifacts from earlier work have been cleaned out
-pnpm_or_bun install --frozen-lockfile --prefer-offline
+run_command pnpm install --frozen-lockfile --prefer-offline
 
 ###################################################################################################
 # Standard teardown for all scripts

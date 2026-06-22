@@ -33,28 +33,38 @@ fi
 # Remove any and all generated files
 
 if [ -d "./node_modules/" ]; then
-  pnpm_or_bun run clean
+  run_command pnpm run clean
 fi
 
-run_command "rm -rf
-  ${TMPDIR:-/tmp}/react-*
-  "
+run_command rm -rf "${TMPDIR:-/tmp}"/react-*
 
 for DIRECTORY in '.' 'docs-website' 'demos/*' 'external-tests/*' 'packages/*' ; do
-  run_command "rm -rf
-    $DIRECTORY/.turbo/
-    $DIRECTORY/.yalc/
-    $DIRECTORY/build/
-    $DIRECTORY/coverage/
-    $DIRECTORY/dist/
-    $DIRECTORY/e2e-test-output/
-    $DIRECTORY/legacy-types/
-    $DIRECTORY/node_modules/
-    $DIRECTORY/playwright-report/
-    $DIRECTORY/public/build/
-    $DIRECTORY/storybook-static/
+  run_command rm -rf                  \
+    $DIRECTORY/.astro/                \
+    $DIRECTORY/.cache/                \
+    $DIRECTORY/.cache-loader/         \
+    $DIRECTORY/.docusaurus/           \
+    $DIRECTORY/.next/                 \
+    $DIRECTORY/.nitro/                \
+    $DIRECTORY/.nuxt/                 \
+    $DIRECTORY/.output/               \
+    $DIRECTORY/.react-router/         \
+    $DIRECTORY/.svelte-kit/           \
+    $DIRECTORY/.turbo/                \
+    $DIRECTORY/.wrangler/             \
+    $DIRECTORY/.yalc/                 \
+    $DIRECTORY/_fresh/                \
+    $DIRECTORY/build/                 \
+    $DIRECTORY/coverage/              \
+    $DIRECTORY/dist/                  \
+    $DIRECTORY/e2e-test-output/       \
+    $DIRECTORY/legacy-types/          \
+    $DIRECTORY/node_modules/          \
+    $DIRECTORY/out/                   \
+    $DIRECTORY/playwright-report/     \
+    $DIRECTORY/public/build/          \
+    $DIRECTORY/storybook-static/      \
     $DIRECTORY/*.log*
-    "
 done
 
 REMAINING_FILES=$(git clean -xdn | sed 's/Would remove /    /')
