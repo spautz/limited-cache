@@ -6,35 +6,39 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: write
-  id-token: write
+permissions: {}
 
 jobs:
   publish-npm:
-    name: Publish to NPM
+    name: Publish to npm
     runs-on: ubuntu-latest
-    # Only run for the original repo, and only the default branch, and only if it's properly protected
+    environment: publish-release
+    # Only run in non-fork repos, on protected default branches.
     if: |
-      (! github.event.push.head.repo.fork)
+      (! github.event.repository.fork)
         && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
-        && github.ref_protected == true
-    strategy:
-      matrix:
-        package-name: [limited-cache]
+        && github.ref_protected
+    permissions:
+      contents: read # Required to clone the repository when this template is used in a private repo.
+      id-token: write # Required for npm trusted publishing via GitHub OIDC.
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          fetch-depth: 0
+          persist-credentials: false
 
       - uses: ./.github/reusable-workflows/setup-repo
         with:
           node-version: nvmrc
+          enable-package-manager-cache: false
 
-      - name: Publish to NPM
-        run: |
-          cd packages/${{ matrix.package-name }}
-          pnpm pack
-          NPM_CONFIG_PROVENANCE=true  pnpm publish --tag next *${{ matrix.package-name }}*.tgz
+      - name: Pack and verify tarballs
+        run: pnpm run release:pack-packages
+
+      - name: Stage packages to npm
+        id: stage-release
+        run: bash ./scripts/release/stage-packages-to-npm.sh
+
+      - name: Summarize staged releases
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+          STAGE_IDS: ${{ steps.stage-release.outputs.stage_ids }}
+        run: bash ./scripts/release/summarize-staged-releases.sh

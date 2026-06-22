@@ -1,0 +1,58 @@
+name: Verify and Promote Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      npm-tag:
+        description: npm dist-tag to verify
+        required: true
+        default: next
+      promote-to-tag:
+        description: npm dist-tag to promote to; blank or same as npm-tag skips promotion
+        required: false
+        default: ''
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  verify-and-promote-release:
+    name: Verify and promote npm release
+    runs-on: ubuntu-latest
+    environment: npm-dist-tag-promotion
+    # Only run in non-fork repos, on protected default branches.
+    if: |
+      (! github.event.repository.fork)
+        && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        && github.ref_protected
+    permissions:
+      contents: read
+    env:
+      NPM_TAG: ${{ inputs['npm-tag'] }}
+      PROMOTE_TO_TAG: ${{ inputs['promote-to-tag'] }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/reusable-workflows/setup-repo
+        with:
+          node-version: nvmrc
+          enable-package-manager-cache: false
+
+      - name: Verify live packages
+        run: bash ./scripts/release/verify-live-packages.sh
+
+      - name: Verify npm auth
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_DIST_TAG_TOKEN }}
+        run: pnpm whoami
+
+      - name: Promote dist-tags
+        if: ${{ inputs['promote-to-tag'] != '' && inputs['promote-to-tag'] != inputs['npm-tag'] }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_DIST_TAG_TOKEN }}
+        run: bash ./scripts/release/promote-dist-tags.sh
