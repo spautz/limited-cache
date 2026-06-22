@@ -1,4 +1,4 @@
-import { describe, beforeEach, expect, it, vitest } from 'vitest';
+import { beforeEach, describe, expect, it, vitest } from 'vitest';
 import { LimitedCacheObject, type LimitedCacheObjectInstance } from '../../index.js';
 
 // To avoid race conditions or timing issues, since some expect() checks can take 10+ ms when busy,
@@ -24,8 +24,8 @@ describe('maxCacheTime scenarios', () => {
     await timeoutPromise();
     myCache['ghi'] = 789;
 
-    expect(Object.prototype.hasOwnProperty.call(myCache, 'abc')).toEqual(false);
-    expect(Object.prototype.hasOwnProperty.call(myCache, 'def')).toEqual(false);
+    expect(Object.hasOwn(myCache, 'abc')).toEqual(false);
+    expect(Object.hasOwn(myCache, 'def')).toEqual(false);
 
     expect(Object.keys(myCache)).toEqual(['ghi']);
   });
@@ -46,9 +46,9 @@ describe('maxCacheTime scenarios', () => {
     await timeoutPromise();
     myCache['ghi'] = 789;
 
-    expect(Object.prototype.hasOwnProperty.call(myCache, 'abc')).toEqual(false);
-    expect(Object.prototype.hasOwnProperty.call(myCache, 'def')).toEqual(false);
-    expect(Object.prototype.hasOwnProperty.call(myCache, 'ghi')).toEqual(true);
+    expect(Object.hasOwn(myCache, 'abc')).toEqual(false);
+    expect(Object.hasOwn(myCache, 'def')).toEqual(false);
+    expect(Object.hasOwn(myCache, 'ghi')).toEqual(true);
     expect(myCache['abc']).toEqual(undefined);
     expect(myCache['def']).toEqual(undefined);
     expect(myCache['ghi']).toEqual(789);

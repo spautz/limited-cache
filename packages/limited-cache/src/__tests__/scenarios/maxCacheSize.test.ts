@@ -1,4 +1,4 @@
-import { describe, beforeEach, expect, it, vitest } from 'vitest';
+import { beforeEach, describe, expect, it, vitest } from 'vitest';
 import { LimitedCache, type LimitedCacheInstance } from '../../index.js';
 
 // To avoid race conditions or timing issues, since some expect() checks can take 10+ ms when busy,

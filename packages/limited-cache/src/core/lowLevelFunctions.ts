@@ -1,5 +1,3 @@
-import { dateNow, hasOwnProperty, objectAssign, objectCreate } from './builtIns.js';
-import { CURRENT_META_VERSION, defaultOptions, MAXIMUM_CACHE_TIME } from './defaultOptions.js';
 import type {
   DefaultItemType,
   LimitedCacheMeta,
@@ -7,6 +5,8 @@ import type {
   LimitedCacheOptionsFull,
   LimitedCacheOptionsReadonly,
 } from '../types.js';
+import { dateNow, hasOwnProperty, objectAssign, objectCreate } from './builtIns.js';
+import { CURRENT_META_VERSION, defaultOptions, MAXIMUM_CACHE_TIME } from './defaultOptions.js';
 
 /* Initialization and options */
 
@@ -348,14 +348,14 @@ const lowLevelReset = <ItemType = DefaultItemType>(
 
 export {
   isCacheMeta,
-  upgradeCacheMeta,
-  lowLevelInit,
-  lowLevelGetOne,
+  lowLevelDoMaintenance,
   lowLevelGetAll,
+  lowLevelGetOne,
   lowLevelHas,
-  lowLevelSet,
+  lowLevelInit,
   lowLevelRemove,
   lowLevelReset,
-  lowLevelDoMaintenance,
+  lowLevelSet,
   lowLevelSetOptions,
+  upgradeCacheMeta,
 };

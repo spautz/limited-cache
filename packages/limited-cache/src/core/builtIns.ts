@@ -8,4 +8,4 @@ const {
 } = Object;
 const dateNow = Date.now;
 
-export { objectAssign, objectCreate, dateNow, hasOwnProperty };
+export { dateNow, hasOwnProperty, objectAssign, objectCreate };

@@ -1,18 +1,18 @@
+import type {
+  DefaultItemType,
+  LimitedCacheMeta,
+  LimitedCacheObjectInstance,
+  LimitedCacheOptions,
+} from '../types.js';
 import { hasOwnProperty } from './builtIns.js';
 import {
-  lowLevelInit,
-  lowLevelGetOne,
   lowLevelGetAll,
+  lowLevelGetOne,
   lowLevelHas,
-  lowLevelSet,
+  lowLevelInit,
   lowLevelRemove,
+  lowLevelSet,
 } from './lowLevelFunctions.js';
-import type {
-  LimitedCacheOptions,
-  LimitedCacheObjectInstance,
-  LimitedCacheMeta,
-  DefaultItemType,
-} from '../types.js';
 
 // The `any` here doesn't escape out anywhere: it's overridden by the constructor below
 
@@ -75,4 +75,4 @@ const getCacheMetaFromObject = (instance: LimitedCacheObjectInstance): LimitedCa
   return cacheMetasForProxies.get(instance);
 };
 
-export { LimitedCacheObject, getCacheMetaFromObject };
+export { getCacheMetaFromObject, LimitedCacheObject };

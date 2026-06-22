@@ -12,24 +12,12 @@
     // Tests are a repo-wide task
     "//#w:all-tests": {
       "dependsOn": ["w:dependencies"],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        "**/__tests__/**",
-        "**/tests/**",
-        "**/*.test.*",
-        "**/*.spec.*"
-      ],
+      "inputs": ["$TURBO_DEFAULT$", "**/__tests__/**", "**/tests/**", "**/*.test.*", "**/*.spec.*"],
       "outputs": ["coverage/**"]
     },
     "//#w:all-tests:ci": {
       "dependsOn": ["w:dependencies"],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        "**/__tests__/**",
-        "**/tests/**",
-        "**/*.test.*",
-        "**/*.spec.*"
-      ],
+      "inputs": ["$TURBO_DEFAULT$", "**/__tests__/**", "**/tests/**", "**/*.test.*", "**/*.spec.*"],
       "outputs": ["coverage/**"]
     },
     "//#w:all-tests:ui": {
@@ -72,13 +60,7 @@
       "dependsOn": ["typecheck", "lint", "test", "build", "build-storybook"]
     },
     "pipeline-ci": {
-      "dependsOn": [
-        "typecheck",
-        "lint:verify",
-        "test:ci",
-        "build",
-        "build-storybook"
-      ]
+      "dependsOn": ["typecheck", "lint:verify", "test:ci", "build", "build-storybook"]
     },
 
     // -----------------------------------------------------------------------

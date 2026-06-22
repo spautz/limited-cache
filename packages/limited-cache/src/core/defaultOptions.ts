@@ -14,4 +14,4 @@ const defaultOptions: LimitedCacheOptionsReadonly = {
   scanLimit: 50,
 };
 
-export { CURRENT_META_VERSION, MAXIMUM_CACHE_TIME, defaultOptions };
+export { CURRENT_META_VERSION, defaultOptions, MAXIMUM_CACHE_TIME };
