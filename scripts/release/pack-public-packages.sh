@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This updates external tests by publishing local packages and updating yalc dependencies
+# Pack every public package tarball for release.
 
 ###################################################################################################
 # Standard setup for all scripts
@@ -21,22 +21,16 @@ source ./scripts/helpers/helpers.sh
 ###################################################################################################
 # Main body
 
-# This script assumes you've already run either `setup-local-environment.sh` or
-# `setup-ci-environment.sh`
+for PACKAGE_DIR in packages/*; do
+  [[ -d "$PACKAGE_DIR" ]] || continue
 
-pnpm_or_bun run publish:yalc
+  IS_PRIVATE="$(node -p "require('./$PACKAGE_DIR/package.json').private === true ? 'true' : 'false'")"
+  [[ "$IS_PRIVATE" != "true" ]] || continue
 
-for DIRECTORY in external-tests/*/ ; do
-  pushd $DIRECTORY
-
-  # Use workspace's copy of Yalc to copy over any necessary local packages, so that they'll be
-  # in place when we try to install
-  if [ -f "./package.json" ]; then
-    ../../node_modules/.bin/yalc update
-  fi
-  # TODO: else = Deno or other alternative
-
-  popd
+  (
+    cd "$PACKAGE_DIR"
+    run_command pnpm pack --out package-%v.tgz
+  )
 done
 
 ###################################################################################################

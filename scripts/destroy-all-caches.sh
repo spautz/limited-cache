@@ -42,20 +42,20 @@ fi
 
 
 if command_exists jest; then
-  run_command "jest --clearCache"
+  run_command jest --clearCache
 else
-  run_command "npx jest --clearCache"
+  run_command_pnpm_dlx jest --clearCache
 fi
 
 if command_exists pnpm; then
-  run_command "rm -rf $(pnpm store path)"
+  run_command rm -rf "$(pnpm store path)"
 fi
 
 if command_exists yarn; then
-  run_command "yarn cache clean --all"
+  run_command yarn cache clean --all
 fi
 
-run_command "npm cache clean --force"
+run_command npm cache clean --force
 
 # We repeat the standard clean again at the end, because it's quick and to ensure nothing new was
 # added while running the other commands.
