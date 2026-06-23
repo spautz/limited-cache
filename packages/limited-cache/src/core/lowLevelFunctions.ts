@@ -18,6 +18,7 @@ const normalizeOptions = (cacheMetaOptions: LimitedCacheOptionsFull): LimitedCac
     opLimit: positiveNumberOrZero(cacheMetaOptions.opLimit),
   });
 
+  // @ts-expect-error `process.env.NODE_ENV` left intact and not added to global typings
   if (process.env.NODE_ENV !== 'production') {
     cacheMetaOptions.warnIfItemPurgedBeforeTime = positiveNumberOrZero(
       cacheMetaOptions.warnIfItemPurgedBeforeTime,
@@ -197,6 +198,7 @@ const _removeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void 
   // Warn if the 'oldest' item is more recent than we'd like: this means it cycled into and out of
   // cache too quickly for the cache to be useful.
   if (
+    // @ts-expect-error `process.env.NODE_ENV` left intact and not added to global typings
     process.env.NODE_ENV !== 'production' &&
     warnIfItemPurgedBeforeTime &&
     oldestExpireTime > now
