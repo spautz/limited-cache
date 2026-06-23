@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.0
+
+### Minor Changes
+
+- Update devtools and repo setup to match newer standards. Includes typing updates but no functional changes. ([#80](https://github.com/spautz/limited-cache/issues/80)) ([18db9a2](https://github.com/spautz/limited-cache/commit/18db9a215f42bf153bf71f7f2f6416cb0b043603))
+
 ## 2.2.0
 
 ### Minor Changes
