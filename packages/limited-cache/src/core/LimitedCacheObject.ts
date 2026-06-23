@@ -4,7 +4,6 @@ import type {
   LimitedCacheObjectInstance,
   LimitedCacheOptions,
 } from '../types.js';
-import { hasOwnProperty } from './builtIns.js';
 import {
   lowLevelGetAll,
   lowLevelGetOne,
@@ -14,12 +13,10 @@ import {
   lowLevelSet,
 } from './lowLevelFunctions.js';
 
-// The `any` here doesn't escape out anywhere: it's overridden by the constructor below
-
-const proxyHandler: ProxyHandler<LimitedCacheObjectInstance> = {
+const proxyHandler: ProxyHandler<LimitedCacheMeta> = {
   get: (cacheMeta: LimitedCacheMeta, cacheKey: string) => {
     if (cacheKey === 'hasOwnProperty') {
-      return hasOwnProperty;
+      return Object.prototype.hasOwnProperty;
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return lowLevelGetOne(cacheMeta, cacheKey);
@@ -41,8 +38,7 @@ const proxyHandler: ProxyHandler<LimitedCacheObjectInstance> = {
     return;
   },
   has: lowLevelHas,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  set: (cacheMeta: LimitedCacheMeta, cacheKey: string, item: any): any => {
+  set: <T>(cacheMeta: LimitedCacheMeta, cacheKey: string, item: T): T => {
     lowLevelSet(cacheMeta, cacheKey, item);
     return item;
   },
@@ -54,6 +50,16 @@ const proxyHandler: ProxyHandler<LimitedCacheObjectInstance> = {
 };
 
 /**
+ * TypeScript's Proxy type models the runtime target, but LimitedCacheObject intentionally returns
+ * a facade with a different surface from the internal cache metadata target.
+ */
+const internal_createLimitedCacheObjectProxy = <ItemType = DefaultItemType>(
+  cacheMeta: LimitedCacheMeta<ItemType>,
+): LimitedCacheObjectInstance<ItemType> => {
+  return new Proxy(cacheMeta, proxyHandler) as unknown as LimitedCacheObjectInstance<ItemType>;
+};
+
+/**
  * So that we can retrieve the cacheMeta for a LimitedCacheObject, without polluting its properties, each proxy
  * is associated back to its internal cacheMeta here.
  */
@@ -62,8 +68,8 @@ const cacheMetasForProxies = new WeakMap();
 const LimitedCacheObject = <ItemType = DefaultItemType>(
   options?: LimitedCacheOptions,
 ): LimitedCacheObjectInstance<ItemType> => {
-  const cacheMeta = lowLevelInit(options);
-  const limitedCacheObject = new Proxy(cacheMeta, proxyHandler);
+  const cacheMeta = lowLevelInit<ItemType>(options);
+  const limitedCacheObject = internal_createLimitedCacheObjectProxy(cacheMeta);
 
   cacheMetasForProxies.set(limitedCacheObject, cacheMeta);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return

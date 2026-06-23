@@ -1,3 +1,6 @@
+// biome-ignore-all lint/performance/noDelete: Delete is explicitly used to unset items for these tests
+// biome-ignore-all lint/suspicious/noAssignInExpressions: Assignment expressions are explicitly tested
+
 import { beforeEach, describe, expect, it } from 'vitest';
 import { defaultOptions } from '../core/defaultOptions.js';
 import { getCacheMetaFromObject, LimitedCacheObject } from '../core/LimitedCacheObject.js';

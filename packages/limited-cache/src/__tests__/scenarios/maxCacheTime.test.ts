@@ -1,10 +1,12 @@
+// biome-ignore-all lint/performance/noDelete: Delete is explicitly used to unset items for these tests
+
 import { beforeEach, describe, expect, it, vitest } from 'vitest';
 import { LimitedCacheObject, type LimitedCacheObjectInstance } from '../../index.js';
 
 // To avoid race conditions or timing issues, since some expect() checks can take 10+ ms when busy,
 // we use a long cache timeout even for 'immediate' expiration, and use delays slightly longer than that
 const CACHE_TIMEOUT = 25;
-const timeoutPromise = (): Promise<null> =>
+const timeoutPromise = (): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, CACHE_TIMEOUT + 2));
 
 describe('maxCacheTime scenarios', () => {

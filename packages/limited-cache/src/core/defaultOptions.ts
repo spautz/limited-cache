@@ -1,7 +1,8 @@
 import type { LimitedCacheOptionsReadonly } from '../types.js';
 
-const CURRENT_META_VERSION = 2;
-const MAXIMUM_CACHE_TIME = 365 * 86400 * 1000;
+const CURRENT_META_VERSION = 2 as const;
+// Default = 1 year
+const MAXIMUM_CACHE_TIME: number = 365 * 86400 * 1000;
 
 const defaultOptions: LimitedCacheOptionsReadonly = {
   // Public
