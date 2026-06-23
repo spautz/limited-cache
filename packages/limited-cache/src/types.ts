@@ -1,15 +1,3 @@
-declare global {
-  // We only want the exact `process.env.NODE_ENV` (and not all Node typings) since that's handled by bundlers
-  // even in ESM.
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace NodeJS {
-    interface ProcessEnv {
-      // Usually optional because env vars may be missing at runtime
-      NODE_ENV?: 'development' | 'production' | 'test';
-    }
-  }
-}
-
 // This makes it easy to ensure that ItemType gets passed to any nested generics:
 //  * Using `unknown` helps catch errors during development but is a pain for consumers.
 //  * Using `any` is nicer for consumers, but errors could slip through during development.

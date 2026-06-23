@@ -3,9 +3,10 @@
 A minimal JS cache. Like using an object to store keys and values, except it won't grow forever
 
 [![npm version](https://img.shields.io/npm/v/limited-cache.svg)](https://www.npmjs.com/package/limited-cache)
-[![build status](https://github.com/spautz/limited-cache/workflows/CI/badge.svg)](https://github.com/spautz/limited-cache/actions)
+[![readme](https://img.shields.io/badge/-readme-informational)](https://github.com/spautz/limited-cache/blob/main/packages/limited-cache/README.md)
+[![build status](https://github.com/spautz/limited-cache/actions/workflows/ci.yml/badge.svg)](https://github.com/spautz/limited-cache/actions)
 [![test coverage](https://img.shields.io/coveralls/github/spautz/limited-cache/main.svg)](https://coveralls.io/github/spautz/limited-cache?branch=main)
-[![dependencies status](https://img.shields.io/librariesio/release/npm/limited-cache.svg)](https://libraries.io/github/spautz/limited-cache)
+[![repo vulnerabilities](https://snyk.io/test/github/spautz/limited-cache/badge.svg)](https://snyk.io/test/github/spautz/limited-cache)
 [![gzip size](https://img.shields.io/bundlephobia/minzip/limited-cache.svg)](https://bundlephobia.com/package/limited-cache@latest)
 
 ## Motivation
@@ -114,7 +115,7 @@ on the higher-level LimitedCache and LimitedCacheObject is available as a low-le
 - `lowLevelReset(cacheMeta)`
 - `lowLevelSetOptions(cacheMeta, options)` - you can update options anytime
 
-These functions are also grouped together as [limitedCacheUtil](https://github.com/spautz/limited-cache/blob/main/src/core/limitedCacheUtil.ts#L13-L23) --
+These functions are also grouped together as [limitedCacheUtil](https://github.com/spautz/limited-cache/blob/main/packages/limited-cache/src/core/limitedCacheUtil.ts#L25-L35) --
 but minimization and tree-shaking will be slightly better if you import each individually.
 
 ## FAQ
