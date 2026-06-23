@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.1
+
+### Patch Changes
+
+- Revert an accidental type change for process.env ([#88](https://github.com/spautz/limited-cache/issues/88)) ([1a82894](https://github.com/spautz/limited-cache/commit/1a82894b2a4287ea379019a72e7b74328790cf59))
+
 ## 2.3.0
 
 ### Minor Changes
