@@ -24,18 +24,14 @@
     "removeComments": false,
     "sourceMap": true,
     // Interop Constraints
-    "erasableSyntaxOnly": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    // @TODO @FIXME
-    "isolatedDeclarations": false,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     // Language and Environment
     "jsx": "react-jsx",
-    "lib": ["DOM", "DOM.Iterable", "ES2020"],
+    "lib": ["ES2022"],
     "moduleDetection": "force",
-    "target": "ES2020",
     // Completeness
     "skipLibCheck": true
   }

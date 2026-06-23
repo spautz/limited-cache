@@ -1,9 +1,10 @@
-import { configDefaults, defineConfig } from 'vitest/config';
 import type { UserConfig } from 'vite';
+import { configDefaults, defineConfig } from 'vitest/config';
 
 // Check each package and demo
 const testPathsToExclude = [
   ...configDefaults.exclude,
+  '**/.yalc/**',
   '**/coverage/**',
   '**/legacy-types/**',
   '**/setupTests.ts',

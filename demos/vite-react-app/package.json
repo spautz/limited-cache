@@ -21,10 +21,10 @@
     "all": "turbo run pipeline-all",
     "all:ci": "turbo run pipeline-ci --ui=stream",
     "build": "pnpm run build:clean && pnpm run build:main",
-    "clean": "pnpm run build:clean && pnpm run test:clean && rimraf --glob ./node_modules/.cache ./.turbo ./*.log",
+    "clean": "pnpm run \"/^.*:clean$/\" && rimraf --glob ./node_modules/.cache ./.turbo ./*.log",
     "dev": "vite",
-    "lint": "eslint . --max-warnings 0 --report-unused-disable-directives --fix",
-    "lint:verify": "eslint . --max-warnings 0 --report-unused-disable-directives",
+    "lint": "biome check --write .",
+    "lint:verify": "biome check .",
     "start": "vite preview",
     "test:clean": "rimraf ./coverage",
     "test": "pnpm run test:clean       && vitest run --coverage",
@@ -44,7 +44,13 @@
     "react-dom": "catalog:demos"
   },
   "devDependencies": {
+    "@skip-the-build/vite": "^1.1.1",
+    "@testing-library/jest-dom": "catalog:shared",
+    "@testing-library/react": "catalog:shared",
     "@types/react": "catalog:demos",
-    "@types/react-dom": "catalog:demos"
+    "@types/react-dom": "catalog:demos",
+    "@vitest/coverage-v8": "catalog:shared",
+    "@vitest/ui": "catalog:shared",
+    "typescript": "catalog:demos"
   }
 }

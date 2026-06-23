@@ -1,13 +1,13 @@
 import { describe, it } from 'vitest';
 
-import { lowLevelInit, lowLevelGetOne, lowLevelSet } from '../../index.js';
+import { lowLevelGetOne, lowLevelInit, lowLevelSet } from '../../index.js';
 
 /**
  * This is not a source file or test file.
  * Instead, it ensures that the typeChecks are correct.
  */
 
-let value;
+let value: unknown;
 
 const defaultCacheMeta = lowLevelInit();
 

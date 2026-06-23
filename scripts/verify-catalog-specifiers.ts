@@ -1,84 +1,72 @@
 #!/usr/bin/env node
 /** biome-ignore-all lint/suspicious/noConsole: This is a shell script */
 
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { globSync } from 'glob';
 
-const DEPENDENCY_FIELDS = [
+const DEPENDENCY_FIELD_NAMES = [
   'dependencies',
   'devDependencies',
   'peerDependencies',
   'optionalDependencies',
 ] as const;
-type DependencyField = (typeof DEPENDENCY_FIELDS)[number];
+type DependencyFieldName = (typeof DEPENDENCY_FIELD_NAMES)[number];
 
-type PackageManifest = Partial<Record<DependencyField, Record<string, string>>>;
-type Policy = { prefix: string; allowedCatalogs: Set<string> };
+type PackageManifest = Partial<Record<DependencyFieldName, Record<string, string>>>;
+type Policy = {
+  pathPattern: string;
+  allowedCatalogs: Set<string>;
+};
+type PolicyWithFiles = Policy & { files: string[] };
 
 // NOTE: The library-specific ("isolated") catalogs help with isolated testing
 const ALLOW_TESTING_CATALOGS = false;
-const isolatedTestingCatalogs = ['react16', 'react17', 'react18', 'react19', 'typescriptLTS'];
-
-const defaultAllowedCatalogs = [
+const defaultAllowedCatalogs = new Set([
+  ...(ALLOW_TESTING_CATALOGS ? ['react16', 'react17', 'react18', 'react19', 'typescriptLTS'] : []),
   'shared',
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  ...(ALLOW_TESTING_CATALOGS ? isolatedTestingCatalogs : []),
-];
+]);
 
-const policyByPrefix: Policy[] = [
+const catalogPolicies: Policy[] = [
   {
-    prefix: 'packages/',
+    pathPattern: '',
     allowedCatalogs: new Set(['packages', ...defaultAllowedCatalogs]),
   },
   {
-    prefix: 'demos/',
+    pathPattern: 'packages/*',
+    allowedCatalogs: new Set(['packages', ...defaultAllowedCatalogs]),
+  },
+  {
+    pathPattern: 'demos/*',
     allowedCatalogs: new Set(['demos', ...defaultAllowedCatalogs]),
   },
   {
-    prefix: 'docs-website/',
+    pathPattern: 'docs-website',
     allowedCatalogs: new Set(['packages', ...defaultAllowedCatalogs]),
   },
 ];
 
-const explicitPolicyByPath = new Map<string, Set<string>>([
-  ['package.json', new Set(['packages', ...defaultAllowedCatalogs])],
-]);
-
-function collectPackageJsonPaths(rootDir: string): string[] {
-  const paths = ['package.json', 'docs-website/package.json'];
-
-  for (const segment of ['packages', 'demos']) {
-    const parent = path.join(rootDir, segment);
-    if (!existsSync(parent)) continue;
-
-    for (const entry of readdirSync(parent, { withFileTypes: true })) {
-      if (!entry.isDirectory()) continue;
-      const relative = `${segment}/${entry.name}/package.json`;
-      const absolute = path.join(rootDir, relative);
-      if (existsSync(absolute)) paths.push(relative);
-    }
-  }
-
-  return paths;
+// Expand/augment each catalogPolicies entry with the exact package.json files it applies to
+function collectCatalogPoliciesWithFiles(rootDir: string): PolicyWithFiles[] {
+  return catalogPolicies.map((policy) => ({
+    ...policy,
+    files: globSync(path.posix.join(policy.pathPattern, 'package.json'), {
+      cwd: rootDir,
+      nodir: true,
+    })
+      .map((packageJsonPath) => packageJsonPath.replaceAll(path.sep, '/'))
+      .sort(),
+  }));
 }
 
-function getAllowedCatalogs(relativePath: string): Set<string> | null {
-  const explicit = explicitPolicyByPath.get(relativePath);
-  if (explicit) return explicit;
-
-  for (const policy of policyByPrefix) {
-    if (relativePath.startsWith(policy.prefix)) return policy.allowedCatalogs;
-  }
-
-  return null;
-}
-
-function findCatalogIssues(relativePath: string, pkg: PackageManifest): string[] {
+function findCatalogIssues(
+  relativePath: string,
+  pkg: PackageManifest,
+  allowedCatalogs: Set<string>,
+): string[] {
   const issues: string[] = [];
-  const allowedCatalogs = getAllowedCatalogs(relativePath);
-  if (!allowedCatalogs) return issues;
 
-  for (const field of DEPENDENCY_FIELDS) {
+  for (const field of DEPENDENCY_FIELD_NAMES) {
     const dependencies = pkg[field];
     if (!dependencies || typeof dependencies !== 'object') continue;
 
@@ -107,14 +95,18 @@ function findCatalogIssues(relativePath: string, pkg: PackageManifest): string[]
 
 function main(): void {
   const rootDir = process.cwd();
-  const packageJsonPaths = collectPackageJsonPaths(rootDir);
+  const catalogPoliciesWithFiles = collectCatalogPoliciesWithFiles(rootDir);
   const issues: string[] = [];
+  let checkedFileCount = 0;
 
-  for (const relativePath of packageJsonPaths) {
-    const absolutePath = path.join(rootDir, relativePath);
-    const json = readFileSync(absolutePath, 'utf8');
-    const pkg = JSON.parse(json) as PackageManifest;
-    issues.push(...findCatalogIssues(relativePath, pkg));
+  for (const policy of catalogPoliciesWithFiles) {
+    for (const relativePath of policy.files) {
+      checkedFileCount += 1;
+      const absolutePath = path.join(rootDir, relativePath);
+      const json = readFileSync(absolutePath, 'utf8');
+      const pkg = JSON.parse(json) as PackageManifest;
+      issues.push(...findCatalogIssues(relativePath, pkg, policy.allowedCatalogs));
+    }
   }
 
   if (issues.length > 0) {
@@ -124,9 +116,7 @@ function main(): void {
     return;
   }
 
-  console.log(
-    `Catalog policy check passed (${packageJsonPaths.length} package.json files checked).`,
-  );
+  console.log(`Catalog policy check passed (${checkedFileCount} package.json files checked).`);
 }
 
 main();

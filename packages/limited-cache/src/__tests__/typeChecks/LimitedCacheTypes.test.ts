@@ -7,7 +7,7 @@ import { LimitedCache } from '../../index.js';
  * Instead, it ensures that the typeChecks are correct.
  */
 
-let value;
+let value: unknown;
 
 const defaultCache = LimitedCache();
 

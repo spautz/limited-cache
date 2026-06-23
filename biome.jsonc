@@ -1,0 +1,118 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "includes": [
+      "**",
+      // These are in addition to .gitignore
+      "!**/.yalc",
+      "!**/*.log",
+      "!package-lock.json",
+      "!pnpm-lock.yaml",
+      "!yarn.lock",
+      // Generated files
+      "!**/routeTree.gen.ts",
+      // Each external-test has its own linting config, following the conventions of its framework
+      "!external-tests"
+    ],
+    // 2mb
+    "maxSize": 2097152
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": true,
+    "indentStyle": "space",
+    "lineWidth": 100
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "html": {
+    // For processing astro/svelte/etc. As of February 2026 (v2.3.14) this isn't ready.
+    // "experimentalFullSupportEnabled": true
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
+  "json": {
+    "parser": {
+      "allowComments": true,
+      "allowTrailingCommas": true
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "complexity": {
+        "noForEach": "warn",
+        "noStaticOnlyClass": "error",
+        "noBannedTypes": "error",
+        "useLiteralKeys": "off"
+      },
+      "correctness": {
+        "noUnusedVariables": "error",
+        "useHookAtTopLevel": "error",
+        "noUndeclaredVariables": "error",
+        "noUnusedImports": "error"
+      },
+      "performance": {
+        "noDelete": "warn"
+      },
+      "style": {
+        "noInferrableTypes": "error",
+        "noNonNullAssertion": "error",
+        "noParameterAssign": "error",
+        "noUnusedTemplateLiteral": "error",
+        "noUselessElse": "error",
+        "useAsConstAssertion": "error",
+        "useConst": "error",
+        "useDefaultParameterLast": "error",
+        "useEnumInitializers": "error",
+        "useNumberNamespace": "error",
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error",
+        "useTemplate": "error",
+        "useImportType": "error",
+        "useExportType": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "error",
+        "noConsole": "warn",
+        "noEmptyInterface": "error",
+        "noRedundantUseStrict": "error"
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.astro", "**/*.svelte"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            // Not yet supported
+            // https://github.com/biomejs/biome/issues/2233
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off"
+          }
+        }
+      }
+    }
+  ]
+}

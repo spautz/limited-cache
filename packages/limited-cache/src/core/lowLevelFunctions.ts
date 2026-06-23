@@ -1,5 +1,3 @@
-import { dateNow, hasOwnProperty, objectAssign, objectCreate } from './builtIns.js';
-import { CURRENT_META_VERSION, defaultOptions, MAXIMUM_CACHE_TIME } from './defaultOptions.js';
 import type {
   DefaultItemType,
   LimitedCacheMeta,
@@ -7,13 +5,14 @@ import type {
   LimitedCacheOptionsFull,
   LimitedCacheOptionsReadonly,
 } from '../types.js';
+import { CURRENT_META_VERSION, defaultOptions, MAXIMUM_CACHE_TIME } from './defaultOptions.js';
 
 /* Initialization and options */
 
 const positiveNumberOrZero = (value: number): number => Math.max(value, 0) || 0;
 
 const normalizeOptions = (cacheMetaOptions: LimitedCacheOptionsFull): LimitedCacheOptionsFull => {
-  objectAssign(cacheMetaOptions, {
+  Object.assign(cacheMetaOptions, {
     maxCacheSize: positiveNumberOrZero(cacheMetaOptions.maxCacheSize),
     maxCacheTime: positiveNumberOrZero(cacheMetaOptions.maxCacheTime),
     opLimit: positiveNumberOrZero(cacheMetaOptions.opLimit),
@@ -39,6 +38,7 @@ const upgradeCacheMeta = (cacheMeta: LimitedCacheMeta): void => {
   if (cacheMeta.limitedCacheMetaVersion !== CURRENT_META_VERSION) {
     // Version is out of date! (Today the only prior version is 1)
     // Version 1: Cache meta cannot be migrated because timestamps and keys are incompatible
+    // biome-ignore lint/suspicious/noConsole: Intentional warning
     console.warn('Limited-cache metadata is from an incompatible version (1). It must be reset.');
     cacheMeta.limitedCacheMetaVersion = CURRENT_META_VERSION;
     lowLevelReset(cacheMeta);
@@ -50,7 +50,7 @@ const lowLevelSetOptions = <ItemType = DefaultItemType>(
   options: LimitedCacheOptions,
 ): LimitedCacheOptionsReadonly => {
   upgradeCacheMeta(cacheMeta);
-  return normalizeOptions(objectAssign(cacheMeta.options, options));
+  return normalizeOptions(Object.assign(cacheMeta.options, options));
 };
 
 const lowLevelInit = <ItemType = DefaultItemType>(
@@ -105,7 +105,7 @@ const lowLevelDoMaintenance = <ItemType = DefaultItemType>(
 ): LimitedCacheMeta<ItemType> => {
   upgradeCacheMeta(cacheMeta);
   const { cache, keyList, keyInfo } = cacheMeta;
-  const now = dateNow();
+  const now = Date.now();
 
   // Rebuild cache from keyList only, checking timestamps to auto-remove expired
   const [newCache, newKeyList, newKeyInfo] = keyList.reduce(
@@ -123,11 +123,11 @@ const lowLevelDoMaintenance = <ItemType = DefaultItemType>(
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
       {} as (typeof cacheMeta)['cache'],
       [] as (typeof cacheMeta)['keyList'],
-      objectCreate(null) as (typeof cacheMeta)['keyInfo'],
+      Object.create(null) as (typeof cacheMeta)['keyInfo'],
     ],
   );
 
-  return objectAssign(cacheMeta, {
+  return Object.assign(cacheMeta, {
     cache: newCache,
     keyList: newKeyList,
     keyInfo: newKeyInfo,
@@ -205,6 +205,7 @@ const _removeItemsToMakeRoom = (cacheMeta: LimitedCacheMeta, now: number): void 
     const [oldestItemSetTime, oldestItemExpireTime] = keyInfo[oldestItemKey] as [number, number];
 
     if (now - oldestItemSetTime < warnIfItemPurgedBeforeTime) {
+      // biome-ignore lint/suspicious/noConsole: Dev-only code
       console.warn(
         'Purged an item from cache while it was still fresh: you may want to increase maxCacheSize',
         {
@@ -232,8 +233,9 @@ const lowLevelHas = <ItemType = DefaultItemType>(
 ): boolean => {
   upgradeCacheMeta(cacheMeta);
   const { cache } = cacheMeta;
-  if (hasOwnProperty.call(cache, cacheKey) && cache[cacheKey] !== undefined) {
-    if (!_cacheKeyHasExpired(cacheMeta, cacheKey, dateNow())) {
+  // biome-ignore lint/suspicious/noPrototypeBuiltins: Keeping the legacy hasOwnProperty to avoid a breaking change
+  if (Object.prototype.hasOwnProperty.call(cache, cacheKey) && cache[cacheKey] !== undefined) {
+    if (!_cacheKeyHasExpired(cacheMeta, cacheKey, Date.now())) {
       return true;
     }
     // If it's expired, clear the value so that we can short-circuit future lookups
@@ -276,7 +278,7 @@ const lowLevelSet = <ItemType = DefaultItemType>(
     keyInfo,
   } = cacheMeta;
 
-  const now = dateNow();
+  const now = Date.now();
   const isNew = !keyInfo[cacheKey];
 
   if (cacheMeta.cache[cacheKey] !== item) {
@@ -338,24 +340,24 @@ const lowLevelReset = <ItemType = DefaultItemType>(
   cacheMeta: LimitedCacheMeta<ItemType>,
 ): LimitedCacheMeta<ItemType> => {
   upgradeCacheMeta(cacheMeta);
-  return objectAssign(cacheMeta, {
+  return Object.assign(cacheMeta, {
     cache: {},
     keyList: [],
-    keyInfo: objectCreate(null) as Record<string, ItemType>,
+    keyInfo: Object.create(null) as Record<string, ItemType>,
     opsLeft: cacheMeta.options.opLimit,
   });
 };
 
 export {
   isCacheMeta,
-  upgradeCacheMeta,
-  lowLevelInit,
-  lowLevelGetOne,
+  lowLevelDoMaintenance,
   lowLevelGetAll,
+  lowLevelGetOne,
   lowLevelHas,
-  lowLevelSet,
+  lowLevelInit,
   lowLevelRemove,
   lowLevelReset,
-  lowLevelDoMaintenance,
+  lowLevelSet,
   lowLevelSetOptions,
+  upgradeCacheMeta,
 };

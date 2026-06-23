@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { LimitedCache } from 'limited-cache';
+import { useState } from 'react';
 
-const limitedCache = LimitedCache({
+const limitedCache = LimitedCache<string>({
   maxCacheSize: 5,
   maxCacheTime: 30000,
   warnIfItemPurgedBeforeTime: 0,

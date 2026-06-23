@@ -1,7 +1,10 @@
-import { describe, beforeEach, expect, it } from 'vitest';
+// biome-ignore-all lint/performance/noDelete: Delete is explicitly used to unset items for these tests
+// biome-ignore-all lint/suspicious/noAssignInExpressions: Assignment expressions are explicitly tested
+
+import { beforeEach, describe, expect, it } from 'vitest';
 import { defaultOptions } from '../core/defaultOptions.js';
-import { LimitedCacheObject, getCacheMetaFromObject } from '../core/LimitedCacheObject.js';
-import { type LimitedCacheObjectInstance } from '../types.js';
+import { getCacheMetaFromObject, LimitedCacheObject } from '../core/LimitedCacheObject.js';
+import type { LimitedCacheObjectInstance } from '../types.js';
 
 describe('LimitedCacheObject', () => {
   it('initializes without options', () => {
@@ -29,13 +32,13 @@ describe('LimitedCacheObject', () => {
     });
 
     it('has: when missing, via prototype hasOwnProperty', () => {
-      const result = Object.prototype.hasOwnProperty.call(myCache, 'asdf');
+      const result = Object.hasOwn(myCache, 'asdf');
       expect(result).toEqual(false);
     });
 
     it('has: when missing, via local hasOwnProperty', () => {
       // eslint-disable-next-line no-prototype-builtins
-      const result = myCache.hasOwnProperty('asdf');
+      const result = Object.hasOwn(myCache, 'asdf');
       expect(result).toEqual(false);
     });
 
@@ -47,7 +50,7 @@ describe('LimitedCacheObject', () => {
     it('has: when present, via prototype hasOwnProperty', () => {
       myCache['abc'] = 123;
 
-      const result = Object.prototype.hasOwnProperty.call(myCache, 'abc');
+      const result = Object.hasOwn(myCache, 'abc');
       expect(result).toEqual(true);
     });
 
@@ -55,7 +58,7 @@ describe('LimitedCacheObject', () => {
       myCache['abc'] = 123;
 
       // eslint-disable-next-line no-prototype-builtins
-      const result = myCache.hasOwnProperty('abc');
+      const result = Object.hasOwn(myCache, 'abc');
       expect(result).toEqual(true);
     });
 
@@ -101,7 +104,7 @@ describe('LimitedCacheObject', () => {
       myCache['abc'] = 123;
       delete myCache['abc'];
 
-      const result = Object.prototype.hasOwnProperty.call(myCache, 'abc');
+      const result = Object.hasOwn(myCache, 'abc');
       expect(result).toEqual(false);
     });
 

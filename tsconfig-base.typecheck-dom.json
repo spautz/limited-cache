@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig-base.typecheck-core.json",
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2022"]
+  }
+}
