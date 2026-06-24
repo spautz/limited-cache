@@ -235,8 +235,7 @@ const lowLevelHas = <ItemType = DefaultItemType>(
 ): boolean => {
   upgradeCacheMeta(cacheMeta);
   const { cache } = cacheMeta;
-  // biome-ignore lint/suspicious/noPrototypeBuiltins: Keeping the legacy hasOwnProperty to avoid a breaking change
-  if (Object.prototype.hasOwnProperty.call(cache, cacheKey) && cache[cacheKey] !== undefined) {
+  if (Object.hasOwn(cache, cacheKey) && cache[cacheKey] !== undefined) {
     if (!_cacheKeyHasExpired(cacheMeta, cacheKey, Date.now())) {
       return true;
     }
