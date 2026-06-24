@@ -29,24 +29,27 @@ if [[ -z "${NODE_AUTH_TOKEN:-}" ]]; then
   exit 1
 fi
 
-for PACKAGE_DIR in packages/*; do
-  [[ -d "$PACKAGE_DIR" ]] || continue
+promote_public_package() {
+  local PACKAGE_DIR="$1"
+  local PACKAGE_NAME
+  local EXPECTED_VERSION
+  local PACKAGE_SPEC
+  local ACTUAL_VERSION
 
-  IS_PRIVATE="$(node -p "require('./$PACKAGE_DIR/package.json').private === true ? 'true' : 'false'")"
-  [[ "$IS_PRIVATE" != "true" ]] || continue
-
-  PACKAGE_NAME="$(node -p "require('./$PACKAGE_DIR/package.json').name")"
-  EXPECTED_VERSION="$(node -p "require('./$PACKAGE_DIR/package.json').version")"
+  PACKAGE_NAME="$(read_package_json_field "$PACKAGE_DIR" name)"
+  EXPECTED_VERSION="$(read_package_json_field "$PACKAGE_DIR" version)"
   PACKAGE_SPEC="${PACKAGE_NAME}@${EXPECTED_VERSION}"
 
   pnpm dist-tag add "$PACKAGE_SPEC" "$PROMOTE_TO_TAG"
-  ACTUAL_VERSION="$(pnpm view "${PACKAGE_NAME}@${PROMOTE_TO_TAG}" version)"
+  ACTUAL_VERSION="$(read_package_version_with_retry "${PACKAGE_NAME}@${PROMOTE_TO_TAG}" "$EXPECTED_VERSION")"
 
   if [[ "$ACTUAL_VERSION" != "$EXPECTED_VERSION" ]]; then
     echo "Expected ${PACKAGE_NAME}@${PROMOTE_TO_TAG} to resolve to ${EXPECTED_VERSION}, but got ${ACTUAL_VERSION}."
     exit 1
   fi
-done
+}
+
+for_each_public_package promote_public_package
 
 ###################################################################################################
 # Standard teardown for all scripts

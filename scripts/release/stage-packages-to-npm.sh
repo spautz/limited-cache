@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Stage all packed public package tarballs to npm and expose the resulting stage IDs.
+# Stage all packed public package tarballs to npm and expose the resulting stage IDs and release tags.
 
 ###################################################################################################
 # Standard setup for all scripts
@@ -27,16 +27,31 @@ STAGED_RELEASE_JSON="$(mktemp "$TEMP_PARENT/staged-release.XXXXXX.json")"
 trap 'rm -f "$STAGED_RELEASE_JSON"' EXIT
 
 PACKED_TARBALLS=()
-for PACKAGE_DIR in packages/*; do
-  [[ -d "$PACKAGE_DIR" ]] || continue
+RELEASE_TAGS=()
 
-  IS_PRIVATE="$(node -p "require('./$PACKAGE_DIR/package.json').private === true ? 'true' : 'false'")"
-  [[ "$IS_PRIVATE" != "true" ]] || continue
+stage_public_package() {
+  local PACKAGE_DIR="$1"
+  local PACKAGE_NAME
+  local PACKAGE_VERSION
+  local PACKAGE_TAG
+  local PACKAGE_HAS_TARBALL=0
+  local PACKED_TARBALL
+
+  PACKAGE_NAME="$(read_package_json_field "$PACKAGE_DIR" name)"
+  PACKAGE_VERSION="$(read_package_json_field "$PACKAGE_DIR" version)"
+  PACKAGE_TAG="${PACKAGE_NAME}@${PACKAGE_VERSION}"
 
   while IFS= read -r PACKED_TARBALL; do
     PACKED_TARBALLS+=("$PACKED_TARBALL")
+    PACKAGE_HAS_TARBALL=1
   done < <(find "$PACKAGE_DIR" -maxdepth 1 -type f -name 'package-*.tgz' | sort)
-done
+
+  if [[ "$PACKAGE_HAS_TARBALL" -eq 1 ]]; then
+    RELEASE_TAGS+=("$PACKAGE_TAG")
+  fi
+}
+
+for_each_public_package stage_public_package
 
 if [[ "${#PACKED_TARBALLS[@]}" -eq 0 ]]; then
   echo 'No packed tarballs were found.'
@@ -55,14 +70,24 @@ if [[ -z "$STAGE_IDS" ]]; then
   exit 1
 fi
 
+RELEASE_TAG_NAMES="$(printf '%s\n' "${RELEASE_TAGS[@]}" | sort -u)"
+if [[ -z "$RELEASE_TAG_NAMES" ]]; then
+  echo 'Failed to derive any release tags from package metadata.'
+  exit 1
+fi
+
 if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
   {
     echo 'stage_ids<<EOF'
     printf '%s\n' "$STAGE_IDS"
     echo EOF
+    echo 'release_tags<<EOF'
+    printf '%s\n' "$RELEASE_TAG_NAMES"
+    echo EOF
   } >> "$GITHUB_OUTPUT"
 else
   printf '%s\n' "$STAGE_IDS"
+  printf '%s\n' "$RELEASE_TAG_NAMES"
 fi
 
 ###################################################################################################
