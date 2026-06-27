@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.0
+
+### Major Changes
+
+- Update CJS build settings and raise to ES2022 ([#90](https://github.com/spautz/limited-cache/issues/90)) ([4428c27](https://github.com/spautz/limited-cache/commit/4428c276d5208a50dbcd495bcc7a0fd7aa3047ea))
+- Change default ItemType from `any` to `unknown` ([#90](https://github.com/spautz/limited-cache/issues/90)) ([4428c27](https://github.com/spautz/limited-cache/commit/4428c276d5208a50dbcd495bcc7a0fd7aa3047ea))
+
 ## 2.3.1
 
 ### Patch Changes
