@@ -21,17 +21,16 @@ source ./scripts/helpers/helpers.sh
 ###################################################################################################
 # Main body
 
-for PACKAGE_DIR in packages/*; do
-  [[ -d "$PACKAGE_DIR" ]] || continue
-
-  IS_PRIVATE="$(node -p "require('./$PACKAGE_DIR/package.json').private === true ? 'true' : 'false'")"
-  [[ "$IS_PRIVATE" != "true" ]] || continue
+pack_public_package() {
+  local PACKAGE_DIR="$1"
 
   (
     cd "$PACKAGE_DIR"
     run_command pnpm pack --out package-%v.tgz
   )
-done
+}
+
+for_each_public_package pack_public_package
 
 ###################################################################################################
 # Standard teardown for all scripts

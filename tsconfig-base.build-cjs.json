@@ -3,16 +3,14 @@
   "compilerOptions": {
     // Modules
     "module": "CommonJS",
-    "moduleResolution": "Node",
-    "resolvePackageJsonExports": false,
-    "resolvePackageJsonImports": false,
+    "moduleResolution": "Node16",
     // Emit
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
     "sourceMap": true,
     // Language and Environment
-    "target": "ES6",
+    "target": "ES2022",
     "verbatimModuleSyntax": false
   },
   "exclude": ["node_modules", "**/*.stories.*", "**/__tests__", "**/*.test.*"]

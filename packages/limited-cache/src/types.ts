@@ -1,9 +1,8 @@
 // This makes it easy to ensure that ItemType gets passed to any nested generics:
 //  * Using `unknown` helps catch errors during development but is a pain for consumers.
 //  * Using `any` is nicer for consumers, but errors could slip through during development.
-// In v3.0.0 the default will change from `any` to `unknown`
-// biome-ignore lint/suspicious/noExplicitAny: Intentionally left as any for better DX
-export type DefaultItemType = any;
+// In v3.0.0 the default was changed from `any` to `unknown`
+export type DefaultItemType = unknown;
 
 export interface LimitedCacheOptionsFull {
   /** Items will be removed to keep the cache within the maxCacheSize limit */
